@@ -1,5 +1,5 @@
+import os
 # Django settings for taikoexplorer project.
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -107,7 +107,10 @@ ROOT_URLCONF = 'taikoexplorer.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'taikoexplorer.wsgi.application'
 
+SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
+
 TEMPLATE_DIRS = (
+    os.path.join(SETTINGS_PATH, 'templates')
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
