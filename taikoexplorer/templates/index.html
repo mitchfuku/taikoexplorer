@@ -1,12 +1,16 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
   <head>
-    <script src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>
-    <title>Title of the document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheets -->
+    {% include "css_imports.html" %}
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/_navbar.css" />
+    <!-- javascript -->
+    {% include "js_imports.html" %}
+    <title>TaikoExplorer</title>
   </head>
-
   <body>
-    The content of the document......
+    {% include "navbar.html" %}
   </body>
 
 </html>
