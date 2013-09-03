@@ -11,6 +11,17 @@
   </head>
   <body>
     {% include "navbar.html" %}
+    <div class="container">
+      <div id="search-results" class="row"></div>
+    </div>
   </body>
-
+  <script>
+    var searchResultDisplayer = new SearchResultDisplayer({
+      resultContainer: $("#search-results")
+    });
+    var searchBar = new SearchBar ({
+      searchDiv: $("#main-search"),
+      displayer: searchResultDisplayer
+    });
+  </script>
 </html>

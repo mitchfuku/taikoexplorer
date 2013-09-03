@@ -16,30 +16,32 @@ def youtube_search(options):
               developerKey=DEVELOPER_KEY)
 
   search_response = youtube.search().list(
-                      q=options.q,
+                      q=options["q"],
                       part="id,snippet",
-                      maxResults=options.maxResults
+                      maxResults=options["maxResults"]
                     ).execute()
 
-  videos = []
-  channels = []
-  playlists = []
+  #videos = []
+  #channels = []
+  #playlists = []
 
-  for search_result in search_response.get("items", []):
-    if search_result["id"]["kind"] == "youtube#video":
-      videos.append("%s (%s)" % (search_result["snippet"]["title"],
-        search_result["id"]["videoId"]))
-    elif search_result["id"]["kind"] == "youtube#channel":
-      channels.append("%s (%s)" % (search_result["snippet"]["title"],
-        search_result["id"]["channelId"]))
-    elif search_result["id"]["kind"] == "youtube#playlist":
-      playlists.append("%s (%s)" % (search_result["snippet"]["title"],
-        search_result["id"]["playlistId"]))
+  #for search_result in search_response.get("items", []):
+    #if search_result["id"]["kind"] == "youtube#video":
+      #videos.append("%s (%s)" % (search_result["snippet"]["title"],
+        #search_result["id"]["videoId"]))
+    #elif search_result["id"]["kind"] == "youtube#channel":
+      #channels.append("%s (%s)" % (search_result["snippet"]["title"],
+        #search_result["id"]["channelId"]))
+    #elif search_result["id"]["kind"] == "youtube#playlist":
+      #playlists.append("%s (%s)" % (search_result["snippet"]["title"],
+        #search_result["id"]["playlistId"]))
 
-  print "Videos:\n", "\n".join(videos), "\n"
-  print "Channels:\n", "\n".join(channels), "\n"
-  print "Playlists:\n", "\n".join(playlists), "\n"
+  #print "Videos:\n", "\n".join(videos), "\n"
+  #print "Channels:\n", "\n".join(channels), "\n"
+  #print "Playlists:\n", "\n".join(playlists), "\n"
+  return search_response
 
+# Running from shell example
 if __name__ == "__main__":
   parser = OptionParser()
   parser.add_option("--q", dest="q", help="Search term", default="taiko")
