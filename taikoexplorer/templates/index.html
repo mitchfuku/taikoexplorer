@@ -10,18 +10,23 @@
     <title>TaikoExplorer</title>
   </head>
   <body>
+    {% include "loading_icon.html" %}
     {% include "navbar.html" %}
-    <div class="container">
+    <div id="main-content" class="container">
       <div id="search-results" class="row"></div>
     </div>
   </body>
   <script>
+    var loadingIcon = new LoadingIcon({
+      loadingIconDiv: $("#loading-icon")
+    });
     var searchResultDisplayer = new SearchResultDisplayer({
       resultContainer: $("#search-results")
     });
     var searchBar = new SearchBar ({
       searchDiv: $("#main-search"),
-      displayer: searchResultDisplayer
+      displayer: searchResultDisplayer,
+      loadingIcon: loadingIcon
     });
   </script>
 </html>
