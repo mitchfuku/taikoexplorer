@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
+from taikoexplorer_db.models import Tag
 import json
 import settings as templates_settings
 import youtube
