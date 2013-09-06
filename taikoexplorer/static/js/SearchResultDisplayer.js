@@ -12,14 +12,14 @@ SearchResultDisplayer.prototype = {
       this.resultContainer.append(
         '<div class="row search-result"> \
           <div class="col-md-4 video-thumb"> \
-              <a href="https://www.youtube.com/watch?v='
-              + vid.id.videoId + '"> \
-                <img src="' + vid.snippet.thumbnails.medium.url + '" /> \
-              </a> \
+            <a href="/video?v='
+            + vid.id.videoId + '"> \
+              <img src="' + vid.snippet.thumbnails.medium.url + '" /> \
+            </a> \
           </div> \
           <div class="col-md-8 video-details"> \
             <p class="title"> \
-              <a href="https://www.youtube.com/watch?v='
+              <a href="/video?v='
               + vid.id.videoId + '"> \
                 ' + vid.snippet.title + '</a> \
             </p> \
