@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', views.home, name='home'),
     url(r'^yts/', views.youtubeSearch, name='yts'),
-
+    url(r'^video/', views.video, name='video'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

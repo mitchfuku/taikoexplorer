@@ -9,6 +9,12 @@ import youtube
 def home(request):
   return render(request, 'index.html')
 
+#serves the /video directory
+def video(request):
+  context = {}
+  context['vid'] = request.GET.get("v", None)
+  return render(request, 'video.html', context)
+
 def youtubeSearch(request):
   options = dict({
     "q" : request.GET.get("query", None),

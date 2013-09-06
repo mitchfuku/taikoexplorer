@@ -8,6 +8,7 @@ function SearchBar(params) {
 
 SearchBar.prototype = {
   init: function() {
+    console.log(window.location.pathname);
     this.searchForm.submit(function() {
       var that = this;
       that.loadingIcon.showLoadingIcon();
