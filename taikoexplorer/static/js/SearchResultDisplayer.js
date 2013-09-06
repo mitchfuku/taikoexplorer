@@ -5,8 +5,10 @@ function SearchResultDisplayer(params) {
 SearchResultDisplayer.prototype = {
   display: function(data) {
     console.log(data);
-    for (var i = 0; i < data.items.length; i++) {
-      var vid = data.items[i];
+    var videos = data.video;
+    for (var i = 0; i < videos.items.length; i++) {
+      var vid = videos.items[i];
+      //The video itself
       this.resultContainer.append(
         '<div class="row search-result"> \
           <div class="col-md-4 video-thumb"> \
@@ -29,7 +31,15 @@ SearchResultDisplayer.prototype = {
             <p class="desc"> \
               ' + vid.snippet.description + '</p> \
           </div> \
+          <div class="row"> \
+            <div class="input-group"> \
+              <span class="input-group-addon">@</span> \
+              <input type="text" class="form-control" placeholder="Username"> \
+            </div> \
+          </div> \
         </div>'
+      );
+      this.resultContainer.append(
       );
     }
   },

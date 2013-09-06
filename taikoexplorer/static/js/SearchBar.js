@@ -3,7 +3,7 @@ function SearchBar(params) {
   this.displayer = params.displayer;
   this.searchInput = this.searchForm.find("input");
   this.loadingIcon = params.loadingIcon;
-  this.init();
+  //this.init();
 }
 
 SearchBar.prototype = {

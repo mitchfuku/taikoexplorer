@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- stylesheets -->
     {% include "css_imports.html" %}
-    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/_navbar.css" />
     <!-- javascript -->
     {% include "js_imports.html" %}
     <title>TaikoExplorer</title>
@@ -12,21 +11,14 @@
   <body>
     {% include "loading_icon.html" %}
     {% include "navbar.html" %}
-    <div id="main-content" class="container">
-      <div id="search-results" class="row"></div>
-    </div>
+      <div id="main-content" class="container">
+        {% block maincontent %}
+        {% endblock maincontent %}
+      </div>
   </body>
   <script>
-    var loadingIcon = new LoadingIcon({
-      loadingIconDiv: $("#loading-icon")
-    });
-    var searchResultDisplayer = new SearchResultDisplayer({
-      resultContainer: $("#search-results")
-    });
     var searchBar = new SearchBar ({
       searchDiv: $("#main-search"),
-      displayer: searchResultDisplayer,
-      loadingIcon: loadingIcon
     });
   </script>
 </html>

@@ -24,9 +24,11 @@ def youtube_search(options):
   #videos = []
   #channels = []
   #playlists = []
+  vIDs = []
 
-  #for search_result in search_response.get("items", []):
-    #if search_result["id"]["kind"] == "youtube#video":
+  for search_result in search_response.get("items", []):
+    if search_result["id"]["kind"] == "youtube#video":
+      vIDs.append(search_result["id"]["videoId"])
       #videos.append("%s (%s)" % (search_result["snippet"]["title"],
         #search_result["id"]["videoId"]))
     #elif search_result["id"]["kind"] == "youtube#channel":
@@ -39,6 +41,7 @@ def youtube_search(options):
   #print "Videos:\n", "\n".join(videos), "\n"
   #print "Channels:\n", "\n".join(channels), "\n"
   #print "Playlists:\n", "\n".join(playlists), "\n"
+  search_response["vids"] = vIDs
   return search_response
 
 # Running from shell example
