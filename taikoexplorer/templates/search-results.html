@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+
+{% block maincontent %}
+<div id="search-results" class="row">
+  {% for vid in data.videos.items %}
+  <div class="row search-result"> 
+    <div class="col-md-4 video-thumb"> 
+      <a href="https://www.youtube.com/watch?v={{vid.id.videoId}}"> 
+        <img src="{{vid.snippet.thumbnails.medium.url}}" /> 
+      </a> 
+    </div> 
+    <div class="col-md-8 video-details"> 
+      <h4 class="title"> 
+        <a href="https://www.youtube.com/watch?v={{vid.id.videoId}}">
+          {{vid.snippet.title}}
+        </a> 
+      </h4> 
+      <p class="info"> 
+        by <a href="https://www.youtube.com/user/{{vid.snippet.channelTitle}}" target="_blank">{{vid.snippet.channelTitle}}</a> 
+      </p> 
+      <p class="desc">{{vid.snippet.description}}</p>
+      <div class="row"> 
+        <div class="panel-group col-md-12" id="accordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                  Video Information
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form>
+                  <div class="row">
+                    <div class="input-group col-md-6"> 
+                      <span class="input-group-addon">Group</span> 
+                      <input type="text" class="form-control" placeholder="Enter Group Name" value="hello"> 
+                    </div>
+                    <div class="input-group col-md-6"> 
+                      <span class="input-group-addon">Song</span> 
+                      <input type="text" class="form-control" placeholder="Enter Song Title"> 
+                    </div> 
+                  </div>
+                  <div class="row">
+                    <div class="input-group col-md-2">
+                      <span class="input-group-addon">Open Source</span>
+                      <span class="input-group-addon">
+                        <input type="checkbox">
+                      </span>
+                    </div>
+                    <div class="input-group col-md-2">
+                      <span class="input-group-addon">Drill</span>
+                      <span class="input-group-addon">
+                        <input type="checkbox" checked>
+                      </span>
+                    </div>
+                    <div class="input-group col-md-2">
+                      <span class="input-group-addon">Copyrighted</span>
+                      <span class="input-group-addon">
+                        <input type="checkbox">
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <button type="submit" class="btn btn-primary">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+  {% endfor %}
+</div>
+{% endblock maincontent %}
