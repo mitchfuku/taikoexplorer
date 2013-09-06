@@ -1,6 +1,9 @@
 {% extends "index.html" %}
 
 {% block maincontent %}
+<div>
+  {{data.tags}}
+</div>
 <div id="search-results" class="row">
   {% for vid in data.videos.items %}
   <div class="row search-result"> 
@@ -31,34 +34,40 @@
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">
               <div class="panel-body">
-                <form>
+                <form method="post">
+                  {% csrf_token %} 
+                  <input type="hidden" value={{vid.id.videoId}} name="vid" />
                   <div class="row">
                     <div class="input-group col-md-6"> 
                       <span class="input-group-addon">Group</span> 
-                      <input type="text" class="form-control" placeholder="Enter Group Name" value="hello"> 
+                      <input type="text" class="form-control" placeholder="Enter Group Name" name="group_name"> 
                     </div>
                     <div class="input-group col-md-6"> 
                       <span class="input-group-addon">Song</span> 
-                      <input type="text" class="form-control" placeholder="Enter Song Title"> 
+                      <input type="text" class="form-control" placeholder="Enter Song Title" name="song_title"> 
                     </div> 
                   </div>
                   <div class="row">
+                    <div class="input-group col-md-6"> 
+                      <span class="input-group-addon">Composer</span> 
+                      <input type="text" class="form-control" placeholder="Enter Composer" name="composer"> 
+                    </div> 
                     <div class="input-group col-md-2">
                       <span class="input-group-addon">Open Source</span>
                       <span class="input-group-addon">
-                        <input type="checkbox">
+                        <input type="checkbox" name="is_open_source">
                       </span>
                     </div>
                     <div class="input-group col-md-2">
                       <span class="input-group-addon">Drill</span>
                       <span class="input-group-addon">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" name="is_drill">
                       </span>
                     </div>
                     <div class="input-group col-md-2">
                       <span class="input-group-addon">Copyrighted</span>
                       <span class="input-group-addon">
-                        <input type="checkbox">
+                        <input type="checkbox" name="is_copyrighted">
                       </span>
                     </div>
                   </div>
@@ -80,3 +89,35 @@
   {% endfor %}
 </div>
 {% endblock maincontent %}
+
+{% block js %}
+<script>
+  var csrftoken = $.cookie('csrftoken');
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+    crossDomain: false,
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type)) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+  $("#search-results").delegate('form', 'submit', function(e) {
+    var values = {};
+    $.each($(this).serializeArray(), function(i, field) {
+      values[field.name] = field.value;
+    });
+    $.post(
+      "video-data/",
+      values,
+      function() {
+        console.log("success");
+      }
+    );
+    return false;
+  });
+</script>
+{% endblock js %}

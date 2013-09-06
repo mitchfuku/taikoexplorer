@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
+from django.template import RequestContext
 from taikoexplorer_db.models import Tag
 import json
 import settings as templates_settings
@@ -16,11 +17,12 @@ def home(request):
       })
       searchResults = youtube.youtube_search(options)
       tags = Tag.objects.filter(vid__in=searchResults.get("vids", None))
+      # iterate through tags and create a map with the vid as the key
       data = {
         "videos" : searchResults,
-        "db" : list(tags)
+        "tags" : list(tags)
       }
-      return render_to_response('search-results.html', {"data" : data})
+      return render(request, 'search-results.html', {"data" : data})
 
   # if all else fails, show landing page
   return render(request, 'index.html')
@@ -37,6 +39,24 @@ def youtubeSearch(request):
     "video" : youtubeResults,
     "db" : list(tags)
   }
-  print(tags)
-  print(youtubeResults.get("vids", []))
   return HttpResponse(json.dumps(data), content_type='application/json')
+
+#serves the /video-data async requests
+def editVideoData(request):
+  if request.method == 'POST':
+    vid = request.POST.get("vid", None)
+    groupName = request.POST.get("group_name", None)
+    songTitle = request.POST.get("song_title", None)
+    composer = request.POST.get("composer", None)
+    isOpenSource = request.POST.get("is_open_source", False)
+    isDrill = request.POST.get("is_drill", False)
+    isCopyrighted = request.POST.get("is_copyrighted", False)
+    # not doing any is* yet....just name and title
+    try:
+      tag = Tag.objects.get(vid=vid)
+      tag.composer = composer
+      tag.group = groupName
+    except Tag.DoesNotExist:
+      tag = Tag(vid=vid, composer=composer, group=groupName)
+    tag.save()
+    return HttpResponse(json.dumps("success"), content_type='application/json')
