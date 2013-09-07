@@ -13,19 +13,23 @@ def home(request):
     if query is not None :
       options = dict({
         "q" : query,
-        "maxResults" : request.GET.get("maxResults", 10)
+        "maxResults" : request.GET.get("maxResults", 10),
+        "pageToken" : request.GET.get("pageToken", "")
       })
       searchResults = youtube.youtube_search(options)
       tags = Tag.objects.filter(vid__in=searchResults.get("vids", None))
       tagDict = {}
       for tag in tags :
         tagDict[tag.vid] = tag
+      print(searchResults)
       import sys
       sys.stdout.flush()
       # iterate through tags and create a map with the vid as the key
       data = {
         "videos" : searchResults,
-        "tags" : tagDict
+        "tags" : tagDict,
+        "query" : query,
+        "pageToken" : request.GET.get("pageToken", "")
       }
       return render(request, 'search-results.html', {"data" : data})
 
@@ -36,7 +40,8 @@ def home(request):
 def youtubeSearch(request):
   options = dict({
     "q" : request.GET.get("query", None),
-    "maxResults" : request.GET.get("maxResults", 10)
+    "maxResults" : request.GET.get("maxResults", 10),
+    "pageToken" : request.GET.get("pageToken", "")
   })
   youtubeResults = youtube.youtube_search(options)
   tags = Tag.objects.filter(vid__in=youtubeResults.get("vids", None))

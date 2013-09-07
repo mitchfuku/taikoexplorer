@@ -18,7 +18,8 @@ def youtube_search(options):
   search_response = youtube.search().list(
                       q=options["q"],
                       part="id,snippet",
-                      maxResults=options["maxResults"]
+                      maxResults=options["maxResults"],
+                      pageToken=options["pageToken"]
                     ).execute()
 
   #videos = []
