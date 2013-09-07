@@ -17,10 +17,15 @@ def home(request):
       })
       searchResults = youtube.youtube_search(options)
       tags = Tag.objects.filter(vid__in=searchResults.get("vids", None))
+      tagDict = {}
+      for tag in tags :
+        tagDict[tag.vid] = tag
+      import sys
+      sys.stdout.flush()
       # iterate through tags and create a map with the vid as the key
       data = {
         "videos" : searchResults,
-        "tags" : list(tags)
+        "tags" : tagDict
       }
       return render(request, 'search-results.html', {"data" : data})
 
@@ -44,10 +49,13 @@ def youtubeSearch(request):
 #serves the /video-data async requests
 def editVideoData(request):
   if request.method == 'POST':
-    vid = request.POST.get("vid", None)
-    groupName = request.POST.get("group_name", None)
-    songTitle = request.POST.get("song_title", None)
-    composer = request.POST.get("composer", None)
+    vid = request.POST.get("vid")
+    groupName = request.POST.get("group_name", "")
+    import sys
+    sys.stdout.flush()
+    songTitle = request.POST.get("song_title", "")
+    composer = request.POST.get("composer", "")
+    print(composer)
     isOpenSource = request.POST.get("is_open_source", False)
     isDrill = request.POST.get("is_drill", False)
     isCopyrighted = request.POST.get("is_copyrighted", False)
@@ -56,7 +64,9 @@ def editVideoData(request):
       tag = Tag.objects.get(vid=vid)
       tag.composer = composer
       tag.group = groupName
+      tag.song_title=songTitle
     except Tag.DoesNotExist:
-      tag = Tag(vid=vid, composer=composer, group=groupName)
+      tag = Tag(
+          vid=vid, composer=composer, group=groupName, song_title=songTitle)
     tag.save()
     return HttpResponse(json.dumps("success"), content_type='application/json')

@@ -14,6 +14,7 @@ class Tag(models.Model):
   vid = models.CharField(max_length=20)
   composer = models.CharField(max_length=100, blank=True, null=True)
   group = models.CharField(max_length=100, blank=True, null=True)
+  song_title = models.CharField(max_length=100, blank=True, null=True)
   date_modified = models.DateField(auto_now=True)
   date_composed = models.DateField(blank=True, null=True, default=None)
   is_open_source = models.NullBooleanField(blank=True)

@@ -1,9 +1,7 @@
 {% extends "index.html" %}
 
 {% block maincontent %}
-<div>
-  {{data.tags}}
-</div>
+{% load dictionary_helpers %}
 <div id="search-results" class="row">
   {% for vid in data.videos.items %}
   <div class="row search-result"> 
@@ -36,21 +34,39 @@
               <div class="panel-body">
                 <form method="post">
                   {% csrf_token %} 
-                  <input type="hidden" value={{vid.id.videoId}} name="vid" />
+                  <input type="hidden" value="{{vid.id.videoId}}" name="vid" />
                   <div class="row">
                     <div class="input-group col-md-6"> 
                       <span class="input-group-addon">Group</span> 
-                      <input type="text" class="form-control" placeholder="Enter Group Name" name="group_name"> 
+                      <input 
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Group Name"
+                        name="group_name"
+                        value="{{data.tags|get_group:vid.id.videoId}}"
+                      >
                     </div>
                     <div class="input-group col-md-6"> 
                       <span class="input-group-addon">Song</span> 
-                      <input type="text" class="form-control" placeholder="Enter Song Title" name="song_title"> 
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Song Title"
+                        name="song_title"
+                        value="{{data.tags|get_song:vid.id.videoId}}"
+                      > 
                     </div> 
                   </div>
                   <div class="row">
                     <div class="input-group col-md-6"> 
                       <span class="input-group-addon">Composer</span> 
-                      <input type="text" class="form-control" placeholder="Enter Composer" name="composer"> 
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Composer"
+                        name="composer"
+                        value="{{data.tags|get_composer:vid.id.videoId}}"
+                      > 
                     </div> 
                     <div class="input-group col-md-2">
                       <span class="input-group-addon">Open Source</span>
