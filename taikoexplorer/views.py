@@ -17,11 +17,19 @@ def home(request):
         "pageToken" : request.GET.get("pageToken", "")
       })
       searchResults = youtube.youtube_search(options)
-      tags = Tag.objects.filter(vid__in=searchResults.get("vids", None))
-      tagDict = {}
-      for tag in tags :
-        tagDict[tag.vid] = tag
-      print(searchResults)
+      songVideo = SongVideo.objects.filter(
+          video_vid__in=searchResults.get("vids", None)).values_list(
+              'song_id', flat=True)
+      groupvideo = groupvideo.objects.select_related.filter(
+          video_vid__in=searchResults.get("vids", None))
+      composerSong = ComposerSong.objects.select_related.filter(
+          song_id__in=songVideo)
+      print(songVideo)
+      print(groupVideo)
+      print(composerSong)
+      dataDict = {}
+      for group in groupVideo:
+        dataDict[group.video_vid] = group
       import sys
       sys.stdout.flush()
       # iterate through tags and create a map with the vid as the key
@@ -75,3 +83,4 @@ def editVideoData(request):
           vid=vid, composer=composer, group=groupName, song_title=songTitle)
     tag.save()
     return HttpResponse(json.dumps("success"), content_type='application/json')
+
