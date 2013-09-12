@@ -84,7 +84,6 @@ description
 Composer
 full_name
 (implied) id
-is_original = boolean true if the song associated to this composer was composed by this composer
 
 Song (also for drills)
 (implied) id
@@ -93,25 +92,31 @@ description
 date_composed = date the ORIGINAL version of this song was composed
 is_open_source
 is_drill = boolean true if the "song" is a drill
+is_original = boolean true if the song being played is the original version
 
 Group
 (implied) id
-full_name
+name
 nicknames = array(?)
 date_founded
+
+AKA
+(implied) id
+group_id = foreign key into group
+name
 
 //songs written by composer and composers of a song
 ComposerSong
 composer_id
 song_id
+is_original_composer = boolean true if the song associated to this composer was composed by this composer
+date_rearranged = if this is not the original, date this was rearranged
 
 //Songs in the video and videos this song is in
 SongVideo
 song_id
 video_id (implied id)
 video_vid
-date_rearranged = if this is not the original, date this was rearranged
-is_original = boolean true if the song being played is the original version
 
 //Groups in the video and videos this group is in
 GroupVideo
