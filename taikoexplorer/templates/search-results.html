@@ -45,7 +45,26 @@
                 <div class="panel-body">
                   <form method="post">
                     {% csrf_token %} 
-                    <input type="hidden" value="{{vid.id.videoId}}" name="vid" />
+                    <input
+                      type="hidden"
+                      value="{{vid.id.videoId}}"
+                      name="vid"
+                    />
+                    <input 
+                      type="hidden"
+                      value="{{vid.snippet.description}}"
+                      name="vdesc"
+                    />
+                    <input
+                      type="hidden"
+                      value="{{vid.snippet.title}}"
+                      name="vtitle"
+                    />
+                    <input
+                      type="hidden"
+                      value="{{vid.snippet.thumbnails.default.url}}"
+                      name="dthumb"
+                    />
                     <div class="row">
                       <div class="input-group col-md-6"> 
                         <span class="input-group-addon">Group</span> 
@@ -75,7 +94,7 @@
                           type="text"
                           class="form-control"
                           placeholder="Enter Composer"
-                          name="composer"
+                          name="composer_name"
                           value="{{data.tags|get_composer:vid.id.videoId}}"
                         > 
                       </div> 

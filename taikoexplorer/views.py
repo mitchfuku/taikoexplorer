@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
-from taikoexplorer_db.models import Tag
+from taikoexplorer_db.models import Video, Composer, Song, Group
 import json
 import settings as templates_settings
 import youtube
@@ -17,25 +17,25 @@ def home(request):
         "pageToken" : request.GET.get("pageToken", "")
       })
       searchResults = youtube.youtube_search(options)
-      songVideo = SongVideo.objects.filter(
-          video_vid__in=searchResults.get("vids", None)).values_list(
-              'song_id', flat=True)
-      groupvideo = groupvideo.objects.select_related.filter(
-          video_vid__in=searchResults.get("vids", None))
-      composerSong = ComposerSong.objects.select_related.filter(
-          song_id__in=songVideo)
-      print(songVideo)
-      print(groupVideo)
-      print(composerSong)
+      
+      videos = Video.objects.filter(
+          vid__in=searchResults.get("vids", None)).prefetch_related(
+          'songs__composers', 'groups')
       dataDict = {}
-      for group in groupVideo:
-        dataDict[group.video_vid] = group
+      for video in videos :
+        dataDict[video.vid] = {
+          "video-data" : video,
+          "groups" : video.groups.all(),
+          "songs" : video.songs.all(),
+          "composers" : Composer.objects.filter(songs__in=video.songs.all()).all()
+        }
+      print(dataDict)
       import sys
       sys.stdout.flush()
       # iterate through tags and create a map with the vid as the key
       data = {
         "videos" : searchResults,
-        "tags" : tagDict,
+        "tags" : dataDict,
         "query" : query,
         "pageToken" : request.GET.get("pageToken", "")
       }
@@ -46,41 +46,60 @@ def home(request):
 
 # serves the /yts api
 def youtubeSearch(request):
-  options = dict({
-    "q" : request.GET.get("query", None),
-    "maxResults" : request.GET.get("maxResults", 10),
-    "pageToken" : request.GET.get("pageToken", "")
-  })
-  youtubeResults = youtube.youtube_search(options)
-  tags = Tag.objects.filter(vid__in=youtubeResults.get("vids", None))
-  data = {
-    "video" : youtubeResults,
-    "db" : list(tags)
-  }
-  return HttpResponse(json.dumps(data), content_type='application/json')
+  return HttpResponse(json.dumps("hello"), content_type='application/json')
 
 #serves the /video-data async requests
 def editVideoData(request):
   if request.method == 'POST':
     vid = request.POST.get("vid")
+    vtitle = request.POST.get("vtitle")
+    vdesc = request.POST.get("vdesc")
+    dthumb = request.POST.get("dthumb")
     groupName = request.POST.get("group_name", "")
-    import sys
-    sys.stdout.flush()
     songTitle = request.POST.get("song_title", "")
-    composer = request.POST.get("composer", "")
-    print(composer)
+    composerName = request.POST.get("composer_name", "")
     isOpenSource = request.POST.get("is_open_source", False)
     isDrill = request.POST.get("is_drill", False)
     isCopyrighted = request.POST.get("is_copyrighted", False)
     # not doing any is* yet....just name and title
-    try:
-      tag = Tag.objects.get(vid=vid)
-      tag.composer = composer
-      tag.group = groupName
-      tag.song_title=songTitle
-    except Tag.DoesNotExist:
-      tag = Tag(
-          vid=vid, composer=composer, group=groupName, song_title=songTitle)
-    tag.save()
+
+    video, video_created = Video.objects.get_or_create(
+      vid=vid, 
+      title=vtitle,
+      description=vdesc,
+      default_thumb_url=dthumb)
+
+    if composerName :
+      composer, composer_created = Composer.objects.get_or_create(
+        full_name=composerName)
+    if songTitle :
+      song, song_created = Song.objects.get_or_create(
+        title=songTitle)
+    if groupName :
+      group, group_created = Group.objects.get_or_create(
+        name=groupName)
+    if (video_created or \
+      song_created or \
+      composer_created or \
+      song.composers.get(full_name=composerName)) and \
+      composer :
+        song.composers.add(composer)
+    if (video_created or \
+      song_created or \
+      video.songs.get(title=songTitle)) and \
+      song :
+        video.songs.add(song)
+    if (video_created or \
+      group_created or \
+      video.groups.get(name=groupName)) and \
+      group :
+        video.groups.add(group)
+    import sys
+    sys.stdout.flush()
     return HttpResponse(json.dumps("success"), content_type='application/json')
+
+def createNewSong(songTitle):
+  song = Song(
+      title=songTitle)
+  return song
 
