@@ -35,7 +35,7 @@ def home(request):
       # iterate through tags and create a map with the vid as the key
       data = {
         "videos" : searchResults,
-        "tags" : dataDict,
+        "metadata" : dataDict,
         "query" : query,
         "pageToken" : request.GET.get("pageToken", "")
       }

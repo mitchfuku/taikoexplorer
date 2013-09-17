@@ -1,6 +1,12 @@
 from django import template
 register = template.Library()
 
+@register.filter(name='get_metadata')
+def getMetadata(dic, key) :
+  if key in dic :
+    return dic[key]
+  return None
+
 @register.filter(name='get_group')
 def getGroup(dic, key) :
   #tag = dic.groups.all()

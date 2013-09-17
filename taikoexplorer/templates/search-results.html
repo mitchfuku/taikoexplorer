@@ -43,6 +43,7 @@
               </div>
               <div id="collapse{{forloop.counter0}}" class="panel-collapse collapse">
                 <div class="panel-body">
+                  {% with metadata=data.metadata|get_metadata:vid.id.videoId %}
                   <form method="post">
                     {% csrf_token %} 
                     <input
@@ -50,6 +51,7 @@
                       value="{{vid.id.videoId}}"
                       name="vid"
                     />
+                    {% if metadata == None %}
                     <input 
                       type="hidden"
                       value="{{vid.snippet.description}}"
@@ -65,6 +67,7 @@
                       value="{{vid.snippet.thumbnails.default.url}}"
                       name="dthumb"
                     />
+                    {% endif %}
                     <div class="row">
                       <div class="input-group col-md-6"> 
                         <span class="input-group-addon">Group</span> 
@@ -73,7 +76,7 @@
                           class="form-control"
                           placeholder="Enter Group Name"
                           name="group_name"
-                          value="{{data.tags|get_group:vid.id.videoId}}"
+                          value=""
                         >
                       </div>
                       <div class="input-group col-md-6"> 
@@ -83,7 +86,7 @@
                           class="form-control"
                           placeholder="Enter Song Title"
                           name="song_title"
-                          value="{{data.tags|get_song:vid.id.videoId}}"
+                          value=""
                         > 
                       </div> 
                     </div>
@@ -93,29 +96,29 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Enter Composer"
+                          placeholder="Enter Composer Name"
                           name="composer_name"
-                          value="{{data.tags|get_composer:vid.id.videoId}}"
+                          value=""
                         > 
                       </div> 
-                      <div class="input-group col-md-2">
-                        <span class="input-group-addon">Open Source</span>
-                        <span class="input-group-addon">
-                          <input type="checkbox" name="is_open_source">
-                        </span>
-                      </div>
-                      <div class="input-group col-md-2">
-                        <span class="input-group-addon">Drill</span>
-                        <span class="input-group-addon">
-                          <input type="checkbox" name="is_drill">
-                        </span>
-                      </div>
-                      <div class="input-group col-md-2">
-                        <span class="input-group-addon">Copyrighted</span>
-                        <span class="input-group-addon">
-                          <input type="checkbox" name="is_copyrighted">
-                        </span>
-                      </div>
+                      <!--<div class="input-group col-md-2">-->
+                        <!--<span class="input-group-addon">Open Source</span>-->
+                        <!--<span class="input-group-addon">-->
+                          <!--<input type="checkbox" name="is_open_source">-->
+                        <!--</span>-->
+                      <!--</div>-->
+                      <!--<div class="input-group col-md-2">-->
+                        <!--<span class="input-group-addon">Drill</span>-->
+                        <!--<span class="input-group-addon">-->
+                          <!--<input type="checkbox" name="is_drill">-->
+                        <!--</span>-->
+                      <!--</div>-->
+                      <!--<div class="input-group col-md-2">-->
+                        <!--<span class="input-group-addon">Copyrighted</span>-->
+                        <!--<span class="input-group-addon">-->
+                          <!--<input type="checkbox" name="is_copyrighted">-->
+                        <!--</span>-->
+                      <!--</div>-->
                     </div>
                     <div class="row">
                       <div class="col-md-2">
@@ -125,6 +128,7 @@
                       </div>
                     </div>
                   </form>
+                  {% endwith %}
                 </div> 
               </div>
             </div>
