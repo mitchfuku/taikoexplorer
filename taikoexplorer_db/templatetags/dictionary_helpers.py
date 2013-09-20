@@ -3,8 +3,8 @@ register = template.Library()
 
 @register.filter(name='get_metadata')
 def getMetadata(dic, key) :
-  if key in dic :
-    return dic[key]
+  #if key in dic :
+    #return dic[key]
   return None
 
 @register.filter(name='get_group')

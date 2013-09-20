@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
 from taikoexplorer_db.models import Video, Composer, Song, Group
+from django.forms.models import model_to_dict
 import json
 import settings as templates_settings
 import youtube
@@ -24,14 +25,13 @@ def home(request):
       dataDict = {}
       for video in videos :
         dataDict[video.vid] = {
-          "video-data" : video,
-          "groups" : video.groups.all(),
-          "songs" : video.songs.all(),
-          "composers" : Composer.objects.filter(songs__in=video.songs.all()).all()
+          "video-data" : model_to_dict(video),
+          "groups" : list(video.groups.all()),
+          "songs" : list(video.songs.all()),
+          "composers" : list(Composer.objects.filter(
+            songs__in=video.songs.all()
+          ).all())
         }
-      print(dataDict)
-      import sys
-      sys.stdout.flush()
       # iterate through tags and create a map with the vid as the key
       data = {
         "videos" : searchResults,
@@ -39,7 +39,9 @@ def home(request):
         "query" : query,
         "pageToken" : request.GET.get("pageToken", "")
       }
-      return render(request, 'search-results.html', {"data" : data})
+      import sys
+      sys.stdout.flush()
+      return render(request, 'search-results.html', {"data" : json.dumps(data)})
 
   # if all else fails, show landing page
   return render(request, 'index.html')

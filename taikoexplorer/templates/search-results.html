@@ -3,141 +3,110 @@
 {% block maincontent %}
 {% load dictionary_helpers %}
 <div id="search-results" class="row">
-  {% for vid in data.videos.items %}
-    <div class="row search-result"> 
-      <div class="col-md-4 video-thumb"> 
-        {% if vid.id.kind == "youtube#video" %}
-        <a href="https://www.youtube.com/watch?v={{vid.id.videoId}}"> 
-          <img src="{{vid.snippet.thumbnails.medium.url}}" /> 
-        </a> 
-      </div> 
-      <div class="col-md-8 video-details"> 
-        <h4 class="title"> 
-          <a href="https://www.youtube.com/watch?v={{vid.id.videoId}}">
-        {% elif vid.id.kind == "youtube#channel" %}
-        <a href="https://www.youtube.com/user/{{vid.snippet.channelTitle}}"> 
-          <img src="{{vid.snippet.thumbnails.default.url}}" /> 
-        </a> 
-      </div> 
-      <div class="col-md-8 video-details"> 
-        <h4 class="title"> 
-          <a href="https://www.youtube.com/user/{{vid.snippet.channelTitle}}">
-        {% endif %}
-            {{vid.snippet.title}}
-          </a> 
-        </h4> 
-        <p class="info"> 
-          by <a href="https://www.youtube.com/user/{{vid.snippet.channelTitle}}" target="_blank">{{vid.snippet.channelTitle}}</a> 
-        </p> 
-        <p class="desc">{{vid.snippet.description}}</p>
-        {% if vid.id.kind == "youtube#video" %}
-        <div class="row"> 
-          <div class="panel-group col-md-12" id="accordion{{forloop.counter0}}">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{forloop.counter0}}" href="#collapse{{forloop.counter0}}">
-                    Video Information
-                  </a>
-                </h4>
-              </div>
-              <div id="collapse{{forloop.counter0}}" class="panel-collapse collapse">
-                <div class="panel-body">
-                  {% with metadata=data.metadata|get_metadata:vid.id.videoId %}
-                  <form method="post">
-                    {% csrf_token %} 
-                    <input
-                      type="hidden"
-                      value="{{vid.id.videoId}}"
-                      name="vid"
-                    />
-                    {% if metadata == None %}
-                    <input 
-                      type="hidden"
-                      value="{{vid.snippet.description}}"
-                      name="vdesc"
-                    />
-                    <input
-                      type="hidden"
-                      value="{{vid.snippet.title}}"
-                      name="vtitle"
-                    />
-                    <input
-                      type="hidden"
-                      value="{{vid.snippet.thumbnails.default.url}}"
-                      name="dthumb"
-                    />
-                    {% endif %}
-                    <div class="row">
-                      <div class="input-group col-md-6"> 
-                        <span class="input-group-addon">Group</span> 
-                        <input 
-                          type="text"
-                          class="form-control"
-                          placeholder="Enter Group Name"
-                          name="group_name"
-                          value=""
-                        >
-                      </div>
-                      <div class="input-group col-md-6"> 
-                        <span class="input-group-addon">Song</span> 
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Enter Song Title"
-                          name="song_title"
-                          value=""
-                        > 
-                      </div> 
-                    </div>
-                    <div class="row">
-                      <div class="input-group col-md-6"> 
-                        <span class="input-group-addon">Composer</span> 
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Enter Composer Name"
-                          name="composer_name"
-                          value=""
-                        > 
-                      </div> 
-                      <!--<div class="input-group col-md-2">-->
-                        <!--<span class="input-group-addon">Open Source</span>-->
-                        <!--<span class="input-group-addon">-->
-                          <!--<input type="checkbox" name="is_open_source">-->
-                        <!--</span>-->
-                      <!--</div>-->
-                      <!--<div class="input-group col-md-2">-->
-                        <!--<span class="input-group-addon">Drill</span>-->
-                        <!--<span class="input-group-addon">-->
-                          <!--<input type="checkbox" name="is_drill">-->
-                        <!--</span>-->
-                      <!--</div>-->
-                      <!--<div class="input-group col-md-2">-->
-                        <!--<span class="input-group-addon">Copyrighted</span>-->
-                        <!--<span class="input-group-addon">-->
-                          <!--<input type="checkbox" name="is_copyrighted">-->
-                        <!--</span>-->
-                      <!--</div>-->
-                    </div>
-                    <div class="row">
-                      <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary">
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                  {% endwith %}
+  {% if vid.id.kind == "youtube#video" %}
+  <div class="row"> 
+    <div class="panel-group col-md-12" id="accordion{{forloop.counter0}}">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{forloop.counter0}}" href="#collapse{{forloop.counter0}}">
+              Video Information
+            </a>
+          </h4>
+        </div>
+        <div id="collapse{{forloop.counter0}}" class="panel-collapse collapse">
+          <div class="panel-body">
+            {% with metadata=data.metadata|get_metadata:vid.id.videoId %}
+            <form id="form-container">
+              {% csrf_token %} 
+              <input
+                type="hidden"
+                value="{{vid.id.videoId}}"
+                name="vid"
+              />
+              {% if metadata == None %}
+              <input 
+                type="hidden"
+                value="{{vid.snippet.description}}"
+                name="vdesc"
+              />
+              <input
+                type="hidden"
+                value="{{vid.snippet.title}}"
+                name="vtitle"
+              />
+              <input
+                type="hidden"
+                value="{{vid.snippet.thumbnails.default.url}}"
+                name="dthumb"
+              />
+              {% endif %}
+              <div class="row">
+                <div class="input-group col-md-6"> 
+                  <span class="input-group-addon">Song</span> 
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Song Title"
+                    name="song_title"
+                    value=""
+                  /> 
                 </div> 
+                <div class="input-group col-md-6"> 
+                  <span class="input-group-addon">Composer</span> 
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Composer Name"
+                    name="composer_name"
+                    value=""
+                  /> 
+                </div> 
+                <button type="submit" class="btn btn-primary add-song">
+                  Submit
+                </button>
               </div>
-            </div>
-          </div>
-        </div><!-- end search-result -->
-      {% endif %}
-    </div> 
-  </div>
-  {% endfor %}
+              <div class="row">
+                <div class="input-group col-md-6"> 
+                  <span class="input-group-addon">Group</span> 
+                  <input 
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Group Name"
+                    name="group_name"
+                    value=""
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Submit
+                </button>
+                <!--<div class="input-group col-md-2">-->
+                  <!--<span class="input-group-addon">Open Source</span>-->
+                  <!--<span class="input-group-addon">-->
+                    <!--<input type="checkbox" name="is_open_source">-->
+                  <!--</span>-->
+                <!--</div>-->
+                <!--<div class="input-group col-md-2">-->
+                  <!--<span class="input-group-addon">Drill</span>-->
+                  <!--<span class="input-group-addon">-->
+                    <!--<input type="checkbox" name="is_drill">-->
+                  <!--</span>-->
+                <!--</div>-->
+                <!--<div class="input-group col-md-2">-->
+                  <!--<span class="input-group-addon">Copyrighted</span>-->
+                  <!--<span class="input-group-addon">-->
+                    <!--<input type="checkbox" name="is_copyrighted">-->
+                  <!--</span>-->
+                <!--</div>-->
+              </div>
+            </form>
+            {% endwith %}
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div><!-- end search-result -->
+  {% endif %}
 </div>
 {% block footer %}
 <ul class="pager">
@@ -152,7 +121,13 @@
 {% endblock maincontent %}
 
 {% block js %}
+<script src="/static/js/build/SearchResult.js"></script>
+<script src="/static/js/build/SearchResultContainer.js"></script>
 <script>
+  React.renderComponent(
+    SearchResultContainer({data:{{data|safe}}}),
+    document.getElementById('search-results')
+  );
   var csrftoken = $.cookie('csrftoken');
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -166,18 +141,29 @@
       }
     }
   });
-  $("#search-results").delegate('form', 'submit', function(e) {
+  $("#form-container").on('submit', function(e) {
     var values = {};
+    var postURL = "";
+    var $button = $("input[type=submit][clicked=true]");
+    if ($button.hasClass("add-song")) {
+      postURL = "add-song-data/";
+    } else if ($button.hasClass("add-group")) {
+      postURL = "add-group-data/";
+    }
+    console.log(postURL);
+    console.log($button);
     $.each($(this).serializeArray(), function(i, field) {
       values[field.name] = field.value;
     });
-    $.post(
-      "video-data/",
+    console.log(values);
+    console.log(e);
+    /*$.post(
+      postURL,
       values,
       function() {
         console.log("success");
       }
-    );
+    );*/
     return false;
   });
 </script>
