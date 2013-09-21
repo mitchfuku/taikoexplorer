@@ -9,3 +9,7 @@
 h4.title {
   margin-top: 0;
 }
+
+.panel * {
+  font-size: 14px;
+}

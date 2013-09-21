@@ -17,7 +17,7 @@ var SearchResult = React.createClass({
 
   genRenderVideoDescription: function(desc) {
     if (desc) {
-      return <p class="desc">{desc}</p>;
+      return <p className="desc">{desc}</p>;
     } else {
       return <p><i>No Video Description</i></p>;
     }
@@ -29,7 +29,7 @@ var SearchResult = React.createClass({
     // If a video, set this to URL
     var urlmod = "watch?v=" + data.id.videoId;
     var form = 
-      <SearchResultForm 
+      <SearchResultFormWrapper
         videodata={data}
         metadata={metadata}
         index={this.props.index}
@@ -42,22 +42,22 @@ var SearchResult = React.createClass({
     }
     return (
       <div>
-        <div class="col-md-4 video-thumb"> 
+        <div className="col-md-4 video-thumb"> 
           <a href={'https://www.youtube.com/' + urlmod}> 
             <img src={data.snippet.thumbnails.medium.url} /> 
           </a> 
         </div> 
-        <div class="col-md-8 video-details"> 
-          <h4 class="title"> 
+        <div className="col-md-8 video-details"> 
+          <h4 className="title"> 
             <a href={'https://www.youtube.com/' + urlmod}>
               {data.snippet.title}
             </a> 
           </h4> 
-          <p class="info"> 
+          <p className="info"> 
             by {this.genRenderVideoUploaderLink(data)}
           </p> 
           {this.genRenderVideoDescription(data.snippet.description)}
-          <div class="row">
+          <div className="row">
             {form}
           </div>
         </div>
@@ -67,7 +67,6 @@ var SearchResult = React.createClass({
 
   render: function() {
     var data = this.props.videodata;
-    console.log(data);
     return this.genRenderThumbDetails(data.id.kind);
   }
 });

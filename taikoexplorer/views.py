@@ -41,7 +41,11 @@ def home(request):
       }
       import sys
       sys.stdout.flush()
-      return render(request, 'search-results.html', {"data" : json.dumps(data)})
+      return render(
+        request,
+        'search-results.html',
+        {"data" : json.dumps(data)}
+      )
 
   # if all else fails, show landing page
   return render(request, 'index.html')

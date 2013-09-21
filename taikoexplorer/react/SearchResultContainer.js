@@ -5,7 +5,7 @@ var SearchResultContainer = React.createClass({
     var searchResultNodes = this.props.data.videos.items.map(
       function(video, index) {
         return (
-          <div class="row search-result"> 
+          <div className="row search-result"> 
             <SearchResult
               videodata={video}
               metadata={this.props.data.metadata[video.id.videoId]}

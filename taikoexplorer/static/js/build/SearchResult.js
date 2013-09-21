@@ -67,7 +67,6 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
 
   render: function() {
     var data = this.props.videodata;
-    console.log(data);
     return this.genRenderThumbDetails(data.id.kind);
   }
 });

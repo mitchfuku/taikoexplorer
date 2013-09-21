@@ -35,7 +35,7 @@ var SearchResultForm = React.createClass({displayName: 'SearchResultForm',
       React.DOM.div( {className:"panel-group col-md-12", id:"accordion" + this.props.index}, 
         React.DOM.div( {className:"panel panel-default"}, 
           React.DOM.div( {className:"panel-heading"}, 
-            React.DOM.h4( {className:"panel-title"}, 
+            React.DOM.h5( {className:"panel-title video-accordion"}, 
               React.DOM.a( 
                 {className:"accordion-toggle",
                 'data-toggle':"collapse", 
@@ -61,39 +61,41 @@ var SearchResultForm = React.createClass({displayName: 'SearchResultForm',
                 ),
                 this.genRenderHiddenFormInputs(),
                 React.DOM.div( {className:"row"}, 
-                  React.DOM.div( {className:"input-group col-md-6"},  
+                  React.DOM.div( {className:"input-group col-md-4"},  
                     React.DOM.span( {className:"input-group-addon"}, "Song"), 
-                    React.DOM.input(
-                      {type:"text",
-                      className:"form-control",
-                      placeholder:"Enter Song Title",
+                    ReactInput(
+                      {classname:"form-control",
                       name:"song_title",
+                      placeholder:"Enter Song Title",
+                      type:"text",
                       value:""}
                     ) 
                   ), 
-                  React.DOM.div( {className:"input-group col-md-6"},  
+                  React.DOM.div( {className:"input-group col-md-5"},  
                     React.DOM.span( {className:"input-group-addon"}, "Composer"), 
-                    React.DOM.input(
-                      {type:"text",
-                      className:"form-control",
-                      placeholder:"Enter Composer Name",
+                    ReactInput(
+                      {classname:"form-control",
                       name:"composer_name",
+                      placeholder:"Enter Composer Name",
+                      type:"text",
                       value:""}
                     ) 
                   ), 
-                  React.DOM.button( {type:"submit", className:"btn btn-primary add-song"}, 
-" Submit "                  )
+                  React.DOM.div( {className:"input-group col-md-3"},  
+                    React.DOM.button( {type:"submit", className:"btn btn-primary add-song"}, 
+" Submit "                    )
+                  )
                 ),
                 React.DOM.div( {className:"row"}, 
                   React.DOM.div( {className:"input-group col-md-6"},  
                     React.DOM.span( {className:"input-group-addon"}, "Group"), 
-                    React.DOM.input( 
-                      {type:"text",
-                      className:"form-control",
-                      placeholder:"Enter Group Name",
+                    ReactInput(
+                      {classname:"form-control",
                       name:"group_name",
+                      placeholder:"Enter Group Name",
+                      type:"text",
                       value:""}
-                    )
+                    ) 
                   ),
                   React.DOM.button( {type:"submit", className:"btn btn-primary"}, 
 " Submit "                  )
