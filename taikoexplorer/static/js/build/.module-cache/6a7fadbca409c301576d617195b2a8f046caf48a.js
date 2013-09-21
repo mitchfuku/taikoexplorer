@@ -10,8 +10,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
       SearchResultForm( 
         {videodata:data,
         metadata:metadata,
-        index:this.props.index,
-        csrftoken:this.props.csrftoken}
+        index:this.props.index}
       );
     switch (type) {
       case "youtube#channel" :

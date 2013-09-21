@@ -3,10 +3,20 @@
 var SearchResult = React.createClass({
   genRenderThumbDetails: function(type) {
     var data = this.props.videodata;
+    var metadata = this.props.metadata;
+    // If a video, set this to URL
     var urlmod = "watch?v=" + data.id.videoId;
+    var form = 
+      <SearchResultForm 
+        videodata={data}
+        metadata={metadata}
+        index={this.props.index}
+        csrftoken={this.props.csrftoken}
+      />;
     switch (type) {
       case "youtube#channel" :
         urlmod = "user/" + data.snippet.channelTitle;
+        form = null;
     }
     return (
       <div>
@@ -25,14 +35,16 @@ var SearchResult = React.createClass({
             by <a href={'https://www.youtube.com/user/' + data.snippet.channelTitle} target="_blank">{data.snippet.channelTitle}</a> 
           </p> 
           <p class="desc">{data.snippet.description}</p>
+          <div class="row">
+            {form}
+          </div>
         </div>
       </div>
     );
   },
+
   render: function() {
-    console.log(this.props);
     var data = this.props.videodata;
-    var metadata = this.props.metadata;
     return this.genRenderThumbDetails(data.id.kind);
   }
 });

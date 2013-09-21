@@ -1,0 +1,1 @@
+throw new Error("nonexistent module required: static/js/build/");

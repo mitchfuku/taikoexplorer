@@ -9,9 +9,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
     var form = 
       SearchResultForm( 
         {videodata:data,
-        metadata:metadata,
-        index:this.props.index,
-        csrftoken:this.props.csrftoken}
+        metadata:metadata}
       );
     switch (type) {
       case "youtube#channel" :
@@ -42,7 +40,6 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
       )
     );
   },
-
   render: function() {
     var data = this.props.videodata;
     return this.genRenderThumbDetails(data.id.kind);

@@ -2,6 +2,7 @@
 
 {% block maincontent %}
 {% load dictionary_helpers %}
+{% csrf_token %}
 <div id="search-results" class="row">
   {% if vid.id.kind == "youtube#video" %}
   <div class="row"> 
@@ -121,11 +122,12 @@
 {% endblock maincontent %}
 
 {% block js %}
+<script src="/static/js/build/SearchResultForm.js"></script>
 <script src="/static/js/build/SearchResult.js"></script>
 <script src="/static/js/build/SearchResultContainer.js"></script>
 <script>
   React.renderComponent(
-    SearchResultContainer({data:{{data|safe}}}),
+    SearchResultContainer({data:{{data|safe}}, csrftoken:"{{csrf_token}}"}),
     document.getElementById('search-results')
   );
   var csrftoken = $.cookie('csrftoken');

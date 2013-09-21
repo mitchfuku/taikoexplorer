@@ -16,6 +16,7 @@ var SearchResultContainer = React.createClass({displayName: 'SearchResultContain
         );
       }.bind(this)
     );
+    console.log(this.props);
     return (
       React.DOM.div(null, 
         searchResultNodes

@@ -2,16 +2,20 @@
 
 var SearchResultContainer = React.createClass({
   render: function() {
-    var searchResultNodes = this.props.data.videos.items.map(function(video) {
-      return (
-        <div class="row search-result"> 
-          <SearchResult
-            videodata={video}
-            metadata={this.props.data.metadata[video.id.videoId]}
-          />
-        </div>
-      );
-    }.bind(this));
+    var searchResultNodes = this.props.data.videos.items.map(
+      function(video, index) {
+        return (
+          <div class="row search-result"> 
+            <SearchResult
+              videodata={video}
+              metadata={this.props.data.metadata[video.id.videoId]}
+              index={index}
+              csrftoken={this.props.csrftoken}
+            />
+          </div>
+        );
+      }.bind(this)
+    );
     return (
       <div>
         {searchResultNodes}

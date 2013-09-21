@@ -9,8 +9,7 @@ var SearchResultContainer = React.createClass({displayName: 'SearchResultContain
             SearchResult(
               {videodata:video,
               metadata:this.props.data.metadata[video.id.videoId],
-              index:index,
-              csrftoken:this.props.csrftoken}
+              index:index}
             )
           )
         );
