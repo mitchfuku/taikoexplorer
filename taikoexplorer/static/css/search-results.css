@@ -2,6 +2,10 @@
   padding: 10px 10px 10px;
 }
 
+.search-result .video-thumb img {
+  max-width: 320px;
+}
+
 h4.title {
   margin-top: 0;
 }
