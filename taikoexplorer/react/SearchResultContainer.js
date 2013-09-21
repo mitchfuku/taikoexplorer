@@ -17,7 +17,7 @@ var SearchResultContainer = React.createClass({
       }.bind(this)
     );
     return (
-      <div>
+      <div id="search-results">
         {searchResultNodes}
       </div>
     );

@@ -1,6 +1,14 @@
 /** @jsx React.DOM */
 
 var SearchResult = React.createClass({
+  genRenderVideoDescription: function(desc) {
+    if (desc) {
+      return <p class="desc">{desc}</p>;
+    } else {
+      return <p><i>No Video Description</i></p>;
+    }
+  },
+
   genRenderThumbDetails: function(type) {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
@@ -34,7 +42,7 @@ var SearchResult = React.createClass({
           <p class="info"> 
             by <a href={'https://www.youtube.com/user/' + data.snippet.channelTitle} target="_blank">{data.snippet.channelTitle}</a> 
           </p> 
-          <p class="desc">{data.snippet.description}</p>
+          {this.genRenderVideoDescription(data.snippet.description)}
           <div class="row">
             {form}
           </div>

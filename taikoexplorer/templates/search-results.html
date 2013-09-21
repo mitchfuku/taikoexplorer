@@ -2,121 +2,19 @@
 
 {% block maincontent %}
 {% load dictionary_helpers %}
-{% csrf_token %}
-<div id="search-results" class="row">
-  {% if vid.id.kind == "youtube#video" %}
-  <div class="row"> 
-    <div class="panel-group col-md-12" id="accordion{{forloop.counter0}}">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{forloop.counter0}}" href="#collapse{{forloop.counter0}}">
-              Video Information
-            </a>
-          </h4>
-        </div>
-        <div id="collapse{{forloop.counter0}}" class="panel-collapse collapse">
-          <div class="panel-body">
-            {% with metadata=data.metadata|get_metadata:vid.id.videoId %}
-            <form id="form-container">
-              {% csrf_token %} 
-              <input
-                type="hidden"
-                value="{{vid.id.videoId}}"
-                name="vid"
-              />
-              {% if metadata == None %}
-              <input 
-                type="hidden"
-                value="{{vid.snippet.description}}"
-                name="vdesc"
-              />
-              <input
-                type="hidden"
-                value="{{vid.snippet.title}}"
-                name="vtitle"
-              />
-              <input
-                type="hidden"
-                value="{{vid.snippet.thumbnails.default.url}}"
-                name="dthumb"
-              />
-              {% endif %}
-              <div class="row">
-                <div class="input-group col-md-6"> 
-                  <span class="input-group-addon">Song</span> 
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter Song Title"
-                    name="song_title"
-                    value=""
-                  /> 
-                </div> 
-                <div class="input-group col-md-6"> 
-                  <span class="input-group-addon">Composer</span> 
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter Composer Name"
-                    name="composer_name"
-                    value=""
-                  /> 
-                </div> 
-                <button type="submit" class="btn btn-primary add-song">
-                  Submit
-                </button>
-              </div>
-              <div class="row">
-                <div class="input-group col-md-6"> 
-                  <span class="input-group-addon">Group</span> 
-                  <input 
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter Group Name"
-                    name="group_name"
-                    value=""
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary">
-                  Submit
-                </button>
-                <!--<div class="input-group col-md-2">-->
-                  <!--<span class="input-group-addon">Open Source</span>-->
-                  <!--<span class="input-group-addon">-->
-                    <!--<input type="checkbox" name="is_open_source">-->
-                  <!--</span>-->
-                <!--</div>-->
-                <!--<div class="input-group col-md-2">-->
-                  <!--<span class="input-group-addon">Drill</span>-->
-                  <!--<span class="input-group-addon">-->
-                    <!--<input type="checkbox" name="is_drill">-->
-                  <!--</span>-->
-                <!--</div>-->
-                <!--<div class="input-group col-md-2">-->
-                  <!--<span class="input-group-addon">Copyrighted</span>-->
-                  <!--<span class="input-group-addon">-->
-                    <!--<input type="checkbox" name="is_copyrighted">-->
-                  <!--</span>-->
-                <!--</div>-->
-              </div>
-            </form>
-            {% endwith %}
-          </div> 
-        </div>
-      </div>
-    </div>
-  </div><!-- end search-result -->
-  {% endif %}
-</div>
+<div id="react-search-results" class="row"></div>
 {% block footer %}
 <ul class="pager">
   {% if data.videos.prevPageToken %}
-  <li class="previous"><a href="/?query={{data.query}}&pageToken={{data.videos.prevPageToken}}">&larr; Older</a></li>
+  <li class="previous"><a href="/?query={{data.query}}&pageToken={{data.videos.prevPageToken}}">&larr; Previous</a></li>
   {% else %}
-  <li class="previous disabled"><a>&larr; Older</a></li>
+  <li class="previous disabled"><a>&larr; Previous</a></li>
+  {% endif %} 
+  {% if data.videos.nextPageToken %}
+  <li class="next"><a href="/?query={{data.query}}&pageToken={{data.videos.nextPageToken}}">Next &rarr;</a></li>
+  {% else %}
+  <li class="next disabled"><a>Next &rarr;</a></li>
   {% endif %}
-  <li class="next"><a href="/?query={{data.query}}&pageToken={{data.videos.nextPageToken}}">Newer &rarr;</a></li>
 </ul>
 {% endblock footer %}
 {% endblock maincontent %}
@@ -128,7 +26,7 @@
 <script>
   React.renderComponent(
     SearchResultContainer({data:{{data|safe}}, csrftoken:"{{csrf_token}}"}),
-    document.getElementById('search-results')
+    document.getElementById('react-search-results')
   );
   var csrftoken = $.cookie('csrftoken');
   function csrfSafeMethod(method) {
