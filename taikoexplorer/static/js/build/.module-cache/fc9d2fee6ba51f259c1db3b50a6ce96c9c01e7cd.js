@@ -8,7 +8,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
       link += 'user/' + data.snippet.channelTitle;
     } else {
       link += 'channel/' + data.snippet.channelId;
-      label = React.DOM.i(null, "unknown user");
+      label = "Unknown username";
     }
     return (
       React.DOM.a( {href:link, target:"_blank"}, label) 

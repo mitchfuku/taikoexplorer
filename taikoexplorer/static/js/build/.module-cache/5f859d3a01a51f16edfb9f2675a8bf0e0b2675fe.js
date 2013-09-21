@@ -8,11 +8,12 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
       link += 'user/' + data.snippet.channelTitle;
     } else {
       link += 'channel/' + data.snippet.channelId;
-      label = React.DOM.i(null, "unknown user");
+      label = "Unknown username";
     }
     return (
       React.DOM.a( {href:link, target:"_blank"}, label) 
     );
+
   },
 
   genRenderVideoDescription: function(desc) {
@@ -54,7 +55,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
             ) 
           ), 
           React.DOM.p( {className:"info"},  
-" by ", this.genRenderVideoUploaderLink(data)
+" by ", React.DOM.a( {href:'https://www.youtube.com/user/' + data.snippet.channelTitle, target:"_blank"}, data.snippet.channelTitle) 
           ), 
           this.genRenderVideoDescription(data.snippet.description),
           React.DOM.div( {className:"row"}, 

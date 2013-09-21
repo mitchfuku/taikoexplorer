@@ -1,20 +1,6 @@
 /** @jsx React.DOM */
 
 var SearchResult = React.createClass({displayName: 'SearchResult',
-  genRenderVideoUploaderLink: function(data) {
-    var link = "https://www.youtube.com/";
-    var label = data.snippet.channelTitle;
-    if (label) {
-      link += 'user/' + data.snippet.channelTitle;
-    } else {
-      link += 'channel/' + data.snippet.channelId;
-      label = React.DOM.i(null, "unknown user");
-    }
-    return (
-      React.DOM.a( {href:link, target:"_blank"}, label) 
-    );
-  },
-
   genRenderVideoDescription: function(desc) {
     if (desc) {
       return React.DOM.p( {className:"desc"}, desc);
@@ -42,19 +28,19 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
     }
     return (
       React.DOM.div(null, 
-        React.DOM.div( {className:"col-md-4 video-thumb"},  
+        React.DOM.div( {className:"col-md-2 video-thumb"},  
           React.DOM.a( {href:'https://www.youtube.com/' + urlmod},  
             React.DOM.img( {src:data.snippet.thumbnails.medium.url} ) 
           ) 
         ), 
-        React.DOM.div( {className:"col-md-8 video-details"},  
+        React.DOM.div( {className:"col-md-10 video-details"},  
           React.DOM.h4( {className:"title"},  
             React.DOM.a( {href:'https://www.youtube.com/' + urlmod}, 
               data.snippet.title
             ) 
           ), 
           React.DOM.p( {className:"info"},  
-" by ", this.genRenderVideoUploaderLink(data)
+" by ", React.DOM.a( {href:'https://www.youtube.com/user/' + data.snippet.channelTitle, target:"_blank"}, data.snippet.channelTitle) 
           ), 
           this.genRenderVideoDescription(data.snippet.description),
           React.DOM.div( {className:"row"}, 
@@ -67,7 +53,6 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
 
   render: function() {
     var data = this.props.videodata;
-    console.log(data);
     return this.genRenderThumbDetails(data.id.kind);
   }
 });

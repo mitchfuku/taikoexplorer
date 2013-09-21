@@ -1,20 +1,6 @@
 /** @jsx React.DOM */
 
 var SearchResult = React.createClass({displayName: 'SearchResult',
-  genRenderVideoUploaderLink: function(data) {
-    var link = "https://www.youtube.com/";
-    var label = data.snippet.channelTitle;
-    if (label) {
-      link += 'user/' + data.snippet.channelTitle;
-    } else {
-      link += 'channel/' + data.snippet.channelId;
-      label = React.DOM.i(null, "unknown user");
-    }
-    return (
-      React.DOM.a( {href:link, target:"_blank"}, label) 
-    );
-  },
-
   genRenderVideoDescription: function(desc) {
     if (desc) {
       return React.DOM.p( {className:"desc"}, desc);
@@ -54,7 +40,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
             ) 
           ), 
           React.DOM.p( {className:"info"},  
-" by ", this.genRenderVideoUploaderLink(data)
+" by ", React.DOM.a( {href:'https://www.youtube.com/user/' + data.snippet.channelTitle, target:"_blank"}, data.snippet.channelTitle) 
           ), 
           this.genRenderVideoDescription(data.snippet.description),
           React.DOM.div( {className:"row"}, 

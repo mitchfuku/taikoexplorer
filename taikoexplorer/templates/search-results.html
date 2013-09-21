@@ -3,19 +3,8 @@
 {% block maincontent %}
 {% load dictionary_helpers %}
 <div id="react-search-results" class="row"></div>
+<div id="react-pager"></div>
 {% block footer %}
-<ul class="pager">
-  {% if data.videos.prevPageToken %}
-  <li class="previous"><a href="/?query={{data.query}}&pageToken={{data.videos.prevPageToken}}">&larr; Previous</a></li>
-  {% else %}
-  <li class="previous disabled"><a>&larr; Previous</a></li>
-  {% endif %} 
-  {% if data.videos.nextPageToken %}
-  <li class="next"><a href="/?query={{data.query}}&pageToken={{data.videos.nextPageToken}}">Next &rarr;</a></li>
-  {% else %}
-  <li class="next disabled"><a>Next &rarr;</a></li>
-  {% endif %}
-</ul>
 {% endblock footer %}
 {% endblock maincontent %}
 
@@ -23,11 +12,24 @@
 <script src="/static/js/build/SearchResultForm.js"></script>
 <script src="/static/js/build/SearchResult.js"></script>
 <script src="/static/js/build/SearchResultContainer.js"></script>
+<script src="/static/js/build/SearchResultsPager.js"></script>
 <script>
+  var data = {{data|safe}};
   React.renderComponent(
-    SearchResultContainer({data:{{data|safe}}, csrftoken:"{{csrf_token}}"}),
+    SearchResultContainer({data:data, csrftoken:"{{csrf_token}}"}),
     document.getElementById('react-search-results')
   );
+  React.renderComponent(
+    SearchResultsPager(
+      {
+        nextpagetoken:data.videos.nextPageToken,
+        prevpagetoken:data.videos.prevPageToken,
+        query:data.query
+      }
+    ),
+    document.getElementById('react-pager')
+  );
+
   var csrftoken = $.cookie('csrftoken');
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
