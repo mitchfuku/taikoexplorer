@@ -34,6 +34,7 @@ var SearchResult = React.createClass({
         metadata={metadata}
         index={this.props.index}
         csrftoken={this.props.csrftoken}
+        shield={this.props.shield}
       />;
     switch (type) {
       case "youtube#channel" :

@@ -1,0 +1,47 @@
+#shield {
+  position: fixed;
+  display: none;
+  height: 100%;
+  width: 100%;
+  background: rgba(119, 119, 119, 0.5);
+  z-index: 1000;
+  margin-top: -51px;
+  text-align: center;
+}
+
+#shield:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -0.25em; /* Adjusts for spacing */
+}
+
+#shield .shield-content {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#shield .shield-content .close {
+  position: absolute; 
+  right: 10px;
+  top: 5px;
+}
+
+#shield .shield-content .form-container {
+  border: 1px solid #aaa;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+#shield .shield-content .form-container button {
+  float: right;
+}
+
+#shield .shield-content .form-container .row {
+  padding: 5px 10px;
+}
+
+#shield .shield-content .form-container:last-child {
+  padding-bottom: 10px;
+}

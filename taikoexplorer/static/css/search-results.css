@@ -6,6 +6,14 @@
   max-width: 320px;
 }
 
+.search-result .video-db-details {
+  margin: 0;
+}
+
+.search-result .songs-and-composers {
+  border-right: 1px solid #ddd;
+}
+
 h4.title {
   margin-top: 0;
 }

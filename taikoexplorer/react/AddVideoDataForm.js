@@ -3,7 +3,7 @@
 var AddVideoDataForm = React.createClass({
   genRenderHiddenFormInputs: function() {
     var data = this.props.videodata;
-    if (metadata) {
+    if (this.props.metadata) {
       return(
         <div className="hidden-form-inputs">
           <input 
@@ -26,48 +26,44 @@ var AddVideoDataForm = React.createClass({
     }
     return null;
   },
-  
-  render: function() {
-    return (
-      <form id="form-container">
-        <input
-          type="hidden"
-          value={data.id.videoId}l
-          name="vid"
-        />
-        <input
-          type="hidden"
-          value={this.props.csrftoken}
-          name="csrfmiddlewaretoken"
-        />
-        {this.genRenderHiddenFormInputs()}
-        <div className="row">
-          <div className="input-group col-md-4"> 
-            <span className="input-group-addon">Song</span> 
-            <ReactInput
-              classname="form-control"
-              name="song_title"
-              placeholder="Enter Song Title"
-              type="text"
-              value=""
-            /> 
-          </div> 
-          <div className="input-group col-md-5"> 
-            <span className="input-group-addon">Composer</span> 
-            <ReactInput
-              classname="form-control"
-              name="composer_name"
-              placeholder="Enter Composer Name"
-              type="text"
-              value=""
-            /> 
-          </div> 
-          <div className="input-group col-md-3"> 
-            <button type="submit" className="btn btn-primary add-song">
-              Submit
-            </button>
+
+  genRenderFormInputs: function() {
+    if (this.props.type === "songcomposer") {
+      return (
+        <div>
+          <div className="row">
+            <div className="input-group col-md-6"> 
+              <span className="input-group-addon">Song</span> 
+              <ReactInput
+                classname="form-control"
+                name="song_title"
+                placeholder="Enter Song Title"
+                type="text"
+                value=""
+              /> 
+            </div> 
+            <div className="input-group col-md-6"> 
+              <span className="input-group-addon">Composer</span> 
+              <ReactInput
+                classname="form-control"
+                name="composer_name"
+                placeholder="Enter Composer Name"
+                type="text"
+                value=""
+              /> 
+            </div> 
+          </div>
+          <div className="row">
+            <div className="input-group col-md-12"> 
+              <button type="submit" className="btn btn-primary add-song">
+                Submit
+              </button>
+            </div>
           </div>
         </div>
+      );
+    } else if (this.props.type === "group") {
+      return (
         <div className="row">
           <div className="input-group col-md-6"> 
             <span className="input-group-addon">Group</span> 
@@ -83,6 +79,27 @@ var AddVideoDataForm = React.createClass({
             Submit
           </button>
         </div>
+      );
+    }
+  },
+  
+  render: function() {
+    var data = this.props.videodata;
+    var metadata = this.props.metadata;
+    return (
+      <form>
+        <input
+          type="hidden"
+          value={data.id.videoId}l
+          name="vid"
+        />
+        <input
+          type="hidden"
+          value={this.props.csrftoken}
+          name="csrfmiddlewaretoken"
+        />
+        {this.genRenderHiddenFormInputs()}
+        {this.genRenderFormInputs()}
       </form>
     );
   }

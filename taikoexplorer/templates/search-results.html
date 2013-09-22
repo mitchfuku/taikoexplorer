@@ -11,18 +11,25 @@
 {% block js %}
 <script src="/static/js/build/Shield.js"></script>
 <script src="/static/js/build/ReactInput.js"></script>
+<script src="/static/js/build/AddVideoDataForm.js"></script>
 <script src="/static/js/build/SearchResultFormWrapper.js"></script>
 <script src="/static/js/build/SearchResult.js"></script>
 <script src="/static/js/build/SearchResultContainer.js"></script>
 <script src="/static/js/build/SearchResultsPager.js"></script>
 <script>
   var data = {{data|safe}};
-  React.renderComponent(
+  var shield = React.renderComponent(
     Shield({}),
     document.getElementById('shield-container')
   );
   React.renderComponent(
-    SearchResultContainer({data:data, csrftoken:"{{csrf_token}}"}),
+    SearchResultContainer(
+      {
+        data:data,
+        csrftoken:"{{csrf_token}}", 
+        shield: shield
+      }
+    ),
     document.getElementById('react-search-results')
   );
   React.renderComponent(

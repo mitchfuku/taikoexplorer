@@ -11,6 +11,7 @@ var SearchResultContainer = React.createClass({
               metadata={this.props.data.metadata[video.id.videoId]}
               index={index}
               csrftoken={this.props.csrftoken}
+              shield={this.props.shield}
             />
           </div>
         );

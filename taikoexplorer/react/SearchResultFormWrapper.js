@@ -1,9 +1,94 @@
 /** @jsx React.DOM */
 
 var SearchResultFormWrapper = React.createClass({
-  render: function() {
+  addSongOrComposer: function(e) {
+    var shield = this.props.shield;
+    var form = this.addForm(
+      "songcomposer",
+      "Add a song and composer"
+    );
+    shield.setChildren(form);
+    shield.show();
+  },
+
+  hideShield: function(e) {
+    e.preventDefault();
+    this.props.shield.hide();
+  },
+
+  addGroup: function(e) {
+    var shield = this.props.shield;
+    var form = this.addForm(
+      "group",
+      "Add a Group"
+    );
+    shield.setChildren(form);
+    shield.show();
+  },
+
+  addForm: function(type, label) {
+    return (
+      <div className="shield-content container">
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2 form-container">
+            <button 
+              type="button" 
+              onClick={this.hideShield}
+              className="close" 
+              data-dismiss="alert" 
+              aria-hidden="true">
+              &times;
+            </button>
+            <div className="row">
+              <h4>{label}</h4>
+            </div>
+            <div className="row">
+              <AddVideoDataForm
+                videodata={this.props.videodata}
+                metadata={this.props.metadata}
+                csrftoken={this.props.csrftoken}
+                type={type}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  genRenderSongsAndComposers: function() {
     var metadata = this.props.metadata;
-    var data = this.props.videodata;
+    if (!metadata || (!metadata.songs.length && !metadata.composers.length)) {
+      return (
+        <div>
+          <p><i>No songs or composers listed</i></p>
+          <a onClick={this.addSongOrComposer}>
+            Add a song or composer
+          </a>
+        </div>
+      );
+    } else {
+      var songs = metadata.songs;
+      var composers = metadata.composers;
+    }
+  },
+
+  genRenderGroups: function() {
+    var metadata = this.props.metadata;
+    if (!metadata || !metadata.groups.length) {
+      return (
+        <div>
+          <p><i>No groups listed</i></p>
+          <a onClick={this.addGroup}>
+            Add a group
+          </a>
+        </div>
+      );
+    } else {
+    }
+  },
+
+  render: function() {
     return(
       <div
         className="panel-group col-md-12"
@@ -24,11 +109,14 @@ var SearchResultFormWrapper = React.createClass({
             id={"collapse" + this.props.index} 
             className="panel-collapse collapse">
             <div className="panel-body">
-              <AddVideoDataForm
-                videodata={data}
-                metadata={metadata}
-                csrftoken={this.props.csrftoken}
-              />
+              <div className="row video-db-details">
+                <div className="col-md-6 songs-and-composers">
+                  {this.genRenderSongsAndComposers()}
+                </div>
+                <div className="col-md-6">
+                  {this.genRenderGroups()}
+                </div>
+              </div>
             </div> 
           </div>
         </div>

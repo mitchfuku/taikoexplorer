@@ -1,31 +1,35 @@
 /** @jsx React.DOM */
 
 var Shield = React.createClass({
-  getInitialState: function() {
-    return (
-      {
-        children: this.props.children,
-      }
-    );
-  },
-
-  setChildren: function(children) {
+  setChildren: function(children) { 
     this.setState({children: children});
+  }, 
+
+  componentDidUpdate: function() {
+    if (this.refs.shield.getDOMNode().children.length) {
+      $(this.refs.shield.getDOMNode().children[0]).remove();
+    }
+    this.renderShield(this.state.children);
   },
 
   show: function() {
-    $('#shield').show(200);
+    $('#shield').fadeIn(200);
   },
 
   hide: function() {
-    $('#shield').hide(200);
+    $('#shield').fadeOut(200);
+  },
+
+  renderShield: function(children) {
+    if (children) {
+      React.renderComponent(
+        this.transferPropsTo(children),
+        this.refs.shield.getDOMNode()
+      );
+    }
   },
 
   render: function() {
-    return (
-      <div id="shield">
-        {this.state.children}
-      </div>
-    );
+    return <div id="shield" ref="shield" />;
   }
 });
