@@ -81,52 +81,45 @@ def youtubeSearch(request):
   return HttpResponse(
       json.dumps(data), content_type='application/json')
 
-#serves the /video-data async requests
+#serves the /add-video-data async requests
 def editVideoData(request):
   if request.method == 'POST':
     vid = request.POST.get("vid")
     vtitle = request.POST.get("vtitle")
     vdesc = request.POST.get("vdesc")
     dthumb = request.POST.get("dthumb")
-    groupName = request.POST.get("group_name", "")
-    songTitle = request.POST.get("song_title", "")
-    composerName = request.POST.get("composer_name", "")
-    isOpenSource = request.POST.get("is_open_source", False)
-    isDrill = request.POST.get("is_drill", False)
-    isCopyrighted = request.POST.get("is_copyrighted", False)
+    groupName = request.POST.get("group_name", None)
+    songTitle = request.POST.get("song_title", None)
+    composerName = request.POST.get("composer_name", None)
+    #isOpenSource = request.POST.get("is_open_source", False)
+    #isDrill = request.POST.get("is_drill", False)
+    #isCopyrighted = request.POST.get("is_copyrighted", False)
     # not doing any is* yet....just name and title
 
-    video, video_created = Video.objects.get_or_create(
-      vid=vid, 
-      title=vtitle,
-      description=vdesc,
-      default_thumb_url=dthumb)
+    print(songTitle)
+    print(groupName)
+    print(composerName)
+    #video, video_created = Video.objects.get_or_create(
+      #vid=vid, 
+      #title=vtitle,
+      #description=vdesc,
+      #default_thumb_url=dthumb)
 
-    if composerName :
-      composer, composer_created = Composer.objects.get_or_create(
-        full_name=composerName)
-    if songTitle :
-      song, song_created = Song.objects.get_or_create(
-        title=songTitle)
-    if groupName :
-      group, group_created = Group.objects.get_or_create(
-        name=groupName)
-    if (video_created or \
-      song_created or \
-      composer_created or \
-      song.composers.get(full_name=composerName)) and \
-      composer :
-        song.composers.add(composer)
-    if (video_created or \
-      song_created or \
-      video.songs.get(title=songTitle)) and \
-      song :
-        video.songs.add(song)
-    if (video_created or \
-      group_created or \
-      video.groups.get(name=groupName)) and \
-      group :
-        video.groups.add(group)
+    #if composerName :
+      #composer, composer_created = Composer.objects.get_or_create(
+        #full_name=composerName)
+    #if songTitle :
+      #song, song_created = Song.objects.get_or_create(
+        #title=songTitle)
+    #if groupName :
+      #group, group_created = Group.objects.get_or_create(
+        #name=groupName)
+    #if composer :
+        #song.composers.add(composer)
+    #if song :
+        #video.songs.add(song)
+    #if group :
+        #video.groups.add(group)
     import sys
     sys.stdout.flush()
     return HttpResponse(json.dumps("success"), content_type='application/json')

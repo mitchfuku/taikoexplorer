@@ -83,10 +83,8 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
 
   submitForm: function() {
-    var $form = $(this.form);
-    console.log($form);
     var values = {};
-    $.each($(this.form).serializeArray(), function(i, field) {
+    $.each($(this).serializeArray(), function(i, field) {
       values[field.name] = field.value;
     });
     console.log(values);
@@ -151,7 +149,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   render: function() {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
-    this.form = 
+    return (
       React.DOM.form(null, 
         React.DOM.input(
           {type:"hidden",
@@ -165,7 +163,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         ),
         this.genRenderHiddenFormInputs(),
         this.genRenderFormInputs()
-      );
-    return this.form;
+      )
+    );
   }
 });

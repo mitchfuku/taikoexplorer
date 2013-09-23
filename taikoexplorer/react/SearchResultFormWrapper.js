@@ -48,6 +48,7 @@ var SearchResultFormWrapper = React.createClass({
                 metadata={this.props.metadata}
                 csrftoken={this.props.csrftoken}
                 type={type}
+                shield={this.props.shield}
               />
             </div>
           </div>

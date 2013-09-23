@@ -5,7 +5,7 @@
  * placeholder, querytype[song, composer, group], classname, name, type,
  * value
  */
-var ReactTypeaheadInput =  React.createClass({
+var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput',
   getInitialState: function() {
     return {
       value: this.props.value
@@ -20,27 +20,34 @@ var ReactTypeaheadInput =  React.createClass({
     this.renderSelect2();
   },
 
-  getData: function() {
-    if (this.$select2)
-      return this.$select2.select2('data')
+  allowMultiple: function() {
+    var t = this.props.type;
+    switch (t) {
+      case "group":
+      case "composer":
+        return true;
+      case "song":
+        return false;
+    }
     return null;
   },
 
   renderSelect2: function() {
     var select2 = React.renderComponent(
       this.transferPropsTo(
-        <input 
-          className={this.props.classname}
-          name={this.props.name}
-          type={this.props.type}
-          value={this.state.value}
-        />
+        React.DOM.input( 
+          {className:this.props.classname,
+          name:this.props.name,
+          type:this.props.type,
+          value:this.state.value}
+        )
       ),
       this.refs['select2'].getDOMNode()
     );
-    this.$select2 = $(select2.getDOMNode());
+    var $el = $(select2.getDOMNode());
     var that = this;
-    this.$select2.select2({
+    var allowMultiple = this.allowMultiple();
+    $el.select2({
       placeholder: that.props.placeholder,
       createSearchChoice: function(term, data) { 
         if (
@@ -54,7 +61,7 @@ var ReactTypeaheadInput =  React.createClass({
         } 
       },
       minimumInputLength: 1,
-      multiple: true,
+      multiple: allowMultiple,
       width: "100%",
       ajax: {
         url: "yts", 
@@ -84,6 +91,6 @@ var ReactTypeaheadInput =  React.createClass({
   },
 
   render: function() {
-    return <div ref="select2" />;
+    return React.DOM.div( {ref:"select2"} );
   }
 });

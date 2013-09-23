@@ -83,10 +83,8 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
 
   submitForm: function() {
-    var $form = $(this.form);
-    console.log($form);
     var values = {};
-    $.each($(this.form).serializeArray(), function(i, field) {
+    $.each($(this).serializeArray(), function(i, field) {
       values[field.name] = field.value;
     });
     console.log(values);

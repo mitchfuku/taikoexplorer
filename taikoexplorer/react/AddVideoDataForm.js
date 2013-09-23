@@ -1,9 +1,48 @@
 /** @jsx React.DOM */
 
 var AddVideoDataForm = React.createClass({
+  genRenderSongInput: function() {
+    this.songInput = this.getInputMarkup(
+      "song_title", 
+      "Enter Song Title", 
+      "song"
+    );
+    return this.songInput;
+  },
+
+  genRenderComposerInput: function() {
+    this.composerInput = this.getInputMarkup(
+      "composer_name", 
+      "Enter Composer Name", 
+      "composer"
+    );
+    return this.composerInput;
+  },
+
+  genRenderGroupInput: function() {
+    this.groupInput = this.getInputMarkup(
+      "group_name", 
+      "Enter Group Name", 
+      "group"
+    );
+    return this.groupInput;
+  },
+
+  getInputMarkup: function(name, placeholder, querytype) {
+    return (
+      <ReactTypeaheadInput
+        querytype={querytype}
+        type="text"
+        name={name}
+        placeholder={placeholder}
+        value=""
+      />
+    );
+  },
+
   genRenderHiddenFormInputs: function() {
     var data = this.props.videodata;
-    if (this.props.metadata) {
+    if (!this.props.metadata) {
       return(
         <div className="hidden-form-inputs">
           <input 
@@ -27,6 +66,40 @@ var AddVideoDataForm = React.createClass({
     return null;
   },
 
+  addSongComposer: function(e) {
+    e.preventDefault();
+    var songInputData = this.songInput.getData();
+    var composerInputData = this.composerInput.getData();
+    console.log(songInputData);
+    console.log(composerInputData);
+    this.submitForm();
+  },
+
+  addGroup: function(e) {
+    e.preventDefault();
+    var groupInputData = this.groupInput.getData();
+    console.log(groupInputData);
+    this.submitForm();
+  },
+
+  submitForm: function() {
+    var $form = $(this.form);
+    console.log($form);
+    var values = {};
+    $.each($form.serializeArray(), function(i, field) {
+      values[field.name] = field.value;
+    });
+    console.log(values);
+    //$.post(
+      //"/add-video-data",
+      //values,
+      //function() {
+        //console.log("success");
+      //}
+    //);
+    this.props.shield.hide();
+  },
+
   genRenderFormInputs: function() {
     if (this.props.type === "songcomposer") {
       return (
@@ -34,28 +107,19 @@ var AddVideoDataForm = React.createClass({
           <div className="row">
             <div className="input-group col-md-6"> 
               <span className="input-group-addon">Song</span> 
-              <ReactTypeaheadInput
-                querytype="song"
-                type="text"
-                name="song_title"
-                placeholder="Enter Song Title"
-                value=""
-              />
+              {this.genRenderSongInput()}
             </div> 
             <div className="input-group col-md-6"> 
               <span className="input-group-addon">Composer</span> 
-              <ReactTypeaheadInput
-                querytype="composer"
-                type="text"
-                name="composer_name"
-                placeholder="Enter Composer Name"
-                value=""
-              />
+              {this.genRenderComposerInput()}
             </div> 
           </div>
           <div className="row">
             <div className="input-group col-md-1"> 
-              <button type="submit" className="btn btn-primary add-song">
+              <button 
+                type="submit" 
+                className="btn btn-primary add-song"
+                onClick={this.addSongComposer}>
                 Submit
               </button>
             </div>
@@ -68,18 +132,15 @@ var AddVideoDataForm = React.createClass({
           <div className="row">
             <div className="input-group col-md-6"> 
               <span className="input-group-addon">Group</span> 
-              <ReactTypeaheadInput
-                querytype="group"
-                type="text"
-                name="group_name"
-                placeholder="Enter Group Name"
-                value=""
-              />
+              {this.genRenderGroupInput()}
             </div>
           </div>
           <div className="row">
             <div className="input-group col-md-1"> 
-              <button type="submit" className="btn btn-primary add-song">
+              <button 
+                type="submit" 
+                className="btn btn-primary add-song"
+                onClick={this.addGroup}>
                 Submit
               </button>
             </div>
@@ -92,7 +153,7 @@ var AddVideoDataForm = React.createClass({
   render: function() {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
-    return (
+    this.form = 
       <form>
         <input
           type="hidden"
@@ -106,7 +167,7 @@ var AddVideoDataForm = React.createClass({
         />
         {this.genRenderHiddenFormInputs()}
         {this.genRenderFormInputs()}
-      </form>
-    );
+      </form>;
+    return this.form;
   }
 });

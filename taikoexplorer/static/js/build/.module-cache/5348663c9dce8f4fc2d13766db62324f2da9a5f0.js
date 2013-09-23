@@ -19,15 +19,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     return this.composerInput;
   },
 
-  genRenderGroupInput: function() {
-    this.groupInput = this.getInputMarkup(
-      "group_name", 
-      "Enter Group Name", 
-      "group"
-    );
-    return this.groupInput;
-  },
-
   getInputMarkup: function(name, placeholder, querytype) {
     return (
       ReactTypeaheadInput(
@@ -42,7 +33,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
 
   genRenderHiddenFormInputs: function() {
     var data = this.props.videodata;
-    if (!this.props.metadata) {
+    if (this.props.metadata) {
       return(
         React.DOM.div( {className:"hidden-form-inputs"}, 
           React.DOM.input( 
@@ -66,38 +57,13 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     return null;
   },
 
-  addSongComposer: function(e) {
-    e.preventDefault();
+  addSongComposer: function() {
     var songInputData = this.songInput.getData();
     var composerInputData = this.composerInput.getData();
     console.log(songInputData);
     console.log(composerInputData);
-    this.submitForm();
-  },
-
-  addGroup: function(e) {
-    e.preventDefault();
-    var groupInputData = this.groupInput.getData();
-    console.log(groupInputData);
-    this.submitForm();
-  },
-
-  submitForm: function() {
-    var $form = $(this.form);
-    console.log($form);
-    var values = {};
-    $.each($(this.form).serializeArray(), function(i, field) {
-      values[field.name] = field.value;
-    });
-    console.log(values);
-    //$.post(
-      //"/add-video-data",
-      //values,
-      //function() {
-        //console.log("success");
-      //}
-    //);
     this.props.shield.hide();
+    return false;
   },
 
   genRenderFormInputs: function() {
@@ -131,15 +97,18 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Group"), 
-              this.genRenderGroupInput()
+              ReactTypeaheadInput(
+                {querytype:"group",
+                type:"text",
+                name:"group_name",
+                placeholder:"Enter Group Name",
+                value:""}
+              )
             )
           ),
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-1"},  
-              React.DOM.button( 
-                {type:"submit", 
-                className:"btn btn-primary add-song",
-                onClick:this.addGroup}, 
+              React.DOM.button( {type:"submit", className:"btn btn-primary add-song"}, 
 " Submit "              )
             )
           )
@@ -151,7 +120,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   render: function() {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
-    this.form = 
+    return (
       React.DOM.form(null, 
         React.DOM.input(
           {type:"hidden",
@@ -165,7 +134,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         ),
         this.genRenderHiddenFormInputs(),
         this.genRenderFormInputs()
-      );
-    return this.form;
+      )
+    );
   }
 });
