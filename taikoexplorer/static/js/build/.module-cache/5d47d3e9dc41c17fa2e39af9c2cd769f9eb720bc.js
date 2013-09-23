@@ -32,8 +32,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       return (
         React.DOM.div(null, 
           React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"},  
-              React.DOM.span( {className:"input-group-addon"}, "Song"), 
+            React.DOM.div( {className:"col-md-6"},  
               ReactTypeaheadInput(
                 {querytype:"song",
                 type:"text",
@@ -44,13 +43,13 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
             ), 
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Composer"), 
-              ReactTypeaheadInput(
-                {querytype:"composer",
-                type:"text",
+              ReactInput(
+                {classname:"form-control",
                 name:"composer_name",
                 placeholder:"Enter Composer Name",
+                type:"text",
                 value:""}
-              )
+              ) 
             ) 
           ),
           React.DOM.div( {className:"row"}, 
@@ -63,25 +62,19 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       );
     } else if (this.props.type === "group") {
       return (
-        React.DOM.div(null, 
-          React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"},  
-              React.DOM.span( {className:"input-group-addon"}, "Group"), 
-              ReactTypeaheadInput(
-                {querytype:"group",
-                type:"text",
-                name:"group_name",
-                placeholder:"Enter Group Name",
-                value:""}
-              )
-            )
+        React.DOM.div( {className:"row"}, 
+          React.DOM.div( {className:"input-group col-md-6"},  
+            React.DOM.span( {className:"input-group-addon"}, "Group"), 
+            ReactInput(
+              {classname:"form-control",
+              name:"group_name",
+              placeholder:"Enter Group Name",
+              type:"text",
+              value:""}
+            ) 
           ),
-          React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-1"},  
-              React.DOM.button( {type:"submit", className:"btn btn-primary add-song"}, 
-" Submit "              )
-            )
-          )
+          React.DOM.button( {type:"submit", className:"btn btn-primary"}, 
+" Submit "          )
         )
       );
     }

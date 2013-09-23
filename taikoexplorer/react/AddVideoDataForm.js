@@ -34,27 +34,27 @@ var AddVideoDataForm = React.createClass({
           <div className="row">
             <div className="input-group col-md-6"> 
               <span className="input-group-addon">Song</span> 
-              <ReactInput
-                classname="form-control"
+              <ReactTypeaheadInput
+                querytype="song"
+                type="text"
                 name="song_title"
                 placeholder="Enter Song Title"
-                type="text"
                 value=""
-              /> 
+              />
             </div> 
             <div className="input-group col-md-6"> 
               <span className="input-group-addon">Composer</span> 
-              <ReactInput
-                classname="form-control"
+              <ReactTypeaheadInput
+                querytype="composer"
+                type="text"
                 name="composer_name"
                 placeholder="Enter Composer Name"
-                type="text"
                 value=""
-              /> 
+              />
             </div> 
           </div>
           <div className="row">
-            <div className="input-group col-md-12"> 
+            <div className="input-group col-md-1"> 
               <button type="submit" className="btn btn-primary add-song">
                 Submit
               </button>
@@ -64,20 +64,26 @@ var AddVideoDataForm = React.createClass({
       );
     } else if (this.props.type === "group") {
       return (
-        <div className="row">
-          <div className="input-group col-md-6"> 
-            <span className="input-group-addon">Group</span> 
-            <ReactInput
-              classname="form-control"
-              name="group_name"
-              placeholder="Enter Group Name"
-              type="text"
-              value=""
-            /> 
+        <div>
+          <div className="row">
+            <div className="input-group col-md-6"> 
+              <span className="input-group-addon">Group</span> 
+              <ReactTypeaheadInput
+                querytype="group"
+                type="text"
+                name="group_name"
+                placeholder="Enter Group Name"
+                value=""
+              />
+            </div>
           </div>
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
+          <div className="row">
+            <div className="input-group col-md-1"> 
+              <button type="submit" className="btn btn-primary add-song">
+                Submit
+              </button>
+            </div>
+          </div>
         </div>
       );
     }

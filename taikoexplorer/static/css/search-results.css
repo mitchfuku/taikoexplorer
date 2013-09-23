@@ -10,6 +10,10 @@
   margin: 0;
 }
 
+.search-result .video-db-details a {
+  cursor: pointer;
+}
+
 .search-result .songs-and-composers {
   border-right: 1px solid #ddd;
 }

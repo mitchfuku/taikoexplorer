@@ -52,7 +52,34 @@ def home(request):
 
 # serves the /yts api
 def youtubeSearch(request):
-  return HttpResponse(json.dumps("hello"), content_type='application/json')
+  query = request.GET.get("q", None)
+  query_type = request.GET.get("type", None)
+  type_dict = {
+    'composer': Composer, 
+    'group': Group,
+    'song': Song
+  }
+  data = []
+  if query is not None and query_type is not None:
+    model = type_dict[query_type]
+    if query_type == 'composer':
+      try:
+        data = model.objects.get(full_name__icontains=query)[:5]
+      except Composer.DoesNotExist:
+        data = []
+    elif query_type == 'group':
+      try:
+        data = model.objects.get(name__icontains=query)[:5]
+      except Group.DoesNotExist:
+        data = []
+    elif query_type == 'song':
+      try: 
+        data = model.objects.get(title__icontains=query)[:5]
+      except Song.DoesNotExist:
+        data = []
+
+  return HttpResponse(
+      json.dumps(data), content_type='application/json')
 
 #serves the /video-data async requests
 def editVideoData(request):
