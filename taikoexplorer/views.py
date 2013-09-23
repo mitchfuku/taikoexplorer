@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from taikoexplorer_db.models import Video, Composer, Song, Group
 from django.forms.models import model_to_dict
+from django.core import serializers
 import json
 import settings as templates_settings
 import youtube
@@ -26,7 +27,7 @@ def home(request):
       for video in videos :
         dataDict[video.vid] = {
           "video-data" : model_to_dict(video),
-          "groups" : list(video.groups.all()),
+          "groups" : json.loads(serializers.serialize("json", video.groups.all())),
           "songs" : list(video.songs.all()),
           "composers" : list(Composer.objects.filter(
             songs__in=video.songs.all()
@@ -64,26 +65,30 @@ def youtubeSearch(request):
     model = type_dict[query_type]
     if query_type == 'composer':
       try:
-        data = model.objects.get(full_name__icontains=query)
+        d = model.objects.get(full_name__icontains=query)
+        data.append(model_to_dict(d))
       except Composer.DoesNotExist:
         data = []
     elif query_type == 'group':
       try:
-        data = model.objects.get(name__icontains=query)
+        d = model.objects.get(name__icontains=query)
+        data.append(model_to_dict(d))
       except Group.DoesNotExist:
         data = []
     elif query_type == 'song':
       try: 
-        data = model.objects.get(title__icontains=query)
+        d = model.objects.get(title=query)
+        data.append(model_to_dict(d))
       except Song.DoesNotExist:
         data = []
-    data = model_to_dict(data)
-    if query_type == 'composer':
-      data["text"] = data.get("full_name")
-    elif query_type == 'group':
-      data["text"] = data.get("name")
-    elif query_type == 'song':
-      data["text"] = data.get("title")
+    if data:
+      for d in data:
+        if query_type == 'composer':
+          d["text"] = d.get("full_name")
+        elif query_type == 'group':
+          d["text"] = d.get("name")
+        elif query_type == 'song':
+          d["text"] = d.get("title")
 
   return HttpResponse(
       json.dumps(data), content_type='application/json')
@@ -118,9 +123,13 @@ def editVideoData(request):
     if groupName is not None:
       # add group
       groupName = json.loads(groupName)
-      #for g in groupName :
-        #group = Group(name=g['text']).save()
-        #video.groups.add(group)
+      for g in groupName :
+        group = None
+        if g['text'] == g['id']: 
+          group = Group(name=g['text']).save()
+        else:
+          group = Group.objects.get(pk=g['id'])
+        video.groups.add(group)
 
     #if songTitle is not None:
       #songTitle = json.loads(songTitle)

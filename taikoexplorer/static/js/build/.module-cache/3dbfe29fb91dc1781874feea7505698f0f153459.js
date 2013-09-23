@@ -5,7 +5,7 @@
  * placeholder, querytype[song, composer, group], classname, name, type,
  * value
  */
-var ReactTypeaheadInput =  React.createClass({
+var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput',
   getInitialState: function() {
     return {
       value: this.props.value
@@ -29,12 +29,12 @@ var ReactTypeaheadInput =  React.createClass({
   renderSelect2: function() {
     var select2 = React.renderComponent(
       this.transferPropsTo(
-        <input 
-          className={this.props.classname}
-          name={this.props.name}
-          type={this.props.type}
-          value={this.state.value}
-        />
+        React.DOM.input( 
+          {className:this.props.classname,
+          name:this.props.name,
+          type:this.props.type,
+          value:this.state.value}
+        )
       ),
       this.refs['select2'].getDOMNode()
     );
@@ -56,6 +56,9 @@ var ReactTypeaheadInput =  React.createClass({
       minimumInputLength: 1,
       multiple: true,
       width: "100%",
+      id: function(object) {
+        console.log(object);
+      },
       ajax: {
         url: "yts", 
         dataType: "json",
@@ -74,6 +77,7 @@ var ReactTypeaheadInput =  React.createClass({
               text: data[i].text
             });
           };
+          console.log(results);
           return {results: results}
         }
       },
@@ -91,6 +95,6 @@ var ReactTypeaheadInput =  React.createClass({
   },
 
   render: function() {
-    return <div ref="select2" />;
+    return React.DOM.div( {ref:"select2"} );
   }
 });

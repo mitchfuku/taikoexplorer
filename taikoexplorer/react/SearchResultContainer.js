@@ -2,6 +2,7 @@
 
 var SearchResultContainer = React.createClass({
   render: function() {
+    console.log(this.props.data.videos.items);
     var searchResultNodes = this.props.data.videos.items.map(
       function(video, index) {
         return (

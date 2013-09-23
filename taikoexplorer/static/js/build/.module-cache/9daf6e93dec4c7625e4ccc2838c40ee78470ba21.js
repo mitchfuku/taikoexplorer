@@ -84,20 +84,15 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
       );
     } else {
       var groups = metadata.groups;
+      console.log(groups);
+      var listItems = groups.map(
+          function(group) {
+            return React.DOM.li( {className:"list-group-item"}, group.name);
+          }
+        );
       return (
-        React.DOM.div(null, 
-          React.DOM.p(null, "Groups in this video"),
-          React.DOM.ul( {className:"list-group"}, 
-            groups.map(
-              function(group) {
-                return (
-                  React.DOM.li( {className:"list-group-item"}, 
-                    group.fields.name
-                  )
-                );
-              }
-            )
-          )
+        React.DOM.ul( {className:"list-group"}, 
+          listItems
         )
       );
     }
