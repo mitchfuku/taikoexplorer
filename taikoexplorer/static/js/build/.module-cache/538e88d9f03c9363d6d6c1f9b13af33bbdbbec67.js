@@ -40,26 +40,32 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     );
   },
 
-  submitForm: function(e) {
+  addSongComposer: function(e) {
     e.preventDefault();
-    var data = this.props.videodata;
-    var values = {};
-    var songInputData = this.songInput ? this.songInput.getData() : null;
-    var composerInputData = this.composerInput ? 
-      this.composerInput.getData() : null;
-    var groupInputData = this.groupInput ? this.groupInput.getData() : null;
+    var songInputData = this.songInput.getData();
+    var composerInputData = this.composerInput.getData();
+    console.log(songInputData);
+    console.log(composerInputData);
+    this.submitForm();
+  },
 
-    //Add pseudo-form elements
-    values["vid"] = data.id.videoId;
-    values["csrfmiddlewaretoken"] = this.props.csrftoken;
-    if (!this.props.metadata) {
-      values["vdesc"] = data.snippet.description;
-      values["vtitle"] = data.snippet.title;
-      values["dthumb"] = data.snippet.thumbnails.default.url;
-    }
-    console.log(JSON.stringify(songInputData));
+  addGroup: function(e) {
+    e.preventDefault();
+    var groupInputData = this.groupInput.getData();
+    console.log(groupInputData);
+    this.submitForm();
+  },
+
+  submitForm: function() {
+    var values = {};
+    //values["vid"] = {data.id.videoId};
+    //values["csrfmiddlewaretoken"] = {this.props.csrftoken};
+    //if (!this.props.metadata) {
+      //values["vdesc"] = {data.snippet.description};
+      //values["vtitle"] = {data.snippet.title};
+      //valuse["dthumb"] = {data.snippet.thumbnails.default.url};
+    //}
     console.log(values);
-    console.log($(this));
     //$.post(
       //"/add-video-data",
       //values,
@@ -89,7 +95,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
               React.DOM.button( 
                 {type:"submit", 
                 className:"btn btn-primary add-song",
-                onClick:this.submitForm}, 
+                onClick:this.addSongComposer}, 
 " Submit "              )
             )
           )
@@ -109,7 +115,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
               React.DOM.button( 
                 {type:"submit", 
                 className:"btn btn-primary add-song",
-                onClick:this.submitForm}, 
+                onClick:this.addGroup}, 
 " Submit "              )
             )
           )
@@ -119,11 +125,22 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
   
   render: function() {
+    var data = this.props.videodata;
     var metadata = this.props.metadata;
-    return (
+    this.form = 
       React.DOM.form(null, 
+        React.DOM.input(
+          {type:"hidden",
+          value:data.id.videoId,
+          name:"vid"}
+        ),
+        React.DOM.input(
+          {type:"hidden",
+          value:this.props.csrftoken,
+          name:"csrfmiddlewaretoken"}
+        ),
         this.genRenderFormInputs()
-      )
-    );
+      );
+    return this.form;
   }
 });

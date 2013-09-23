@@ -40,26 +40,56 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     );
   },
 
-  submitForm: function(e) {
-    e.preventDefault();
+  genRenderHiddenFormInputs: function() {
     var data = this.props.videodata;
-    var values = {};
-    var songInputData = this.songInput ? this.songInput.getData() : null;
-    var composerInputData = this.composerInput ? 
-      this.composerInput.getData() : null;
-    var groupInputData = this.groupInput ? this.groupInput.getData() : null;
-
-    //Add pseudo-form elements
-    values["vid"] = data.id.videoId;
-    values["csrfmiddlewaretoken"] = this.props.csrftoken;
     if (!this.props.metadata) {
-      values["vdesc"] = data.snippet.description;
-      values["vtitle"] = data.snippet.title;
-      values["dthumb"] = data.snippet.thumbnails.default.url;
+      return(
+        React.DOM.div( {className:"hidden-form-inputs"}, 
+          React.DOM.input( 
+            {type:"hidden",
+            value:data.snippet.description,
+            name:"vdesc"}
+          ),
+          React.DOM.input(
+            {type:"hidden",
+            value:data.snippet.title,
+            name:"vtitle"}
+          ),
+          React.DOM.input(
+            {type:"hidden",
+            value:data.snippet.thumbnails.default.url,
+            name:"dthumb"}
+          )
+        )
+      );
     }
-    console.log(JSON.stringify(songInputData));
+    return null;
+  },
+
+  addSongComposer: function(e) {
+    e.preventDefault();
+    var songInputData = this.songInput.getData();
+    var composerInputData = this.composerInput.getData();
+    console.log(songInputData);
+    console.log(composerInputData);
+    this.submitForm();
+  },
+
+  addGroup: function(e) {
+    e.preventDefault();
+    var groupInputData = this.groupInput.getData();
+    console.log(groupInputData);
+    this.submitForm();
+  },
+
+  submitForm: function() {
+    var $form = $(this.form);
+    console.log(this.getDomNode());
+    var values = {};
+    $.each($form.serializeArray(), function(i, field) {
+      values[field.name] = field.value;
+    });
     console.log(values);
-    console.log($(this));
     //$.post(
       //"/add-video-data",
       //values,
@@ -89,7 +119,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
               React.DOM.button( 
                 {type:"submit", 
                 className:"btn btn-primary add-song",
-                onClick:this.submitForm}, 
+                onClick:this.addSongComposer}, 
 " Submit "              )
             )
           )
@@ -109,7 +139,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
               React.DOM.button( 
                 {type:"submit", 
                 className:"btn btn-primary add-song",
-                onClick:this.submitForm}, 
+                onClick:this.addGroup}, 
 " Submit "              )
             )
           )
@@ -119,11 +149,23 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
   
   render: function() {
+    var data = this.props.videodata;
     var metadata = this.props.metadata;
-    return (
+    this.form = 
       React.DOM.form(null, 
+        React.DOM.input(
+          {type:"hidden",
+          value:data.id.videoId,l:true,
+          name:"vid"}
+        ),
+        React.DOM.input(
+          {type:"hidden",
+          value:this.props.csrftoken,
+          name:"csrfmiddlewaretoken"}
+        ),
+        this.genRenderHiddenFormInputs(),
         this.genRenderFormInputs()
-      )
-    );
+      );
+    return this.form;
   }
 });
