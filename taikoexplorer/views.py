@@ -64,19 +64,26 @@ def youtubeSearch(request):
     model = type_dict[query_type]
     if query_type == 'composer':
       try:
-        data = model.objects.get(full_name__icontains=query)[:5]
+        data = model.objects.get(full_name__icontains=query)
       except Composer.DoesNotExist:
         data = []
     elif query_type == 'group':
       try:
-        data = model.objects.get(name__icontains=query)[:5]
+        data = model.objects.get(name__icontains=query)
       except Group.DoesNotExist:
         data = []
     elif query_type == 'song':
       try: 
-        data = model.objects.get(title__icontains=query)[:5]
+        data = model.objects.get(title__icontains=query)
       except Song.DoesNotExist:
         data = []
+    data = model_to_dict(data)
+    if query_type == 'composer':
+      data["text"] = data.get("full_name")
+    elif query_type == 'group':
+      data["text"] = data.get("name")
+    elif query_type == 'song':
+      data["text"] = data.get("title")
 
   return HttpResponse(
       json.dumps(data), content_type='application/json')
@@ -85,12 +92,41 @@ def youtubeSearch(request):
 def editVideoData(request):
   if request.method == 'POST':
     vid = request.POST.get("vid")
-    vtitle = request.POST.get("vtitle")
-    vdesc = request.POST.get("vdesc")
-    dthumb = request.POST.get("dthumb")
+    vtitle = request.POST.get("vtitle", None)
+    vdesc = request.POST.get("vdesc", None)
+    dthumb = request.POST.get("dthumb", None)
     groupName = request.POST.get("group_name", None)
     songTitle = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
+    import sys
+    sys.stdout.flush()
+    video = None
+    if vtitle is None and vdesc is None and dthumb is None:
+      print("not new")
+      video = Video.objects.get(vid=vid)
+    else:
+      print("new")
+      video = Video(
+        vid=vid, 
+        title=vtitle,
+        description=vdesc,
+        default_thumb_url=dthumb).save()
+
+    if groupName is None and songTitle is None and composerName is None:
+      raise Exception("No data was provided")
+
+    if groupName is not None:
+      # add group
+      groupName = json.loads(groupName)
+      #for g in groupName :
+        #group = Group(name=g['text']).save()
+        #video.groups.add(group)
+
+    #if songTitle is not None:
+      #songTitle = json.loads(songTitle)
+      #if composerName is not None:
+        #composerName = json.loads(composerName)
+
     #isOpenSource = request.POST.get("is_open_source", False)
     #isDrill = request.POST.get("is_drill", False)
     #isCopyrighted = request.POST.get("is_copyrighted", False)
@@ -99,11 +135,6 @@ def editVideoData(request):
     print(songTitle)
     print(groupName)
     print(composerName)
-    #video, video_created = Video.objects.get_or_create(
-      #vid=vid, 
-      #title=vtitle,
-      #description=vdesc,
-      #default_thumb_url=dthumb)
 
     #if composerName :
       #composer, composer_created = Composer.objects.get_or_create(
@@ -120,7 +151,6 @@ def editVideoData(request):
         #video.songs.add(song)
     #if group :
         #video.groups.add(group)
-    import sys
     sys.stdout.flush()
     return HttpResponse(json.dumps("success"), content_type='application/json')
 

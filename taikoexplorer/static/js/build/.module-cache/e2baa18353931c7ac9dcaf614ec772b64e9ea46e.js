@@ -44,12 +44,10 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     e.preventDefault();
     var data = this.props.videodata;
     var values = {};
-    var songInputData = this.songInput ?
-      this.songInput.getData() : null;
+    var songInputData = this.songInput ? this.songInput.getData() : "";
     var composerInputData = this.composerInput ? 
-      this.composerInput.getData() : null;
-    var groupInputData = this.groupInput ?
-      this.groupInput.getData() : null;
+      this.composerInput.getData() : "";
+    var groupInputData = this.groupInput ? this.groupInput.getData() : "";
 
     //Add pseudo-form elements
     values["vid"] = data.id.videoId;
@@ -59,22 +57,18 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       values["vtitle"] = data.snippet.title;
       values["dthumb"] = data.snippet.thumbnails.default.url;
     }
-    if (songInputData)
-      values["song_title"] = JSON.stringify(songInputData);
-    if (composerInputData)
-      values["composer_name"] = JSON.stringify(composerInputData);
-    if (groupInputData)
-      values["group_name"] = JSON.stringify(groupInputData);
+    values["song_title"] = JSON.stringify(songInputData);
+    values["composer_name"] = JSON.stringify(composerInputData);
+    values["group_name"] = JSON.stringify(groupInputData);
     console.log(values);
-    var that = this;
-    $.post(
-      "/add-video-data/",
-      values,
-      function() {
-        console.log("success");
-        that.props.shield.hide();
-      }
-    );
+    //$.post(
+      //"/add-video-data",
+      //values,
+      //function() {
+        //console.log("success");
+      //}
+    //);
+    this.props.shield.hide();
   },
 
   genRenderFormInputs: function() {

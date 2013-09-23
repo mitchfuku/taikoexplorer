@@ -44,12 +44,10 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     e.preventDefault();
     var data = this.props.videodata;
     var values = {};
-    var songInputData = this.songInput ?
-      this.songInput.getData() : null;
+    var songInputData = this.songInput ? this.songInput.getData() : null;
     var composerInputData = this.composerInput ? 
       this.composerInput.getData() : null;
-    var groupInputData = this.groupInput ?
-      this.groupInput.getData() : null;
+    var groupInputData = this.groupInput ? this.groupInput.getData() : null;
 
     //Add pseudo-form elements
     values["vid"] = data.id.videoId;
@@ -66,15 +64,14 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     if (groupInputData)
       values["group_name"] = JSON.stringify(groupInputData);
     console.log(values);
-    var that = this;
-    $.post(
-      "/add-video-data/",
-      values,
-      function() {
-        console.log("success");
-        that.props.shield.hide();
-      }
-    );
+    //$.post(
+      //"/add-video-data",
+      //values,
+      //function() {
+        //console.log("success");
+      //}
+    //);
+    this.props.shield.hide();
   },
 
   genRenderFormInputs: function() {

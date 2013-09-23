@@ -64,19 +64,6 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
             q: term,
             type: that.props.querytype
           }
-        },
-        results: function(data) {
-          if (data) data["query_type"] = that.props.querytype
-          console.log(data);
-          var results = [];
-          for (var i = 0; i < data.length; i++) {
-            results.push({
-              id: data[i].id,
-              text: data[i].text
-            });
-          };
-          console.log(results);
-          return {results: results}
         }
       },
       //formatResult: that.formatResult,
@@ -85,7 +72,7 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
   },
 
   formatResult: function(data) {
-    return "<p>" + data.text + "</p>";
+    return data;
   },
 
   formatSelection: function(data) {

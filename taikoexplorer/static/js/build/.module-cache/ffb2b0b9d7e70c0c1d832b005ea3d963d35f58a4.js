@@ -69,12 +69,12 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
           if (data) data["query_type"] = that.props.querytype
           console.log(data);
           var results = [];
-          for (var i = 0; i < data.length; i++) {
+          $.each(data, function(item){
             results.push({
-              id: data[i].id,
-              text: data[i].text
+              id: item.id,
+              text: item.text
             });
-          };
+          });
           console.log(results);
           return {results: results}
         }

@@ -15,7 +15,7 @@ class Song(models.Model):
 
 class Group(models.Model):
   name = models.TextField()
-  date_founded = models.DateField(blank=True)
+  date_founded = models.DateField(blank=True, null=True)
   has_nickname = models.BooleanField(blank=True, default = False)
 
 class Video(models.Model):
@@ -46,9 +46,9 @@ class ComposerSong(models.Model):
   date_rearranged = models.DateField(blank=True)
   
 # Group nicknames
-class AKA(models.Model):
-  group_id = models.ForeignKey(Group)
-  name = models.TextField()
+#class AKA(models.Model):
+  #group_id = models.ForeignKey(Group)
+  #name = models.TextField()
 
 ## Songs in the video and videos this song is in
 #class SongVideo(models.Model):

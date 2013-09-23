@@ -43,15 +43,7 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
     this.$select2.select2({
       placeholder: that.props.placeholder,
       createSearchChoice: function(term, data) { 
-        if (
-          $(data).filter(
-            function() { 
-              return this.text.localeCompare(term) === 0; 
-            }
-          ).length === 0
-        ) {
-          return {id:term, text:term};
-        } 
+        return {id:term, text:term};
       },
       minimumInputLength: 1,
       multiple: true,
@@ -67,28 +59,21 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
         },
         results: function(data) {
           if (data) data["query_type"] = that.props.querytype
-          console.log(data);
-          var results = [];
-          for (var i = 0; i < data.length; i++) {
-            results.push({
-              id: data[i].id,
-              text: data[i].text
-            });
-          };
-          console.log(results);
-          return {results: results}
+          return {results: data}
         }
       },
-      //formatResult: that.formatResult,
-      //formatSelection: that.formatSelection
+      formatResult: that.formatResult,
+      formatSelection: that.formatSelection
     });
   },
 
   formatResult: function(data) {
-    return "<p>" + data.text + "</p>";
+    console.log(data);
+    return data;
   },
 
   formatSelection: function(data) {
+    console.log(data);
     return data;
   },
 
