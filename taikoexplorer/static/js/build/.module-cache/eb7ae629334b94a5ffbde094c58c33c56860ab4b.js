@@ -67,42 +67,41 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   submitForm: function(e) {
     $(e.target).button('loading');
     e.preventDefault();
+    //var data = this.props.videodata;
+    //var values = {};
+    //var songInputData = this.songInput ?
+      //this.songInput.getData() : null;
+    //var composerInputData = this.composerInput ? 
+      //this.composerInput.getData() : null;
+    //var groupInputData = this.groupInput ?
+      //this.groupInput.getData() : null;
 
-    var data = this.props.videodata;
-    var values = {};
-    var songInputData = this.songInput ?
-      this.songInput.getData() : null;
-    var composerInputData = this.composerInput ? 
-      this.composerInput.getData() : null;
-    var groupInputData = this.groupInput ?
-      this.groupInput.getData() : null;
-
-    //Add pseudo-form elements
-    values["vid"] = data.id.videoId;
-    values["csrfmiddlewaretoken"] = this.props.csrftoken;
-    if (!this.props.metadata) {
-      values["vdesc"] = data.snippet.description;
-      values["vtitle"] = data.snippet.title;
-      values["dthumb"] = data.snippet.thumbnails.default.url;
-    }
-    if (songInputData)
-      values["song_title"] = JSON.stringify(songInputData);
-    if (composerInputData)
-      values["composer_name"] = JSON.stringify(composerInputData);
-    if (groupInputData)
-      values["group_name"] = JSON.stringify(groupInputData);
-    var that = this;
-    $.ajax({url:"/add-video-data/", type:"POST", data:values})
-      .done(function(data) {
-        console.log(that);
-        that.addToMarkup(data);
-      })
-      .fail(function() {
-        alert("Failed to update. Contact site administrator."); 
-      })
-      .always(function() {
-        that.props.shield.hide();
-      });
+    ////Add pseudo-form elements
+    //values["vid"] = data.id.videoId;
+    //values["csrfmiddlewaretoken"] = this.props.csrftoken;
+    //if (!this.props.metadata) {
+      //values["vdesc"] = data.snippet.description;
+      //values["vtitle"] = data.snippet.title;
+      //values["dthumb"] = data.snippet.thumbnails.default.url;
+    //}
+    //if (songInputData)
+      //values["song_title"] = JSON.stringify(songInputData);
+    //if (composerInputData)
+      //values["composer_name"] = JSON.stringify(composerInputData);
+    //if (groupInputData)
+      //values["group_name"] = JSON.stringify(groupInputData);
+    //var that = this;
+    //$.ajax({url:"/add-video-data/", type:"POST", data:values})
+      //.done(function(data) {
+        //console.log(that);
+        //that.addToMarkup(data);
+      //})
+      //.fail(function() {
+        //alert("Failed to update. Contact site administrator."); 
+      //})
+      //.always(function() {
+  ////      that.props.shield.hide();
+      //});
   },
 
   addToMarkup: function(data) {
@@ -146,7 +145,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
               React.DOM.button( 
                 {type:"submit", 
                 className:"btn btn-primary add-song",
-                'data-loading-text':"Submitting...",
+                'data-loading-text':"<i class='icon-spinner'></i>Submitting",
                 onClick:this.submitForm}, 
 " Submit "              )
             )
@@ -167,7 +166,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
               React.DOM.button( 
                 {type:"submit", 
                 className:"btn btn-primary add-song",
-                'data-loading-text':"Submitting...",
+                'data-loading-text':"<i class='icon-spinner'></i>Submitting",
                 onClick:this.submitForm}, 
 " Submit "              )
             )

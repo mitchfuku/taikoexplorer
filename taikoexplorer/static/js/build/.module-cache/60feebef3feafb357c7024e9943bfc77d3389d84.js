@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var AddVideoDataForm = React.createClass({
+var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   genRenderSongInput: function() {
     this.songInput = this.getInputMarkup(
       "song_title", 
@@ -53,21 +53,21 @@ var AddVideoDataForm = React.createClass({
       }
     };
     return (
-      <ReactTypeaheadInput
-        ajax={ajax}
-        querytype={querytype}
-        type="text"
-        name={name}
-        placeholder={placeholder}
-        value=""
-      />
+      ReactTypeaheadInput(
+        {ajax:ajax,
+        querytype:querytype,
+        type:"text",
+        name:name,
+        placeholder:placeholder,
+        value:""}
+      )
     );
   },
 
   submitForm: function(e) {
+    console.log(e);
     $(e.target).button('loading');
     e.preventDefault();
-
     var data = this.props.videodata;
     var values = {};
     var songInputData = this.songInput ?
@@ -125,56 +125,54 @@ var AddVideoDataForm = React.createClass({
   genRenderFormInputs: function() {
     if (this.props.type === "songcomposer") {
       return (
-        <div>
-          <div className="row">
-            <div className="input-group col-md-6"> 
-              <span className="input-group-addon">Song</span> 
-              {this.genRenderSongInput()}
-            </div> 
-            <div className="input-group col-md-6"> 
-              <span className="input-group-addon">Composer</span> 
-              {this.genRenderComposerInput()}
-            </div> 
-          </div>
-          <div className="row">
-            <div className="input-group col-md-6"> 
+        React.DOM.div(null, 
+          React.DOM.div( {className:"row"}, 
+            React.DOM.div( {className:"input-group col-md-6"},  
+              React.DOM.span( {className:"input-group-addon"}, "Song"), 
+              this.genRenderSongInput()
+            ), 
+            React.DOM.div( {className:"input-group col-md-6"},  
+              React.DOM.span( {className:"input-group-addon"}, "Composer"), 
+              this.genRenderComposerInput()
+            ) 
+          ),
+          React.DOM.div( {className:"row"}, 
+            React.DOM.div( {className:"input-group col-md-6"} 
 
-            </div> 
-          </div>
-          <div className="row">
-            <div className="input-group col-md-1"> 
-              <button 
-                type="submit" 
-                className="btn btn-primary add-song"
-                data-loading-text="Submitting..."
-                onClick={this.submitForm}>
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
+            ) 
+          ),
+          React.DOM.div( {className:"row"}, 
+            React.DOM.div( {className:"input-group col-md-1"},  
+              React.DOM.button( 
+                {type:"submit", 
+                className:"btn btn-primary add-song",
+                'data-loading-text':"<i class='icon-spinner icon-spin icon-large'></i> @Localization.Uploading>",
+                onClick:this.submitForm}, 
+" Submit "              )
+            )
+          )
+        )
       );
     } else if (this.props.type === "group") {
       return (
-        <div>
-          <div className="row">
-            <div className="input-group col-md-6"> 
-              <span className="input-group-addon">Group</span> 
-              {this.genRenderGroupInput()}
-            </div>
-          </div>
-          <div className="row">
-            <div className="input-group col-md-1"> 
-              <button 
-                type="submit" 
-                className="btn btn-primary add-song"
-                data-loading-text="Submitting..."
-                onClick={this.submitForm}>
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
+        React.DOM.div(null, 
+          React.DOM.div( {className:"row"}, 
+            React.DOM.div( {className:"input-group col-md-6"},  
+              React.DOM.span( {className:"input-group-addon"}, "Group"), 
+              this.genRenderGroupInput()
+            )
+          ),
+          React.DOM.div( {className:"row"}, 
+            React.DOM.div( {className:"input-group col-md-1"},  
+              React.DOM.button( 
+                {type:"submit", 
+                className:"btn btn-primary add-song",
+                'data-loading-text':"<i class='icon-spinner icon-spin icon-large'></i> @Localization.Uploading",
+                onClick:this.submitForm}, 
+" Submit "              )
+            )
+          )
+        )
       );
     }
   },
@@ -182,9 +180,9 @@ var AddVideoDataForm = React.createClass({
   render: function() {
     var metadata = this.props.metadata;
     return (
-      <form>
-        {this.genRenderFormInputs()}
-      </form>
+      React.DOM.form(null, 
+        this.genRenderFormInputs()
+      )
     );
   }
 });
