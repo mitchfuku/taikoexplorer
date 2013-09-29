@@ -29,33 +29,9 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
 
   getInputMarkup: function(name, placeholder, querytype) {
-    var ajax = {
-      url: "yts", 
-      dataType: "json",
-      quietMillis: 500,
-      cache: true,
-      data: function(term) {
-        return {
-          q: term,
-          type: querytype
-        }
-      },
-      results: function(data) {
-        if (data) data["query_type"] = querytype
-        var results = [];
-        for (var i = 0; i < data.length; i++) {
-          results.push({
-            id: data[i].id,
-            text: data[i].text
-          });
-        };
-        return {results: results}
-      }
-    };
     return (
       ReactTypeaheadInput(
-        {ajax:ajax,
-        querytype:querytype,
+        {querytype:querytype,
         type:"text",
         name:name,
         placeholder:placeholder,
@@ -90,13 +66,13 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     if (groupInputData)
       values["group_name"] = JSON.stringify(groupInputData);
     var that = this;
-    $.ajax({url:"/add-video-data/", type:"POST", data:values})
-      .done(function(data) {
+    $.ajax({url:"/add-video-data/", data:values})
+      .done(function() {
         console.log(that);
-        that.addToMarkup(data);
+        that.addToMarkup(values);
       })
       .fail(function() {
-        alert("Failed to update. Contact site administrator."); 
+        alert("failed to post"); 
       })
       .always(function() {
         that.props.shield.hide();
@@ -111,9 +87,8 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     } else if (this.props.type === "group") {
       var wrapper = this.props.wrapper;
       var array = wrapper.state.groups;
-      if (!array) array = [];
       for (var i = 0; i < data.length; i++) {
-        var newData = {fields: {name: data[i]["name"]}};
+        var newData = {fields: {name: data[i]["group_name"]}};
         array.push(newData);
       }
       wrapper.setState({groups: array});
@@ -132,11 +107,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Composer"), 
               this.genRenderComposerInput()
-            ) 
-          ),
-          React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"} 
-
             ) 
           ),
           React.DOM.div( {className:"row"}, 

@@ -34,6 +34,10 @@
   border-radius: 4px;
 }
 
+#shield .shield-content .warning {
+  text-align: left;
+}
+
 #shield .shield-content .form-container button {
   float: right;
 }

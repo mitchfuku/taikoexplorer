@@ -46,7 +46,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     var content = "* - You are about to add a new " + toadd + " to the database.";
     return (
       React.DOM.div( {className:"row warning"}, 
-        React.DOM.div( {className:"col-md-12"}, content)
+        React.DOM.p(null, content)
       )
     );
   },

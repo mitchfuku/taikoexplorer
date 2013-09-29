@@ -4,8 +4,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
   getInitialState: function() {
     if (this.props.metadata) {
       return {
-        groups: this.props.metadata.groups,
-        showAddWarning: false
+        groups: this.props.metadata.groups
       };
     } else {
       return {
@@ -39,20 +38,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     shield.show();
   },
 
-  genRenderAddNewEntryNotice: function() {
-    var toadd = "";
-    if (this.props.type === "group") toadd = "group";
-    else toadd = "song or composer";
-    var content = "* - You are about to add a new " + toadd + " to the database.";
-    return (
-      React.DOM.div( {className:"row warning"}, 
-        React.DOM.div( {className:"col-md-12"}, content)
-      )
-    );
-  },
-
   addForm: function(type, label) {
-    console.log(type);
     return (
       React.DOM.div( {className:"shield-content container"}, 
         React.DOM.div( {className:"row"}, 
@@ -76,8 +62,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 type:type,
                 shield:this.props.shield}
               )
-            ),
-            this.genRenderAddNewEntryNotice()
+            )
           )
         )
       )
@@ -157,6 +142,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 React.DOM.div( {className:"col-md-6 songs-and-composers"}, 
                   this.genRenderSongsAndComposers()
                 ),
+                React.DOM.div( {className:"divider"}),
                 React.DOM.div( {className:"col-md-6 groups"}, 
                   this.genRenderGroups()
                 )

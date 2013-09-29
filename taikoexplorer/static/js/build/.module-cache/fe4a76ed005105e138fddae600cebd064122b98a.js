@@ -5,7 +5,7 @@
  * placeholder, querytype[song, composer, group], classname, name, type,
  * value
  */
-var ReactTypeaheadInput =  React.createClass({
+var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput',
   getInitialState: function() {
     return {
       value: this.props.value
@@ -29,12 +29,12 @@ var ReactTypeaheadInput =  React.createClass({
   renderSelect2: function() {
     var select2 = React.renderComponent(
       this.transferPropsTo(
-        <input 
-          className={this.props.classname}
-          name={this.props.name}
-          type={this.props.type}
-          value={this.state.value}
-        />
+        React.DOM.input( 
+          {className:this.props.classname,
+          name:this.props.name,
+          type:this.props.type,
+          value:this.state.value}
+        )
       ),
       this.refs['select2'].getDOMNode()
     );
@@ -50,13 +50,35 @@ var ReactTypeaheadInput =  React.createClass({
             }
           ).length === 0
         ) {
-          return {id:term, text:term + " *"};
+          return {id:term, text:term};
         } 
       },
       minimumInputLength: 1,
       multiple: true,
       width: "100%",
-      ajax: that.props.ajax,
+      ajax: {
+        url: "yts", 
+        dataType: "json",
+        quietMillis: 500,
+        cache: true,
+        data: function(term) {
+          return {
+            q: term,
+            type: that.props.querytype
+          }
+        },
+        results: function(data) {
+          if (data) data["query_type"] = that.props.querytype
+          var results = [];
+          for (var i = 0; i < data.length; i++) {
+            results.push({
+              id: data[i].id,
+              text: data[i].text
+            });
+          };
+          return {results: results}
+        }
+      },
       //formatResult: that.formatResult,
       //formatSelection: that.formatSelection
     });
@@ -71,6 +93,6 @@ var ReactTypeaheadInput =  React.createClass({
   },
 
   render: function() {
-    return <div ref="select2" />;
+    return React.DOM.div( {ref:"select2"} );
   }
 });

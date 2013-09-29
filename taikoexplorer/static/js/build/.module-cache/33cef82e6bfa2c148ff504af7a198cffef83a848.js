@@ -43,10 +43,10 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     var toadd = "";
     if (this.props.type === "group") toadd = "group";
     else toadd = "song or composer";
-    var content = "* - You are about to add a new " + toadd + " to the database.";
+    var content = "* - You are about to add a new " + toadd + " to the database.  Are you sure there isn't an existing " + toadd + " of that same name?";
     return (
-      React.DOM.div( {className:"row warning"}, 
-        React.DOM.div( {className:"col-md-12"}, content)
+      React.DOM.div( {className:"row"}, 
+        React.DOM.p(null, content)
       )
     );
   },

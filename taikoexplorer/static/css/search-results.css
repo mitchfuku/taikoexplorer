@@ -14,8 +14,13 @@
   cursor: pointer;
 }
 
-.search-result .songs-and-composers {
+.search-result .songs-and-composers  {
   border-right: 1px solid #ddd;
+}
+
+.search-result .groups  {
+  border-left: 1px solid #ddd;
+  margin-left: -1px;
 }
 
 h4.title {

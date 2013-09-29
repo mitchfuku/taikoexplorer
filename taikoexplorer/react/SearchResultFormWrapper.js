@@ -1,6 +1,19 @@
 /** @jsx React.DOM */
 
 var SearchResultFormWrapper = React.createClass({
+  getInitialState: function() {
+    if (this.props.metadata) {
+      return {
+        groups: this.props.metadata.groups,
+        showAddWarning: false
+      };
+    } else {
+      return {
+        groups: null
+      };
+    }
+  },
+
   addSongOrComposer: function(e) {
     var shield = this.props.shield;
     var form = this.addForm(
@@ -26,7 +39,20 @@ var SearchResultFormWrapper = React.createClass({
     shield.show();
   },
 
+  genRenderAddNewEntryNotice: function() {
+    var toadd = "";
+    if (this.props.type === "group") toadd = "group";
+    else toadd = "song or composer";
+    var content = "* - You are about to add a new " + toadd + " to the database.";
+    return (
+      <div className="row warning">
+        <div className="col-md-12">{content}</div>
+      </div>
+    );
+  },
+
   addForm: function(type, label) {
+    console.log(type);
     return (
       <div className="shield-content container">
         <div className="row">
@@ -47,10 +73,12 @@ var SearchResultFormWrapper = React.createClass({
                 videodata={this.props.videodata}
                 metadata={this.props.metadata}
                 csrftoken={this.props.csrftoken}
+                wrapper={this}
                 type={type}
                 shield={this.props.shield}
               />
             </div>
+            {this.genRenderAddNewEntryNotice()}
           </div>
         </div>
       </div>
@@ -75,8 +103,8 @@ var SearchResultFormWrapper = React.createClass({
   },
 
   genRenderGroups: function() {
-    var metadata = this.props.metadata;
-    if (!metadata || !metadata.groups.length) {
+    var metadata = this.state.groups;
+    if (!metadata || !metadata.length) {
       return (
         <div>
           <p><i>No groups listed</i></p>
@@ -86,12 +114,12 @@ var SearchResultFormWrapper = React.createClass({
         </div>
       );
     } else {
-      var groups = metadata.groups;
+      console.log(metadata);
       return (
         <div>
           <p>Groups in this video</p>
           <ul className="list-group">
-            {groups.map(
+            {metadata.map(
               function(group) {
                 return (
                   <li className="list-group-item">
@@ -101,6 +129,9 @@ var SearchResultFormWrapper = React.createClass({
               }
             )}
           </ul>
+          <a onClick={this.addGroup}>
+            Add a group
+          </a>
         </div>
       );
     }
@@ -131,7 +162,7 @@ var SearchResultFormWrapper = React.createClass({
                 <div className="col-md-6 songs-and-composers">
                   {this.genRenderSongsAndComposers()}
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 groups">
                   {this.genRenderGroups()}
                 </div>
               </div>

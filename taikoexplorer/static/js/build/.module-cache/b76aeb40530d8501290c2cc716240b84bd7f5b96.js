@@ -29,33 +29,9 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
 
   getInputMarkup: function(name, placeholder, querytype) {
-    var ajax = {
-      url: "yts", 
-      dataType: "json",
-      quietMillis: 500,
-      cache: true,
-      data: function(term) {
-        return {
-          q: term,
-          type: querytype
-        }
-      },
-      results: function(data) {
-        if (data) data["query_type"] = querytype
-        var results = [];
-        for (var i = 0; i < data.length; i++) {
-          results.push({
-            id: data[i].id,
-            text: data[i].text
-          });
-        };
-        return {results: results}
-      }
-    };
     return (
       ReactTypeaheadInput(
-        {ajax:ajax,
-        querytype:querytype,
+        {querytype:querytype,
         type:"text",
         name:name,
         placeholder:placeholder,
@@ -89,31 +65,27 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       values["composer_name"] = JSON.stringify(composerInputData);
     if (groupInputData)
       values["group_name"] = JSON.stringify(groupInputData);
+    console.log(values);
     var that = this;
-    $.ajax({url:"/add-video-data/", type:"POST", data:values})
-      .done(function(data) {
-        console.log(that);
+    $.post(
+      "/add-video-data/",
+      values,
+      function(data) {
+        console.log("success");
         that.addToMarkup(data);
-      })
-      .fail(function() {
-        alert("Failed to update. Contact site administrator."); 
-      })
-      .always(function() {
         that.props.shield.hide();
-      });
+      }
+    );
   },
 
   addToMarkup: function(data) {
-    console.log(this);
-    console.log(data);
     if (this.props.type === "songcomposer") {
       return true;
     } else if (this.props.type === "group") {
       var wrapper = this.props.wrapper;
       var array = wrapper.state.groups;
-      if (!array) array = [];
       for (var i = 0; i < data.length; i++) {
-        var newData = {fields: {name: data[i]["name"]}};
+        var newData = {fields: {name: data[i]["group_name"]}};
         array.push(newData);
       }
       wrapper.setState({groups: array});
@@ -132,11 +104,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Composer"), 
               this.genRenderComposerInput()
-            ) 
-          ),
-          React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"} 
-
             ) 
           ),
           React.DOM.div( {className:"row"}, 
