@@ -66,8 +66,8 @@ def youtubeSearch(request):
     model = type_dict[query_type]
     if query_type == 'composer':
       try:
-        d = model.objects.filter(full_name__icontains=query)
-        data.append(model_to_dict(d))
+        d = model.objects.all().filter(full_name__icontains=query)
+        data = d
       except Composer.DoesNotExist:
         data = []
     elif query_type == 'group':
@@ -78,8 +78,8 @@ def youtubeSearch(request):
         data = []
     elif query_type == 'song':
       try: 
-        d = model.objects.get(title=query)
-        data.append(model_to_dict(d))
+        d = model.objects.all().get(title__icontains=query)
+        data = d
       except Song.DoesNotExist:
         data = []
     import sys
@@ -141,8 +141,6 @@ def editVideoData(request):
       return HttpResponse(
           json.dumps(groupArr), content_type='application/json')
 
-    import sys
-    sys.stdout.flush()
     #if songTitle is not None:
       #songTitle = json.loads(songTitle)
       #if composerName is not None:
@@ -152,6 +150,9 @@ def editVideoData(request):
     #isDrill = request.POST.get("is_drill", False)
     #isCopyrighted = request.POST.get("is_copyrighted", False)
     # not doing any is* yet....just name and title
+
+    import sys
+    sys.stdout.flush()
 
     print(songTitle)
     print(groupName)

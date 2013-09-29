@@ -47,21 +47,26 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
       multiple: true,
       width: "100%",
       ajax: that.props.ajax,
-      createSearchChoice: function(term, data) { 
-        if (!that.state.allowcreate) return null;
-        if (
-          $(data).filter(
-            function() { 
-              return this.text.localeCompare(term) === 0; 
-            }
-          ).length === 0
-        ) {
-          return {id:term, text:term + " *"};
-        } 
-      }
       //formatResult: that.formatResult,
       //formatSelection: that.formatSelection
     });
+    if (this.state.allowcreate) {
+      this.$select2.select2({
+        createSearchChoice: function(term, data) { 
+          if (
+            $(data).filter(
+              function() { 
+                return this.text.localeCompare(term) === 0; 
+              }
+            ).length === 0
+          ) {
+            return {id:term, text:term + " *"};
+          } 
+        }
+      });
+    } else {
+      this.$select2.select2.createSearchChoice = null;
+    }
   },
 
   formatResult: function(data) {

@@ -54,6 +54,7 @@ var AddVideoDataForm = React.createClass({
     };
     return (
       <ReactTypeaheadInput
+        allowcreate={true}
         ajax={ajax}
         querytype={querytype}
         type="text"

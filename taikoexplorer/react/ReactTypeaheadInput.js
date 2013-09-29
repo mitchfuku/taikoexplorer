@@ -8,7 +8,8 @@
 var ReactTypeaheadInput =  React.createClass({
   getInitialState: function() {
     return {
-      value: this.props.value
+      value: this.props.value,
+      allowcreate: this.props.allowcreate,
     };
   },
 
@@ -42,7 +43,12 @@ var ReactTypeaheadInput =  React.createClass({
     var that = this;
     this.$select2.select2({
       placeholder: that.props.placeholder,
+      minimumInputLength: 1,
+      multiple: true,
+      width: "100%",
+      ajax: that.props.ajax,
       createSearchChoice: function(term, data) { 
+        if (!that.state.allowcreate) return null;
         if (
           $(data).filter(
             function() { 
@@ -52,11 +58,7 @@ var ReactTypeaheadInput =  React.createClass({
         ) {
           return {id:term, text:term + " *"};
         } 
-      },
-      minimumInputLength: 1,
-      multiple: true,
-      width: "100%",
-      ajax: that.props.ajax,
+      }
       //formatResult: that.formatResult,
       //formatSelection: that.formatSelection
     });
