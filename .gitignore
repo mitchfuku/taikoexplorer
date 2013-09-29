@@ -2,3 +2,4 @@ venv
 *.pyc
 staticfiles
 *.swp
+taikoexplorer/static/js/build/.module-cache/*
