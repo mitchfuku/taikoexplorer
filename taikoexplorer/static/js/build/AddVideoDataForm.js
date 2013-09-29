@@ -4,7 +4,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   genRenderSongInput: function() {
     this.songInput = this.getInputMarkup(
       "song_title", 
-      "Enter Song Title", 
+      "Enter a song title", 
       "song"
     );
     return this.songInput;
@@ -13,7 +13,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   genRenderComposerInput: function() {
     this.composerInput = this.getInputMarkup(
       "composer_name", 
-      "Enter Composer Name", 
+      "Enter all composers of this song", 
       "composer"
     );
     return this.composerInput;
@@ -22,7 +22,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   genRenderGroupInput: function() {
     this.groupInput = this.getInputMarkup(
       "group_name", 
-      "Enter Group Name", 
+      "Enter groups in this video", 
       "group"
     );
     return this.groupInput;
@@ -63,6 +63,14 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         value:""}
       )
     );
+  },
+
+  componentDidMount: function() {
+    console.log(this);
+    $(this.refs.songstyle.getDOMNode()).select2({
+      placeholder: "Add all styles in this song",
+      width: "100%"
+    });
   },
 
   submitForm: function(e) {
@@ -138,9 +146,18 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
             ) 
           ),
           React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"} 
-
-            ) 
+            React.DOM.div( {className:"input-group col-md-6"}, 
+              React.DOM.span( {className:"input-group-addon"}, "Style"), 
+              React.DOM.select( {multiple:true, name:"songstyle", ref:"songstyle"}, 
+                React.DOM.option( {value:"betta"}, "Betta"),
+                React.DOM.option( {value:"hachijo"}, "Hachijo"),
+                React.DOM.option( {value:"miyake"}, "Miyake"),
+                React.DOM.option( {value:"naname"}, "Naname"),
+                React.DOM.option( {value:"odaiko"}, "Odaiko"),
+                React.DOM.option( {value:"yatai"}, "Yatai"),
+                React.DOM.option( {value:"other"}, "Other")
+              )
+            )
           ),
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-1"},  

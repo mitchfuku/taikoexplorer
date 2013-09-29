@@ -4,7 +4,7 @@ var AddVideoDataForm = React.createClass({
   genRenderSongInput: function() {
     this.songInput = this.getInputMarkup(
       "song_title", 
-      "Enter Song Title", 
+      "Enter a song title", 
       "song"
     );
     return this.songInput;
@@ -13,7 +13,7 @@ var AddVideoDataForm = React.createClass({
   genRenderComposerInput: function() {
     this.composerInput = this.getInputMarkup(
       "composer_name", 
-      "Enter Composer Name", 
+      "Enter all composers of this song", 
       "composer"
     );
     return this.composerInput;
@@ -22,7 +22,7 @@ var AddVideoDataForm = React.createClass({
   genRenderGroupInput: function() {
     this.groupInput = this.getInputMarkup(
       "group_name", 
-      "Enter Group Name", 
+      "Enter groups in this video", 
       "group"
     );
     return this.groupInput;
@@ -63,6 +63,14 @@ var AddVideoDataForm = React.createClass({
         value=""
       />
     );
+  },
+
+  componentDidMount: function() {
+    console.log(this);
+    $(this.refs.songstyle.getDOMNode()).select2({
+      placeholder: "Add all styles in this song",
+      width: "100%"
+    });
   },
 
   submitForm: function(e) {
@@ -138,9 +146,18 @@ var AddVideoDataForm = React.createClass({
             </div> 
           </div>
           <div className="row">
-            <div className="input-group col-md-6"> 
-
-            </div> 
+            <div className="input-group col-md-6">
+              <span className="input-group-addon">Style</span> 
+              <select multiple name="songstyle" ref="songstyle">
+                <option value="betta">Betta</option>
+                <option value="hachijo">Hachijo</option>
+                <option value="miyake">Miyake</option>
+                <option value="naname">Naname</option>
+                <option value="odaiko">Odaiko</option>
+                <option value="yatai">Yatai</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
           </div>
           <div className="row">
             <div className="input-group col-md-1"> 

@@ -39,7 +39,7 @@ var SearchResultFormWrapper = React.createClass({
     shield.show();
   },
 
-  genRenderAddNewEntryNotice: function() {
+  renderAddNewEntryNotice: function() {
     var toadd = "";
     if (this.props.type === "group") toadd = "group";
     else toadd = "song or composer";
@@ -52,7 +52,6 @@ var SearchResultFormWrapper = React.createClass({
   },
 
   addForm: function(type, label) {
-    console.log(type);
     return (
       <div className="shield-content container">
         <div className="row">
@@ -75,17 +74,17 @@ var SearchResultFormWrapper = React.createClass({
                 csrftoken={this.props.csrftoken}
                 wrapper={this}
                 type={type}
-                shield={this.props.shield}
-              />
+                shield={this.props.shield}>
+              </AddVideoDataForm>
             </div>
-            {this.genRenderAddNewEntryNotice()}
+            {this.renderAddNewEntryNotice()}
           </div>
         </div>
       </div>
     );
   },
 
-  genRenderSongsAndComposers: function() {
+  renderSongsAndComposers: function() {
     var metadata = this.props.metadata;
     if (!metadata || (!metadata.songs.length && !metadata.composers.length)) {
       return (
@@ -102,7 +101,7 @@ var SearchResultFormWrapper = React.createClass({
     }
   },
 
-  genRenderGroups: function() {
+  renderGroups: function() {
     var metadata = this.state.groups;
     if (!metadata || !metadata.length) {
       return (
@@ -160,10 +159,10 @@ var SearchResultFormWrapper = React.createClass({
             <div className="panel-body">
               <div className="row video-db-details">
                 <div className="col-md-6 songs-and-composers">
-                  {this.genRenderSongsAndComposers()}
+                  {this.renderSongsAndComposers()}
                 </div>
                 <div className="col-md-6 groups">
-                  {this.genRenderGroups()}
+                  {this.renderGroups()}
                 </div>
               </div>
             </div> 

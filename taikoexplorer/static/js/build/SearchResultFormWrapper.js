@@ -39,7 +39,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     shield.show();
   },
 
-  genRenderAddNewEntryNotice: function() {
+  renderAddNewEntryNotice: function() {
     var toadd = "";
     if (this.props.type === "group") toadd = "group";
     else toadd = "song or composer";
@@ -52,7 +52,6 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
   },
 
   addForm: function(type, label) {
-    console.log(type);
     return (
       React.DOM.div( {className:"shield-content container"}, 
         React.DOM.div( {className:"row"}, 
@@ -77,14 +76,14 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 shield:this.props.shield}
               )
             ),
-            this.genRenderAddNewEntryNotice()
+            this.renderAddNewEntryNotice()
           )
         )
       )
     );
   },
 
-  genRenderSongsAndComposers: function() {
+  renderSongsAndComposers: function() {
     var metadata = this.props.metadata;
     if (!metadata || (!metadata.songs.length && !metadata.composers.length)) {
       return (
@@ -100,7 +99,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     }
   },
 
-  genRenderGroups: function() {
+  renderGroups: function() {
     var metadata = this.state.groups;
     if (!metadata || !metadata.length) {
       return (
@@ -155,10 +154,10 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
             React.DOM.div( {className:"panel-body"}, 
               React.DOM.div( {className:"row video-db-details"}, 
                 React.DOM.div( {className:"col-md-6 songs-and-composers"}, 
-                  this.genRenderSongsAndComposers()
+                  this.renderSongsAndComposers()
                 ),
                 React.DOM.div( {className:"col-md-6 groups"}, 
-                  this.genRenderGroups()
+                  this.renderGroups()
                 )
               )
             ) 
