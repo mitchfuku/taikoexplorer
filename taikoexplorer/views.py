@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
-from taikoexplorer_db.models import Video, Composer, Song, Group
+from taikoexplorer_db.models import Video, Composer, Song, Group, SongStyle, ComposerSong
 from django.forms.models import model_to_dict
 from django.core import serializers
 import json
@@ -28,10 +28,12 @@ def home(request):
         dataDict[video.vid] = {
           "video-data" : model_to_dict(video),
           "groups" : json.loads(serializers.serialize("json", video.groups.all())),
-          "songs" : list(video.songs.all()),
-          "composers" : list(Composer.objects.filter(
-            songs__in=video.songs.all()
-          ).all())
+          "songs" : json.loads(serializers.serialize("json", video.songs.all())),
+          "composers" : json.loads(serializers.serialize("json", 
+            Composer.objects.filter(
+              songs__in=video.songs.all()
+            ).all())
+          )
         }
       # iterate through tags and create a map with the vid as the key
       data = {
@@ -78,7 +80,7 @@ def youtubeSearch(request):
         data = []
     elif query_type == 'song':
       try: 
-        d = model.objects.all().get(title__icontains=query)
+        d = model.objects.all().filter(title__icontains=query)
         data = d
       except Song.DoesNotExist:
         data = []
@@ -108,6 +110,7 @@ def editVideoData(request):
     groupName = request.POST.get("group_name", None)
     songTitle = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
+    songStyle = request.POST.get("song_style", None)
     video = None
     print (groupName)
     if vtitle is None and vdesc is None and dthumb is None:
@@ -123,8 +126,8 @@ def editVideoData(request):
     if groupName is None and songTitle is None and composerName is None:
       raise Exception("No data was provided")
 
+    # add group
     if groupName is not None:
-      # add group
       groupName = json.loads(groupName)
       groupArr = []
       for g in groupName :
@@ -141,10 +144,45 @@ def editVideoData(request):
       return HttpResponse(
           json.dumps(groupArr), content_type='application/json')
 
-    #if songTitle is not None:
-      #songTitle = json.loads(songTitle)
-      #if composerName is not None:
-        #composerName = json.loads(composerName)
+    # add song and composer
+    if songTitle is not None:
+      songTitle = json.loads(songTitle)
+      composerName = json.loads(composerName)
+      songStyle = json.loads(songStyle)
+      songArr = []
+      for s in songTitle :
+        song = None
+        if type(s['id']) is not int:
+          print("new song")
+          song = Song(title=s['id'])
+          song.save()
+        else:
+          print("old song")
+          song = Song.objects.get(pk=s['id'])
+        # adding styles
+        for ss in songStyle :
+          style = SongStyle.objects.get(name=ss)
+          song.styles.add(style)
+        # adding the composers
+        for c in composerName :
+          composer = None
+          if type(c['id']) is not int:
+            print("new composer")
+            composer = Composer(full_name=c['id'])
+            composer.save()
+          else:
+            print("old composer")
+            composer = Composer.objects.get(pk=c['id'])
+          cs = ComposerSong(composer=composer, song=song)
+          cs.save()
+        video.songs.add(song)
+        songArr.append(model_to_dict(song))
+      return HttpResponse(
+          json.dumps(songArr), content_type='application/json')
+
+      print(songTitle)
+      print(composerName)
+      print(songStyle)
 
     #isOpenSource = request.POST.get("is_open_source", False)
     #isDrill = request.POST.get("is_drill", False)
@@ -153,10 +191,6 @@ def editVideoData(request):
 
     import sys
     sys.stdout.flush()
-
-    print(songTitle)
-    print(groupName)
-    print(composerName)
 
     #if composerName :
       #composer, composer_created = Composer.objects.get_or_create(

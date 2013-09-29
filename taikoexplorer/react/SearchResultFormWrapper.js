@@ -5,6 +5,7 @@ var SearchResultFormWrapper = React.createClass({
     if (this.props.metadata) {
       return {
         groups: this.props.metadata.groups,
+        songs: this.props.metadata.songs,
         showAddWarning: false
       };
     } else {
@@ -98,6 +99,28 @@ var SearchResultFormWrapper = React.createClass({
     } else {
       var songs = metadata.songs;
       var composers = metadata.composers;
+      var metadata = this.state.songs;
+      console.log(metadata);
+      console.log(composers);
+      return (
+        <div>
+          <p>Songs in this video</p>
+          <ul className="list-group">
+            {metadata.map(
+              function(metadata) {
+                return (
+                  <li className="list-group-item">
+                    {metadata.fields.title}
+                  </li>
+                );
+              }
+            )}
+          </ul>
+          <a onClick={this.addSongOrComposer}>
+            Add a song or composer
+          </a>
+        </div>
+      );
     }
   },
 
@@ -113,7 +136,6 @@ var SearchResultFormWrapper = React.createClass({
         </div>
       );
     } else {
-      console.log(metadata);
       return (
         <div>
           <p>Groups in this video</p>

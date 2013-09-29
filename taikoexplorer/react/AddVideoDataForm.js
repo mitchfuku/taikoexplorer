@@ -67,7 +67,7 @@ var AddVideoDataForm = React.createClass({
 
   componentDidMount: function() {
     console.log(this);
-    $(this.refs.songstyle.getDOMNode()).select2({
+    this.songStyleInput = $(this.refs.songstyle.getDOMNode()).select2({
       placeholder: "Add all styles in this song",
       width: "100%"
     });
@@ -100,6 +100,7 @@ var AddVideoDataForm = React.createClass({
       values["composer_name"] = JSON.stringify(composerInputData);
     if (groupInputData)
       values["group_name"] = JSON.stringify(groupInputData);
+    values["song_style"] = JSON.stringify(this.songStyleInput.val());
     var that = this;
     $.ajax({url:"/add-video-data/", type:"POST", data:values})
       .done(function(data) {
@@ -115,10 +116,15 @@ var AddVideoDataForm = React.createClass({
   },
 
   addToMarkup: function(data) {
-    console.log(this);
-    console.log(data);
     if (this.props.type === "songcomposer") {
-      return true;
+      var wrapper = this.props.wrapper;
+      var array = wrapper.state.songs;
+      if (!array) array = [];
+      for (var i = 0; i < data.length; i++) {
+        var newData = {fields: {title: data[i]["title"]}};
+        array.push(newData);
+      }
+      wrapper.setState({songs: array});
     } else if (this.props.type === "group") {
       var wrapper = this.props.wrapper;
       var array = wrapper.state.groups;
@@ -148,14 +154,14 @@ var AddVideoDataForm = React.createClass({
           <div className="row">
             <div className="input-group col-md-6">
               <span className="input-group-addon">Style</span> 
-              <select multiple name="songstyle" ref="songstyle">
-                <option value="betta">Betta</option>
-                <option value="hachijo">Hachijo</option>
-                <option value="miyake">Miyake</option>
-                <option value="naname">Naname</option>
-                <option value="odaiko">Odaiko</option>
-                <option value="yatai">Yatai</option>
-                <option value="other">Other</option>
+              <select multiple name="song_style" ref="songstyle">
+                <option value="Betta">Betta</option>
+                <option value="Hachijo">Hachijo</option>
+                <option value="Miyake">Miyake</option>
+                <option value="Naname">Naname</option>
+                <option value="Odaiko">Odaiko</option>
+                <option value="Yatai">Yatai</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>

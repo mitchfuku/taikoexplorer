@@ -3,15 +3,20 @@ from django.db import models
 class Composer(models.Model):
   full_name = models.TextField()
 
+class SongStyle(models.Model):
+  name = models.TextField()
+  description = models.TextField(blank=True)
+
 # Create a new song for every arrangement of a song
 class Song(models.Model):
   title = models.TextField()
   description = models.TextField(blank=True)
-  date_composed = models.DateField(blank=True)
+  date_composed = models.DateField(blank=True, null=True)
   is_open_source = models.BooleanField(blank=True, default = False)
   is_drill = models.BooleanField(blank=True, default = False)
   is_original_arrangement = models.BooleanField(blank=True, default = True)
   composers = models.ManyToManyField(Composer, related_name='songs', through='ComposerSong')
+  styles = models.ManyToManyField(SongStyle, related_name='songs')
 
 class Group(models.Model):
   name = models.TextField()
@@ -42,8 +47,8 @@ class Video(models.Model):
 class ComposerSong(models.Model):
   composer = models.ForeignKey(Composer)
   song = models.ForeignKey(Song)
-  is_original_composer = models.BooleanField(blank=True)
-  date_rearranged = models.DateField(blank=True)
+  is_original_composer = models.BooleanField(blank=True, default=True)
+  date_rearranged = models.DateField(blank=True, null=True)
   
 # Group nicknames
 #class AKA(models.Model):

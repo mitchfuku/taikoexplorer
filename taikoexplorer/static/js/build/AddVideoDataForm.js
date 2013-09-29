@@ -67,7 +67,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
 
   componentDidMount: function() {
     console.log(this);
-    $(this.refs.songstyle.getDOMNode()).select2({
+    this.songStyleInput = $(this.refs.songstyle.getDOMNode()).select2({
       placeholder: "Add all styles in this song",
       width: "100%"
     });
@@ -100,6 +100,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       values["composer_name"] = JSON.stringify(composerInputData);
     if (groupInputData)
       values["group_name"] = JSON.stringify(groupInputData);
+    values["song_style"] = JSON.stringify(this.songStyleInput.val());
     var that = this;
     $.ajax({url:"/add-video-data/", type:"POST", data:values})
       .done(function(data) {
@@ -118,7 +119,14 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     console.log(this);
     console.log(data);
     if (this.props.type === "songcomposer") {
-      return true;
+      var wrapper = this.props.wrapper;
+      var array = wrapper.state.songs;
+      if (!array) array = [];
+      for (var i = 0; i < data.length; i++) {
+        var newData = {fields: {title: data[i]["title"]}};
+        array.push(newData);
+      }
+      wrapper.setState({songs: array});
     } else if (this.props.type === "group") {
       var wrapper = this.props.wrapper;
       var array = wrapper.state.groups;
@@ -148,14 +156,14 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-6"}, 
               React.DOM.span( {className:"input-group-addon"}, "Style"), 
-              React.DOM.select( {multiple:true, name:"songstyle", ref:"songstyle"}, 
-                React.DOM.option( {value:"betta"}, "Betta"),
-                React.DOM.option( {value:"hachijo"}, "Hachijo"),
-                React.DOM.option( {value:"miyake"}, "Miyake"),
-                React.DOM.option( {value:"naname"}, "Naname"),
-                React.DOM.option( {value:"odaiko"}, "Odaiko"),
-                React.DOM.option( {value:"yatai"}, "Yatai"),
-                React.DOM.option( {value:"other"}, "Other")
+              React.DOM.select( {multiple:true, name:"song_style", ref:"songstyle"}, 
+                React.DOM.option( {value:"Betta"}, "Betta"),
+                React.DOM.option( {value:"Hachijo"}, "Hachijo"),
+                React.DOM.option( {value:"Miyake"}, "Miyake"),
+                React.DOM.option( {value:"Naname"}, "Naname"),
+                React.DOM.option( {value:"Odaiko"}, "Odaiko"),
+                React.DOM.option( {value:"Yatai"}, "Yatai"),
+                React.DOM.option( {value:"Other"}, "Other")
               )
             )
           ),
