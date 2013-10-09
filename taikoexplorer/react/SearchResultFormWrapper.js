@@ -44,7 +44,7 @@ var SearchResultFormWrapper = React.createClass({
     var toadd = "";
     if (this.props.type === "group") toadd = "group";
     else toadd = "song or composer";
-    var content = "* - You are about to add a new " + toadd + " to the database.";
+    var content = "* - Indicates that you are about to add a new " + toadd + " to the database.";
     return (
       <div className="row warning">
         <div className="col-md-12">{content}</div>

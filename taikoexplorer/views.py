@@ -191,17 +191,15 @@ def editVideoData(request):
     video = None
 
     # add new video is it's not already in the db
-    if vtitle is None and vdesc is None and dthumb is None:
-      video = Video.objects.get(vid=vid)
-    else:
-      video = Video(
-        vid=vid, 
-        title=vtitle,
-        description=vdesc,
-        channelTitle=ctitle,
-        channelID=cid,
-        default_thumb_url=dthumb,
-        medium_thumb_url=mthumb)
+    video, created = Video.objects.get_or_create(
+      vid=vid, 
+      title=vtitle,
+      description=vdesc,
+      channelTitle=ctitle,
+      channelID=cid,
+      default_thumb_url=dthumb,
+      medium_thumb_url=mthumb)
+    if created:
       video.save()
 
     if groupName is None and songTitle is None and composerName is None:
@@ -260,5 +258,8 @@ def editVideoData(request):
         songArr.append(model_to_dict(song))
       return HttpResponse(
           json.dumps(songArr), content_type='application/json')
+
+  import sys
+  sys.stdout.flush()
 
   return HttpResponse(json.dumps("failure"), content_type='application/json')

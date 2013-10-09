@@ -90,14 +90,13 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     //Add pseudo-form elements
     values["vid"] = data.id.videoId;
     values["csrfmiddlewaretoken"] = this.props.csrftoken;
-    if (!this.props.metadata) {
-      values["vdesc"] = data.snippet.description;
-      values["vtitle"] = data.snippet.title;
-      values["dthumb"] = data.snippet.thumbnails.default.url;
-      values["mthumb"] = data.snippet.thumbnails.medium.url;
-      values["ctitle"] = data.snippet.channelTitle;
-      values["cid"] = data.snippet.channelId;
-    }
+    values["vdesc"] = data.snippet.description;
+    values["vtitle"] = data.snippet.title;
+    values["dthumb"] = data.snippet.thumbnails.default.url;
+    values["mthumb"] = data.snippet.thumbnails.medium.url;
+    values["ctitle"] = data.snippet.channelTitle;
+    values["cid"] = data.snippet.channelId;
+
     if (songInputData) {
       values["song_title"] = JSON.stringify(songInputData);
     }
@@ -132,8 +131,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         var newData = {fields: {title: data[i]["title"]}};
         array.push(newData);
       }
-      console.log(array);
-      console.log(wrapper);
       wrapper.setState({songs: array});
     } else if (this.props.type === "group") {
       var array = wrapper.state.groups;
@@ -211,7 +208,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
   
   render: function() {
-    var metadata = this.props.metadata;
     return (
       React.DOM.form(null, 
         this.genRenderFormInputs()
