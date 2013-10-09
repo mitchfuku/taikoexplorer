@@ -53,7 +53,11 @@ def dbSearchResults(query):
   composers = Composer.objects.filter(
     full_name__icontains=query
   )
-  videos = list(set(songs) | set(groups)) 
+  composerVideos = []
+  for c in composers:
+    composerVideos.extend(c.videos)
+  # this ensures that we don't get duplicate videos
+  videos = list(set(songs) | set(groups) | set(composerVideos)) 
   formattedVideos = []
   for video in videos :
     formattedVideos.append(formattedVideoData(video))

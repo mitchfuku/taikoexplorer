@@ -2,6 +2,9 @@ from django.db import models
 
 class Composer(models.Model):
   full_name = models.TextField()
+  @property
+  def videos(self):
+    return Video.objects.filter(songs__composers=self)
 
 class SongStyle(models.Model):
   name = models.TextField()
