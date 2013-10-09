@@ -66,11 +66,12 @@ var AddVideoDataForm = React.createClass({
   },
 
   componentDidMount: function() {
-    console.log(this);
-    this.songStyleInput = $(this.refs.songstyle.getDOMNode()).select2({
-      placeholder: "Add all styles in this song",
-      width: "100%"
-    });
+    if (this.props.type === "songcomposer") {
+      this.songStyleInput = $(this.refs.songstyle.getDOMNode()).select2({
+        placeholder: "Add all styles in this song",
+        width: "100%"
+      });
+    }
   },
 
   submitForm: function(e) {
@@ -93,18 +94,25 @@ var AddVideoDataForm = React.createClass({
       values["vdesc"] = data.snippet.description;
       values["vtitle"] = data.snippet.title;
       values["dthumb"] = data.snippet.thumbnails.default.url;
+      values["mthumb"] = data.snippet.thumbnails.medium.url;
+      values["ctitle"] = data.snippet.channelTitle;
+      values["cid"] = data.snippet.channelId;
     }
-    if (songInputData)
+    if (songInputData) {
       values["song_title"] = JSON.stringify(songInputData);
-    if (composerInputData)
+    }
+    if (composerInputData) {
       values["composer_name"] = JSON.stringify(composerInputData);
-    if (groupInputData)
+    }
+    if (groupInputData) {
       values["group_name"] = JSON.stringify(groupInputData);
-    values["song_style"] = JSON.stringify(this.songStyleInput.val());
+    }
+    if (this.props.type === "songcomposer") {
+      values["song_style"] = JSON.stringify(this.songStyleInput.val());
+    }
     var that = this;
     $.ajax({url:"/add-video-data/", type:"POST", data:values})
       .done(function(data) {
-        console.log(that);
         that.addToMarkup(data);
       })
       .fail(function() {

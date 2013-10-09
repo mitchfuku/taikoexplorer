@@ -8,16 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'Song.style'
-        db.delete_column(u'taikoexplorer_db_song', 'style')
 
+        # Changing field 'Video.channelID'
+        db.alter_column(u'taikoexplorer_db_video', 'channelID', self.gf('django.db.models.fields.CharField')(max_length=40))
 
     def backwards(self, orm):
-        # Adding field 'Song.style'
-        db.add_column(u'taikoexplorer_db_song', 'style',
-                      self.gf('django.db.models.fields.TextField')(default=None),
-                      keep_default=False)
 
+        # Changing field 'Video.channelID'
+        db.alter_column(u'taikoexplorer_db_video', 'channelID', self.gf('django.db.models.fields.TextField')())
 
     models = {
         u'taikoexplorer_db.composer': {
@@ -28,9 +26,9 @@ class Migration(SchemaMigration):
         u'taikoexplorer_db.composersong': {
             'Meta': {'object_name': 'ComposerSong'},
             'composer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['taikoexplorer_db.Composer']"}),
-            'date_rearranged': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
+            'date_rearranged': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_original_composer': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_original_composer': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'song': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['taikoexplorer_db.Song']"})
         },
         u'taikoexplorer_db.group': {
@@ -43,7 +41,7 @@ class Migration(SchemaMigration):
         u'taikoexplorer_db.song': {
             'Meta': {'object_name': 'Song'},
             'composers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'songs'", 'symmetrical': 'False', 'through': u"orm['taikoexplorer_db.ComposerSong']", 'to': u"orm['taikoexplorer_db.Composer']"}),
-            'date_composed': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
+            'date_composed': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_drill': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -60,6 +58,8 @@ class Migration(SchemaMigration):
         },
         u'taikoexplorer_db.video': {
             'Meta': {'object_name': 'Video'},
+            'channelID': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
+            'channelTitle': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'default_thumb_url': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'videos'", 'symmetrical': 'False', 'to': u"orm['taikoexplorer_db.Group']"}),

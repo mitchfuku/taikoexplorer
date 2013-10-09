@@ -8,22 +8,83 @@ import json
 import settings as templates_settings
 import youtube
 
+def youtubeSearchResults(getrequest):
+  options = dict({
+    "q" : getrequest.get("query", None),
+    "maxResults" : getrequest.get("maxResults", 10),
+    "pageToken" : getrequest.get("pageToken", "")
+  })
+  searchResults = youtube.youtube_search(options)
+  videos = Video.objects.filter(
+    vid__in=searchResults.get("vids", None)
+  ).prefetch_related(
+    'songs__composers', 'groups'
+  )
+  results = [searchResults, videos]
+  return results
+
+# takes a video db object and formats it to match the yt search result json
+def formattedVideoData(video):
+  return {
+    "id": {
+      "videoId": video.vid
+    },
+    "snippet": {
+      "title": video.title,
+      "description": video.description,
+      "channelId": video.channelID,
+      "channelTitle": video.channelTitle,
+      "thumbnails": {
+        "medium": {
+          "url": video.medium_thumb_url
+        }
+      }
+    }
+  }
+
+def dbSearchResults(query):
+  import sys
+  songs = Video.objects.filter(
+    songs__title__icontains=query
+  )
+  groups = Video.objects.filter(
+    groups__name__icontains=query
+  )
+  composers = Composer.objects.filter(
+    full_name__icontains=query
+  )
+  videos = list(set(songs) | set(groups)) 
+  formattedVideos = []
+  for video in videos :
+    formattedVideos.append(formattedVideoData(video))
+  sys.stdout.flush()
+  return [{"items" : formattedVideos}, videos]
+
+# gets the proper data based on the request type
+# index 0 - youtube result
+# index 1 - db result
+def searchRouter(getrequest):
+  query = getrequest.get("query", None)
+  type = getrequest.get("type", None)
+  if type == "db":
+    # search only db
+    return dbSearchResults(query)
+  elif type == "ytdb":
+    # search both
+    return None
+  # default to search only yt
+  return youtubeSearchResults(getrequest)
+
 # serve the / directory
 def home(request):
   if request.method == 'GET':
     query = request.GET.get("query", None)
+    type = request.GET.get("type", None)
     if query is not None :
-      options = dict({
-        "q" : query,
-        "maxResults" : request.GET.get("maxResults", 10),
-        "pageToken" : request.GET.get("pageToken", "")
-      })
-      searchResults = youtube.youtube_search(options)
-      
-      videos = Video.objects.filter(
-          vid__in=searchResults.get("vids", None)).prefetch_related(
-            'songs__composers', 'groups'
-          )
+      searchData = searchRouter(request.GET)
+      searchResults = searchData[0]
+      videos = searchData[1]
+
       dataDict = {}
       for video in videos :
         dataDict[video.vid] = {
@@ -116,6 +177,9 @@ def editVideoData(request):
     vtitle = request.POST.get("vtitle", None)
     vdesc = request.POST.get("vdesc", None)
     dthumb = request.POST.get("dthumb", None)
+    mthumb = request.POST.get("mthumb", None)
+    cid = request.POST.get("cid", None)
+    ctitle = request.POST.get("ctitle", None)
     groupName = request.POST.get("group_name", None)
     songTitle = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
@@ -130,7 +194,10 @@ def editVideoData(request):
         vid=vid, 
         title=vtitle,
         description=vdesc,
-        default_thumb_url=dthumb)
+        channelTitle=ctitle,
+        channelID=cid,
+        default_thumb_url=dthumb,
+        medium_thumb_url=mthumb)
       video.save()
 
     if groupName is None and songTitle is None and composerName is None:

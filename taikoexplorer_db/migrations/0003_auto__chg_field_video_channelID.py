@@ -8,20 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding M2M table for field styles on 'Song'
-        m2m_table_name = db.shorten_name(u'taikoexplorer_db_song_styles')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('song', models.ForeignKey(orm[u'taikoexplorer_db.song'], null=False)),
-            ('songstyle', models.ForeignKey(orm[u'taikoexplorer_db.songstyle'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['song_id', 'songstyle_id'])
 
+        # Changing field 'Video.channelID'
+        db.alter_column(u'taikoexplorer_db_video', 'channelID', self.gf('django.db.models.fields.TextField')())
 
     def backwards(self, orm):
-        # Removing M2M table for field styles on 'Song'
-        db.delete_table(db.shorten_name(u'taikoexplorer_db_song_styles'))
 
+        # Changing field 'Video.channelID'
+        db.alter_column(u'taikoexplorer_db_video', 'channelID', self.gf('django.db.models.fields.CharField')(max_length=40))
 
     models = {
         u'taikoexplorer_db.composer': {
@@ -32,9 +26,9 @@ class Migration(SchemaMigration):
         u'taikoexplorer_db.composersong': {
             'Meta': {'object_name': 'ComposerSong'},
             'composer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['taikoexplorer_db.Composer']"}),
-            'date_rearranged': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
+            'date_rearranged': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_original_composer': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_original_composer': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'song': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['taikoexplorer_db.Song']"})
         },
         u'taikoexplorer_db.group': {
@@ -47,13 +41,12 @@ class Migration(SchemaMigration):
         u'taikoexplorer_db.song': {
             'Meta': {'object_name': 'Song'},
             'composers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'songs'", 'symmetrical': 'False', 'through': u"orm['taikoexplorer_db.ComposerSong']", 'to': u"orm['taikoexplorer_db.Composer']"}),
-            'date_composed': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
+            'date_composed': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_drill': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_open_source': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_original_arrangement': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'style': ('django.db.models.fields.TextField', [], {}),
             'styles': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'songs'", 'symmetrical': 'False', 'to': u"orm['taikoexplorer_db.SongStyle']"}),
             'title': ('django.db.models.fields.TextField', [], {})
         },
@@ -65,6 +58,8 @@ class Migration(SchemaMigration):
         },
         u'taikoexplorer_db.video': {
             'Meta': {'object_name': 'Video'},
+            'channelID': ('django.db.models.fields.TextField', [], {}),
+            'channelTitle': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'default_thumb_url': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'videos'", 'symmetrical': 'False', 'to': u"orm['taikoexplorer_db.Group']"}),

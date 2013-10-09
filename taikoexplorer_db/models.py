@@ -37,6 +37,8 @@ class Video(models.Model):
   vid = models.CharField(max_length=20)
   title = models.TextField()
   description = models.TextField(blank=True)
+  channelID = models.TextField()
+  channelTitle = models.TextField(blank=True)
   default_thumb_url = models.CharField(max_length=100, blank=True)
   medium_thumb_url = models.CharField(max_length=100, blank=True)
   high_thumb_url = models.CharField(max_length=100, blank=True)
