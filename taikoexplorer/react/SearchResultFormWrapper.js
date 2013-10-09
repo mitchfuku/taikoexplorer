@@ -86,8 +86,8 @@ var SearchResultFormWrapper = React.createClass({
   },
 
   renderSongsAndComposers: function() {
-    var metadata = this.props.metadata;
-    if (!metadata || (!metadata.songs.length && !metadata.composers.length)) {
+    var metadata = this.state.songs;
+    if (!metadata || !metadata.length) {
       return (
         <div>
           <p><i>No songs or composers listed</i></p>
@@ -97,20 +97,15 @@ var SearchResultFormWrapper = React.createClass({
         </div>
       );
     } else {
-      var songs = metadata.songs;
-      var composers = metadata.composers;
-      var metadata = this.state.songs;
-      console.log(metadata);
-      console.log(composers);
       return (
         <div>
           <p>Songs in this video</p>
           <ul className="list-group">
             {metadata.map(
-              function(metadata) {
+              function(song) {
                 return (
                   <li className="list-group-item">
-                    {metadata.fields.title}
+                    {song.fields.title}
                   </li>
                 );
               }

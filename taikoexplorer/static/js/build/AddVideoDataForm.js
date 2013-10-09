@@ -124,17 +124,18 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   },
 
   addToMarkup: function(data) {
+    var wrapper = this.props.wrapper;
     if (this.props.type === "songcomposer") {
-      var wrapper = this.props.wrapper;
       var array = wrapper.state.songs;
       if (!array) array = [];
       for (var i = 0; i < data.length; i++) {
         var newData = {fields: {title: data[i]["title"]}};
         array.push(newData);
       }
+      console.log(array);
+      console.log(wrapper);
       wrapper.setState({songs: array});
     } else if (this.props.type === "group") {
-      var wrapper = this.props.wrapper;
       var array = wrapper.state.groups;
       if (!array) array = [];
       for (var i = 0; i < data.length; i++) {
