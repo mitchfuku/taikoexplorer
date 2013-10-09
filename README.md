@@ -70,7 +70,7 @@ Last chance...
 
 Run these commands from /taikoexplorer: 
 
-    heroku pg:reset DATABASE --confirm
+    heroku pg:reset DATABASE
     rm taikoexplorer_db/migrations/*
     python manage.py schemamigration taikoexplorer_db --initial
     ./manage.py syncdb
