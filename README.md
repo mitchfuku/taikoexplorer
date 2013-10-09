@@ -70,12 +70,21 @@ Last chance...
 
 Run these commands from /taikoexplorer: 
 
-    heroku pg:reset DATABASE --confirm
+    heroku pg:reset DATABASE
     rm taikoexplorer_db/migrations/*
     python manage.py schemamigration taikoexplorer_db --initial
     ./manage.py syncdb
     ./manage.py migrate taikoexplorer_db
     
+Then manually go into heroku pg:psql and do:
+
+    insert into taikoexplorer_db_songstyle (name, description) values ('Betta', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Naname', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Hachijo', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Miyake', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Odaiko', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Yatai', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Other', '');
 
 ## What's Virtualenv?
 
