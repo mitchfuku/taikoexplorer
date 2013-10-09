@@ -22,17 +22,25 @@ def home(request):
       
       videos = Video.objects.filter(
           vid__in=searchResults.get("vids", None)).prefetch_related(
-          'songs__composers', 'groups')
+            'songs__composers', 'groups'
+          )
       dataDict = {}
       for video in videos :
         dataDict[video.vid] = {
           "video-data" : model_to_dict(video),
-          "groups" : json.loads(serializers.serialize("json", video.groups.all())),
-          "songs" : json.loads(serializers.serialize("json", video.songs.all())),
-          "composers" : json.loads(serializers.serialize("json", 
-            Composer.objects.filter(
-              songs__in=video.songs.all()
-            ).all())
+          "groups" : json.loads(
+            serializers.serialize("json", video.groups.all())
+          ),
+          "songs" : json.loads(
+            serializers.serialize("json", video.songs.all())
+          ),
+          "composers" : json.loads(
+            serializers.serialize(
+              "json", 
+              Composer.objects.filter(
+                songs__in=video.songs.all()
+              ).all()
+            )
           )
         }
       # iterate through tags and create a map with the vid as the key
@@ -86,6 +94,7 @@ def youtubeSearch(request):
         data = []
     import sys
     if data:
+      # format the data
       for entry in data:
         entry = model_to_dict(entry)
         sys.stdout.flush()
@@ -112,7 +121,8 @@ def editVideoData(request):
     composerName = request.POST.get("composer_name", None)
     songStyle = request.POST.get("song_style", None)
     video = None
-    print (groupName)
+
+    # add new video is it's not already in the db
     if vtitle is None and vdesc is None and dthumb is None:
       video = Video.objects.get(vid=vid)
     else:
@@ -180,38 +190,4 @@ def editVideoData(request):
       return HttpResponse(
           json.dumps(songArr), content_type='application/json')
 
-      print(songTitle)
-      print(composerName)
-      print(songStyle)
-
-    #isOpenSource = request.POST.get("is_open_source", False)
-    #isDrill = request.POST.get("is_drill", False)
-    #isCopyrighted = request.POST.get("is_copyrighted", False)
-    # not doing any is* yet....just name and title
-
-    import sys
-    sys.stdout.flush()
-
-    #if composerName :
-      #composer, composer_created = Composer.objects.get_or_create(
-        #full_name=composerName)
-    #if songTitle :
-      #song, song_created = Song.objects.get_or_create(
-        #title=songTitle)
-    #if groupName :
-      #group, group_created = Group.objects.get_or_create(
-        #name=groupName)
-    #if composer :
-        #song.composers.add(composer)
-    #if song :
-        #video.songs.add(song)
-    #if group :
-        #video.groups.add(group)
-    return HttpResponse(json.dumps("success"), content_type='application/json')
   return HttpResponse(json.dumps("failure"), content_type='application/json')
-
-def createNewSong(songTitle):
-  song = Song(
-      title=songTitle)
-  return song
-
