@@ -61,6 +61,22 @@ taikoexplorer_db/migrations folder.  After that, run:
 And you are done!  You have the ability to go forward and backward in your
 migrations too.  DO NOT DO MIGRATIONS ANY OTHER WAY.
 
+## Deleting the database
+DO NOT DO THIS UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING!
+YOU WILL BE DELETING THE ENTIRE DATABASE AND RESETTING IT FROM SCRATCH!
+Stop and think for one second...
+
+Last chance...
+
+Run these commands from /taikoexplorer: 
+
+    heroku pg:reset DATABASE --confirm
+    rm taikoexplorer_db/migrations/*
+    python manage.py schemamigration taikoexplorer_db --initial
+    ./manage.py syncdb
+    ./manage.py migrate taikoexplorer_db
+    
+
 ## What's Virtualenv?
 
 Basically, activating virtualenv creates a "virtual" environment for your
