@@ -9,6 +9,9 @@ class Composer(models.Model):
 class SongStyle(models.Model):
   name = models.TextField()
   description = models.TextField(blank=True)
+  @property
+  def videos(self):
+    return Video.objects.filter(songs__styles=self)
 
 # Create a new song for every arrangement of a song
 class Song(models.Model):
