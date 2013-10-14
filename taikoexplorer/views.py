@@ -114,6 +114,7 @@ def rekeyAndFormatVideoData(videos):
 # serve the / directory
 def home(request):
   query = request.GET.get("query", None)
+  request.session["query"] = query
   if request.method == 'GET':
     if query is not None :
       searchData = searchRouter(request.GET)

@@ -129,6 +129,10 @@ WSGI_APPLICATION = 'taikoexplorer.wsgi.application'
 
 SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
+
 TEMPLATE_DIRS = (
     os.path.join(SETTINGS_PATH, 'templates')
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
