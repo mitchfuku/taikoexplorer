@@ -87,51 +87,55 @@ def searchRouter(getrequest):
   # default to search only yt
   return youtubeSearchResults(getrequest)
 
+# iterate through tags and create a map with the vid as the key
+def rekeyAndFormatVideoData(videos):
+  dataDict = {}
+  for video in videos :
+    dataDict[video.vid] = {
+      "video-data" : model_to_dict(video),
+      "groups" : json.loads(
+        serializers.serialize("json", video.groups.all())
+      ),
+      "songs" : json.loads(
+        serializers.serialize("json", video.songs.all())
+      ),
+      "composers" : json.loads(
+        serializers.serialize(
+          "json", 
+          Composer.objects.filter(
+            songs__in=video.songs.all()
+          ).all()
+        )
+      )
+    }
+  return dataDict
+
+
 # serve the / directory
 def home(request):
+  query = request.GET.get("query", None)
   if request.method == 'GET':
-    query = request.GET.get("query", None)
-    type = request.GET.get("type", None)
     if query is not None :
       searchData = searchRouter(request.GET)
       searchResults = searchData[0]
       videos = searchData[1]
 
-      dataDict = {}
-      for video in videos :
-        dataDict[video.vid] = {
-          "video-data" : model_to_dict(video),
-          "groups" : json.loads(
-            serializers.serialize("json", video.groups.all())
-          ),
-          "songs" : json.loads(
-            serializers.serialize("json", video.songs.all())
-          ),
-          "composers" : json.loads(
-            serializers.serialize(
-              "json", 
-              Composer.objects.filter(
-                songs__in=video.songs.all()
-              ).all()
-            )
-          )
-        }
-      # iterate through tags and create a map with the vid as the key
+      dataDict = rekeyAndFormatVideoData(videos)
+
       data = {
         "videos" : searchResults,
         "metadata" : dataDict,
         "query" : query,
         "pageToken" : request.GET.get("pageToken", "")
       }
-      import sys
-      sys.stdout.flush()
+
       return render(
         request,
         'search-results.html',
         {"data" : json.dumps(data)}
       )
 
-  # if all else fails, show landing page
+  # if no query param, show landing page
   return render(request, 'index.html')
 
 # serves the /yts api
@@ -196,8 +200,8 @@ def editVideoData(request):
     songTitle = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
     songStyle = request.POST.get("song_style", None)
-    video = None
 
+    video = None
     # add new video is it's not already in the db
     video, created = Video.objects.get_or_create(
       vid=vid, 
@@ -208,6 +212,7 @@ def editVideoData(request):
       default_thumb_url=dthumb,
       medium_thumb_url=mthumb)
     if created:
+      print("new video")
       video.save()
 
     if groupName is None and songTitle is None and composerName is None:
@@ -224,7 +229,6 @@ def editVideoData(request):
           group = Group(name=g['id'])
           group.save()
         else:
-          print("old group")
           group = Group.objects.get(pk=g['id'])
         video.groups.add(group)
         groupArr.append(model_to_dict(group))
@@ -244,7 +248,6 @@ def editVideoData(request):
           song = Song(title=s['id'])
           song.save()
         else:
-          print("old song")
           song = Song.objects.get(pk=s['id'])
         # adding styles
         for ss in songStyle :
@@ -258,7 +261,6 @@ def editVideoData(request):
             composer = Composer(full_name=c['id'])
             composer.save()
           else:
-            print("old composer")
             composer = Composer.objects.get(pk=c['id'])
           cs = ComposerSong(composer=composer, song=song)
           cs.save()
