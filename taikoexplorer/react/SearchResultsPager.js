@@ -1,12 +1,11 @@
 /** @jsx React.DOM */
 
 var SearchResultsPager = React.createClass({
-  genRenderButton: function(query, token, isNext) {
-    var label = "blah";
+  genRenderButton: function(token, isNextButton) {
     var cl = "previous";
     var label = "\u2190 Previous";
 
-    if (isNext) {
+    if (isNextButton) {
       label = "Next \u2192";
       cl = "next";
     }
@@ -14,7 +13,9 @@ var SearchResultsPager = React.createClass({
     if (token) {
       return (
         <li className={cl}>
-          <a href={"/?query=" + query + "&pageToken=" + token}>
+          <a href={"/?query=" + this.props.query 
+            + "&pageToken=" + token
+            + "&type=" + this.props.type}>
               {label}
           </a>
         </li>
@@ -29,13 +30,12 @@ var SearchResultsPager = React.createClass({
   },
 
   render: function() {
-    var query = this.props.query;
     var nextToken = this.props.nextpagetoken;
     var prevToken = this.props.prevpagetoken;
     return (
       <ul className="pager">
-        {this.genRenderButton(query, prevToken, false)}
-        {this.genRenderButton(query, nextToken, true)}
+        {this.genRenderButton(prevToken, false)}
+        {this.genRenderButton(nextToken, true)}
       </ul>
     );
 

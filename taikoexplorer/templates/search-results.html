@@ -2,7 +2,33 @@
 
 {% block maincontent %}
 {% load dictionary_helpers %}
+{% if request.GET.type == "yt" and not request.GET.pageToken and not request.GET.overrideheader == "true" %}
+<div class="row">
+  <div class="search-result col-md-12">
+    <h5>
+      No videos were found for the search term "{{request.GET.query}}".  Here are some related videos found on Youtube:
+    </h5>
+  </div>
+</div>
+{% elif request.GET.type == "db" and not request.GET.pageToken and not request.GET.overrideheader == "true" %}
+<div class="row">
+  <div class="search-result col-md-12">
+    <h5>
+      Here are videos found for the search term "{{request.GET.query}}":
+    </h5>
+  </div>
+</div>
+{% endif %}
 <div id="react-search-results" class="row"></div>
+{% if request.GET.type == "db"%}
+<div class="row">
+  <div class="search-result col-md-12">
+    <h5>
+      Haven't found the video you're looking for? Search Youtube by clicking <a href="/?query={{request.GET.query}}&type=yt&overrideheader=true">here</a>.
+    </h5>
+  </div>
+</div>
+{% endif %}
 {% block footer %}
 <div id="react-pager"></div>
 {% endblock footer %}
@@ -33,12 +59,14 @@
     ),
     document.getElementById('react-search-results')
   );
+  console.log(data.videos);
   React.renderComponent(
     SearchResultsPager(
       {
         nextpagetoken:data.videos.nextPageToken,
         prevpagetoken:data.videos.prevPageToken,
-        query:data.query
+        query:data.query,
+        type:"{{request.GET.type}}"
       }
     ),
     document.getElementById('react-pager')
@@ -57,30 +85,5 @@
       }
     }
   });
-  /*$("#form-container").on('submit', function(e) {
-    var values = {};
-    var postURL = "";
-    var $button = $("input[type=submit][clicked=true]");
-    if ($button.hasClass("add-song")) {
-      postURL = "add-song-data/";
-    } else if ($button.hasClass("add-group")) {
-      postURL = "add-group-data/";
-    }
-    console.log(postURL);
-    console.log($button);
-    $.each($(this).serializeArray(), function(i, field) {
-      values[field.name] = field.value;
-    });
-    console.log(values);
-    console.log(e);
-    $.post(
-      postURL,
-      values,
-      function() {
-        console.log("success");
-      }
-    );
-    return false;
-  });*/
 </script>
 {% endblock js %}

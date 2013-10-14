@@ -43,7 +43,6 @@ def formattedVideoData(video):
   }
 
 def dbSearchResults(query):
-  import sys
   songs = Video.objects.filter(
     songs__title__icontains=query
   )
@@ -69,12 +68,11 @@ def dbSearchResults(query):
   formattedVideos = []
   for video in videos :
     formattedVideos.append(formattedVideoData(video))
-  sys.stdout.flush()
   return [{"items" : formattedVideos}, videos]
 
 # gets the proper data based on the request type
-# index 0 - youtube result
-# index 1 - db result
+# index 0 - video data results
+# index 1 - db metadata results
 def searchRouter(getrequest):
   query = getrequest.get("query", None)
   type = getrequest.get("type", None)
@@ -84,8 +82,18 @@ def searchRouter(getrequest):
   elif type == "ytdb":
     # search both
     return None
-  # default to search only yt
-  return youtubeSearchResults(getrequest)
+  elif type == "yt":
+    # search only youtube
+    return youtubeSearchResults(getrequest)
+
+  # default to searching db and if no results, searching youtube
+  dbResults = dbSearchResults(query)
+  if len(dbResults[0]["items"]) == 0:
+    getrequest.type = "yt"
+    return youtubeSearchResults(getrequest)
+  else:
+    getrequest.type = "db"
+    return dbSearchResults(query)
 
 # iterate through tags and create a map with the vid as the key
 def rekeyAndFormatVideoData(videos):
@@ -119,9 +127,9 @@ def home(request):
     if query is not None :
       searchData = searchRouter(request.GET)
       searchResults = searchData[0]
-      videos = searchData[1]
+      metadata = searchData[1]
 
-      dataDict = rekeyAndFormatVideoData(videos)
+      dataDict = rekeyAndFormatVideoData(metadata)
 
       data = {
         "videos" : searchResults,
@@ -170,7 +178,6 @@ def youtubeSearch(request):
         data = d
       except Song.DoesNotExist:
         data = []
-    import sys
     if data:
       # format the data
       for entry in data:
@@ -267,10 +274,11 @@ def editVideoData(request):
           cs.save()
         video.songs.add(song)
         songArr.append(model_to_dict(song))
+
+      import sys
+      sys.stdout.flush()
       return HttpResponse(
           json.dumps(songArr), content_type='application/json')
-
-  import sys
-  sys.stdout.flush()
-
+  
+  # not a post
   return HttpResponse(json.dumps("failure"), content_type='application/json')
