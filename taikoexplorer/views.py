@@ -123,6 +123,9 @@ def rekeyAndFormatVideoData(videos):
 def home(request):
   query = request.GET.get("query", None)
   request.session["query"] = query
+  # ToDo play with this value and change the expiry time
+  # also check to make sure this is not constantly being called
+  request.session.set_expiry(0)
   if request.method == 'GET':
     if query is not None :
       searchData = searchRouter(request.GET)
