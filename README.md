@@ -97,11 +97,13 @@ packages on your computer!
 ## Database Help
 
 To use psql to query the db, enter: 
+
     heroku pg:psql
     
 Ctrl - D gets you out of psql
 
 To query all tables in the database, enter:
+
     SELECT table_name 
     FROM information_schema.tables 
     WHERE table_schema='public' 
