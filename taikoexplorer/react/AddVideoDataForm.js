@@ -67,10 +67,7 @@ var AddVideoDataForm = React.createClass({
 
   componentDidMount: function() {
     if (this.props.type === "songcomposer") {
-      this.songStyleInput = $(this.refs.songstyle.getDOMNode()).select2({
-        placeholder: "Add all styles in this song",
-        width: "100%"
-      });
+      this.songStyleInput = $(this.refs.songstyle.getDOMNode());
     }
   },
 
@@ -143,7 +140,7 @@ var AddVideoDataForm = React.createClass({
     }
   },
 
-  genRenderFormInputs: function() {
+  renderFormInputs: function() {
     if (this.props.type === "songcomposer") {
       return (
         <div>
@@ -160,15 +157,7 @@ var AddVideoDataForm = React.createClass({
           <div className="row">
             <div className="input-group col-md-6">
               <span className="input-group-addon">Style</span> 
-              <select multiple name="song_style" ref="songstyle">
-                <option value="Betta">Betta</option>
-                <option value="Hachijo">Hachijo</option>
-                <option value="Miyake">Miyake</option>
-                <option value="Naname">Naname</option>
-                <option value="Odaiko">Odaiko</option>
-                <option value="Yatai">Yatai</option>
-                <option value="Other">Other</option>
-              </select>
+              <SongStyleSelect ref="songstyle" />
             </div>
           </div>
           <div className="row">
@@ -212,7 +201,7 @@ var AddVideoDataForm = React.createClass({
   render: function() {
     return (
       <form>
-        {this.genRenderFormInputs()}
+        {this.renderFormInputs()}
       </form>
     );
   }

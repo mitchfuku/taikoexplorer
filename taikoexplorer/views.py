@@ -35,6 +35,9 @@ def formattedVideoData(video):
       "channelId": video.channelID,
       "channelTitle": video.channelTitle,
       "thumbnails": {
+        "default": {
+          "url": video.default_thumb_url
+        },
         "medium": {
           "url": video.medium_thumb_url
         }
@@ -184,7 +187,6 @@ def youtubeSearch(request):
       # format the data
       for entry in data:
         entry = model_to_dict(entry)
-        sys.stdout.flush()
         if query_type == 'composer':
           entry["text"] = entry["full_name"]
         elif query_type == 'group':

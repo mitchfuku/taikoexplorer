@@ -67,10 +67,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
 
   componentDidMount: function() {
     if (this.props.type === "songcomposer") {
-      this.songStyleInput = $(this.refs.songstyle.getDOMNode()).select2({
-        placeholder: "Add all styles in this song",
-        width: "100%"
-      });
+      this.songStyleInput = $(this.refs.songstyle.getDOMNode());
     }
   },
 
@@ -143,7 +140,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     }
   },
 
-  genRenderFormInputs: function() {
+  renderFormInputs: function() {
     if (this.props.type === "songcomposer") {
       return (
         React.DOM.div(null, 
@@ -160,15 +157,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-6"}, 
               React.DOM.span( {className:"input-group-addon"}, "Style"), 
-              React.DOM.select( {multiple:true, name:"song_style", ref:"songstyle"}, 
-                React.DOM.option( {value:"Betta"}, "Betta"),
-                React.DOM.option( {value:"Hachijo"}, "Hachijo"),
-                React.DOM.option( {value:"Miyake"}, "Miyake"),
-                React.DOM.option( {value:"Naname"}, "Naname"),
-                React.DOM.option( {value:"Odaiko"}, "Odaiko"),
-                React.DOM.option( {value:"Yatai"}, "Yatai"),
-                React.DOM.option( {value:"Other"}, "Other")
-              )
+              SongStyleSelect( {ref:"songstyle"} )
             )
           ),
           React.DOM.div( {className:"row"}, 
@@ -210,7 +199,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   render: function() {
     return (
       React.DOM.form(null, 
-        this.genRenderFormInputs()
+        this.renderFormInputs()
       )
     );
   }
