@@ -103,9 +103,14 @@ var SearchResultFormWrapper = React.createClass({
           <ul className="list-group">
             {metadata.map(
               function(song) {
+                console.log(song);
                 return (
                   <li className="list-group-item">
-                    {song.fields.title}
+                    <a 
+                      href={"/?query=" + song.fields.title}
+                      title="Search other songs with the same name">
+                      {song.fields.title}
+                    </a>
                   </li>
                 );
               }
@@ -139,7 +144,11 @@ var SearchResultFormWrapper = React.createClass({
               function(group) {
                 return (
                   <li className="list-group-item">
-                    {group.fields.name}
+                    <a 
+                      href={"/?query=" + group.fields.name}
+                      title="Search other groups with the same name">
+                      {group.fields.name}
+                    </a>
                   </li>
                 );
               }

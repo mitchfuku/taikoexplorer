@@ -71,6 +71,8 @@ def dbSearchResults(query):
   formattedVideos = []
   for video in videos :
     formattedVideos.append(formattedVideoData(video))
+  import sys
+  sys.stdout.flush()
   return [{"items" : formattedVideos}, videos]
 
 # gets the proper data based on the request type
@@ -96,28 +98,32 @@ def searchRouter(getrequest):
     return youtubeSearchResults(getrequest)
   else:
     getrequest.type = "db"
-    return dbSearchResults(query)
+    return dbResults
 
 # iterate through tags and create a map with the vid as the key
 def rekeyAndFormatVideoData(videos):
   dataDict = {}
   for video in videos :
+    songArr = json.loads(
+      serializers.serialize(
+        "json",
+        video.songs.all()
+      )
+    )
+    for idx, song in enumerate(songArr):
+      song["fields"]["composers"] = json.loads(
+        serializers.serialize(
+          "json",
+          video.songs.all()[idx].composers.all()
+        )
+      )
+
     dataDict[video.vid] = {
       "video-data" : model_to_dict(video),
       "groups" : json.loads(
         serializers.serialize("json", video.groups.all())
       ),
-      "songs" : json.loads(
-        serializers.serialize("json", video.songs.all())
-      ),
-      "composers" : json.loads(
-        serializers.serialize(
-          "json", 
-          Composer.objects.filter(
-            songs__in=video.songs.all()
-          ).all()
-        )
-      )
+      "songs" : songArr,
     }
   return dataDict
 

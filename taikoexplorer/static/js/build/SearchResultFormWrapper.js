@@ -101,9 +101,14 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
           React.DOM.ul( {className:"list-group"}, 
             metadata.map(
               function(song) {
+                console.log(song);
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
-                    song.fields.title
+                    React.DOM.a( 
+                      {href:"/?query=" + song.fields.title,
+                      title:"Search other songs with the same name"}, 
+                      song.fields.title
+                    )
                   )
                 );
               }
@@ -135,7 +140,11 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
               function(group) {
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
-                    group.fields.name
+                    React.DOM.a( 
+                      {href:"/?query=" + group.fields.name,
+                      title:"Search other groups with the same name"}, 
+                      group.fields.name
+                    )
                   )
                 );
               }

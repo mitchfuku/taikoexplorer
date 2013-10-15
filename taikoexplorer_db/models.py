@@ -50,6 +50,9 @@ class Video(models.Model):
   high_thumb_url = models.CharField(max_length=100, blank=True)
   songs = models.ManyToManyField(Song, related_name="videos")
   groups = models.ManyToManyField(Group, related_name="videos")
+  @property
+  def composers(self):
+    return Composer.objects.filter(songs__videos=self)
 
 # Songs written by composer and composers of a song
 class ComposerSong(models.Model):
