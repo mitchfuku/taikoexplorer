@@ -43,6 +43,14 @@ Finally, to start the server, run:
 
 This should start the app on localhost:5000
 
+## What's Virtualenv?
+
+Basically, activating virtualenv creates a "virtual" environment for your
+development.  Anytime you run "pip install <package_name>" or anything like that
+while virtualenv is active, it will not install the package into your computer's
+root, but into its virtual root (venv/bin).  Yay for not installing tons of crap
+packages on your computer!
+
 ## Database migrations
 
 Migrations are done using South.  Here is a great tutorial on setting it up:
@@ -85,14 +93,6 @@ Then manually go into heroku pg:psql and do:
     insert into taikoexplorer_db_songstyle (name, description) values ('Odaiko', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Yatai', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Other', '');
-
-## What's Virtualenv?
-
-Basically, activating virtualenv creates a "virtual" environment for your
-development.  Anytime you run "pip install <package_name>" or anything like that
-while virtualenv is active, it will not install the package into your computer's
-root, but into its virtual root (venv/bin).  Yay for not installing tons of crap
-packages on your computer!
 
 ## Database Help
 
