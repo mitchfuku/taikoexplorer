@@ -71,8 +71,6 @@ def dbSearchResults(query):
   formattedVideos = []
   for video in videos :
     formattedVideos.append(formattedVideoData(video))
-  import sys
-  sys.stdout.flush()
   return [{"items" : formattedVideos}, videos]
 
 # gets the proper data based on the request type
@@ -285,6 +283,7 @@ def editVideoData(request):
             song=song
           )
           if cs_created:
+            print("new composer song association")
             cs.save()
         video.songs.add(song)
         songArr.append(model_to_dict(song))
