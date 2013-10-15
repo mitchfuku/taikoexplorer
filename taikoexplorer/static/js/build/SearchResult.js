@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var SearchResult = React.createClass({displayName: 'SearchResult',
-  genRenderVideoUploaderLink: function(data) {
+  renderVideoUploaderLink: function(data) {
     var link = "https://www.youtube.com/";
     var label = data.snippet.channelTitle;
     if (label) {
@@ -15,7 +15,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
     );
   },
 
-  genRenderVideoDescription: function(desc) {
+  renderVideoDescription: function(desc) {
     if (desc) {
       return React.DOM.p( {className:"desc"}, desc);
     } else {
@@ -23,7 +23,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
     }
   },
 
-  genRenderThumbDetails: function(type) {
+  renderThumbDetails: function(type) {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
     // If a video, set this to URL
@@ -55,9 +55,9 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
             ) 
           ), 
           React.DOM.p( {className:"info"},  
-" by ", this.genRenderVideoUploaderLink(data)
+" by ", this.renderVideoUploaderLink(data)
           ), 
-          this.genRenderVideoDescription(data.snippet.description),
+          this.renderVideoDescription(data.snippet.description),
           React.DOM.div( {className:"row"}, 
             form
           )
@@ -68,6 +68,6 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
 
   render: function() {
     var data = this.props.videodata;
-    return this.genRenderThumbDetails(data.id.kind);
+    return this.renderThumbDetails(data.id.kind);
   }
 });

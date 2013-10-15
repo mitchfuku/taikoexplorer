@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var SearchResult = React.createClass({
-  genRenderVideoUploaderLink: function(data) {
+  renderVideoUploaderLink: function(data) {
     var link = "https://www.youtube.com/";
     var label = data.snippet.channelTitle;
     if (label) {
@@ -15,7 +15,7 @@ var SearchResult = React.createClass({
     );
   },
 
-  genRenderVideoDescription: function(desc) {
+  renderVideoDescription: function(desc) {
     if (desc) {
       return <p className="desc">{desc}</p>;
     } else {
@@ -23,7 +23,7 @@ var SearchResult = React.createClass({
     }
   },
 
-  genRenderThumbDetails: function(type) {
+  renderThumbDetails: function(type) {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
     // If a video, set this to URL
@@ -55,9 +55,9 @@ var SearchResult = React.createClass({
             </a> 
           </h4> 
           <p className="info"> 
-            by {this.genRenderVideoUploaderLink(data)}
+            by {this.renderVideoUploaderLink(data)}
           </p> 
-          {this.genRenderVideoDescription(data.snippet.description)}
+          {this.renderVideoDescription(data.snippet.description)}
           <div className="row">
             {form}
           </div>
@@ -68,6 +68,6 @@ var SearchResult = React.createClass({
 
   render: function() {
     var data = this.props.videodata;
-    return this.genRenderThumbDetails(data.id.kind);
+    return this.renderThumbDetails(data.id.kind);
   }
 });
