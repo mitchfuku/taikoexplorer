@@ -41,7 +41,7 @@ Finally, to start the server, run:
 
     python manage.py runserver
 
-This should start the app on localhost:8000
+This should start the app on localhost:5000
 
 ## Database migrations
 
