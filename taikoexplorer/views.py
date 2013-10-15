@@ -280,7 +280,7 @@ def editVideoData(request):
             composer.save()
           else:
             composer = Composer.objects.get(pk=c['id'])
-          cs, cs_created = ComposerSong.get_or_create(
+          cs, cs_created = ComposerSong.objects.get_or_create(
             composer=composer, 
             song=song
           )
