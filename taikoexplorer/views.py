@@ -280,8 +280,12 @@ def editVideoData(request):
             composer.save()
           else:
             composer = Composer.objects.get(pk=c['id'])
-          cs = ComposerSong(composer=composer, song=song)
-          cs.save()
+          cs, cs_created = ComposerSong.get_or_create(
+            composer=composer, 
+            song=song
+          )
+          if cs_created:
+            cs.save()
         video.songs.add(song)
         songArr.append(model_to_dict(song))
 
