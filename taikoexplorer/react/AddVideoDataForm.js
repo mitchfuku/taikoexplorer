@@ -46,16 +46,51 @@ var AddVideoDataForm = React.createClass({
         for (var i = 0; i < data.length; i++) {
           results.push({
             id: data[i].id,
-            text: data[i].text
+            text: data[i].text,
+            data: data[i]
           });
         };
         return {results: results}
       }
     };
+    var resultFormat = null;
+    if (querytype == "song") {
+      resultFormat = function formatResult(
+          result, 
+          container, 
+          query, 
+          escapeMarkup) { 
+        var markup=[]; 
+        console.log(result);
+        window.Select2.util.markMatch(
+          result.text, 
+          query.term, 
+          markup, 
+          escapeMarkup
+        ); 
+        var markupMatch = markup.join(""); 
+        if (!result.data) {
+          return markupMatch;
+        } 
+        return (
+          '<div class="typeahead-special-match"> \
+            <div class="img-crop"> \
+              <img src="' 
+                + result.data.videos[0].fields.default_thumb_url +
+              '" /> \
+            </div> \
+            <span class="search-term">'
+              + markupMatch +
+            '</span> \
+          </div>'
+        );
+      }
+    }
     return (
       <ReactTypeaheadInput
         allowcreate={true}
         ajax={ajax}
+        outputformat={resultFormat}
         querytype={querytype}
         type="text"
         name={name}

@@ -40,6 +40,9 @@ var ReactTypeaheadInput =  React.createClass({
       this.refs['select2'].getDOMNode()
     );
     this.$select2 = $(select2.getDOMNode());
+    if (!this.props.outputformat) {
+      this.props.outputformat = this.formatResult;
+    }
     var that = this;
     this.$select2.select2({
       placeholder: that.props.placeholder,
@@ -49,6 +52,8 @@ var ReactTypeaheadInput =  React.createClass({
       ajax: that.props.ajax,
       createSearchChoice: function(term, data) { 
         if (!that.state.allowcreate) return null;
+        //Comment out this if statement if you want to allow creating
+        //even if the title is found
         if (
           $(data).filter(
             function() { 
@@ -58,14 +63,21 @@ var ReactTypeaheadInput =  React.createClass({
         ) {
           return {id:term, text:term + " *"};
         } 
-      }
-      //formatResult: that.formatResult,
+      },
+      formatResult: that.props.outputformat
       //formatSelection: that.formatSelection
     });
   },
 
-  formatResult: function(data) {
-    return "<p>" + data.text + "</p>";
+  formatResult: function(result, container, query, escapeMarkup) { 
+    var markup=[]; 
+    window.Select2.util.markMatch(
+      result.text, 
+      query.term, 
+      markup, 
+      escapeMarkup
+    ); 
+    return markup.join(""); 
   },
 
   formatSelection: function(data) {
