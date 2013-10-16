@@ -41,7 +41,15 @@ Finally, to start the server, run:
 
     python manage.py runserver
 
-This should start the app on localhost:8000
+This should start the app on localhost:5000
+
+## What's Virtualenv?
+
+Basically, activating virtualenv creates a "virtual" environment for your
+development.  Anytime you run "pip install <package_name>" or anything like that
+while virtualenv is active, it will not install the package into your computer's
+root, but into its virtual root (venv/bin).  Yay for not installing tons of crap
+packages on your computer!
 
 ## Database migrations
 
@@ -86,65 +94,17 @@ Then manually go into heroku pg:psql and do:
     insert into taikoexplorer_db_songstyle (name, description) values ('Yatai', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Other', '');
 
-## What's Virtualenv?
+## Database Help
 
-Basically, activating virtualenv creates a "virtual" environment for your
-development.  Anytime you run "pip install <package_name>" or anything like that
-while virtualenv is active, it will not install the package into your computer's
-root, but into its virtual root (venv/bin).  Yay for not installing tons of crap
-packages on your computer!
+To use psql to query the db, enter: 
 
-## Database schema
+    heroku pg:psql
+    
+Ctrl - D gets you out of psql
 
-Video
-vid = native video id
-type = yt or vm (youtube for now...more types to come eventually!)
-small_thumb = yt or vm thumbnail url
-default_thumb
-large_thumb
-(implied) id
-title
-description
+To query all tables in the database, enter:
 
-Composer
-full_name
-(implied) id
-
-Song (also for drills)
-(implied) id
-name
-description
-date_composed = date the ORIGINAL version of this song was composed
-is_open_source
-is_drill = boolean true if the "song" is a drill
-is_original = boolean true if the song being played is the original version
-
-Group
-(implied) id
-name
-nicknames = array(?)
-date_founded
-
-AKA
-(implied) id
-group_id = foreign key into group
-name
-
-//songs written by composer and composers of a song
-ComposerSong
-composer_id
-song_id
-is_original_composer = boolean true if the song associated to this composer was composed by this composer
-date_rearranged = if this is not the original, date this was rearranged
-
-//Songs in the video and videos this song is in
-SongVideo
-song_id
-video_id (implied id)
-video_vid
-
-//Groups in the video and videos this group is in
-GroupVideo
-group_id
-video_id (implied) //included in case vimeo or YT ever changes their IDs
-video_vid (native video id)
+    SELECT table_name 
+    FROM information_schema.tables 
+    WHERE table_schema='public' 
+    AND table_type='BASE TABLE';
