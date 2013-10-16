@@ -1,12 +1,17 @@
+.typeahead-special-match {
+  position: relative;
+}
+
 .typeahead-special-match img {
   zoom: 1.2;
-  margin-top: -32px;
-  margin-left: -47px;
+  margin-top: -25px;
+  margin-left: -40px;
 }
 
 .typeahead-special-match .search-term {
   position: absolute;
-  top: 53%;
+  top: 50%;
+  margin-top: -10px;
   left: 70px;
 }
 

@@ -199,7 +199,7 @@ def youtubeSearch(request):
           entry["text"] = entry["title"]
           entry["videos"] = json.loads(
             serializers.serialize("json", Video.objects.filter(
-                songs__title__icontains=query
+                songs__title=entry["title"]
               ).all()
             )
           )

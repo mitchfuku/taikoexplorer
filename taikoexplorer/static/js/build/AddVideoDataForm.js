@@ -61,7 +61,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           query, 
           escapeMarkup) { 
         var markup=[]; 
-        console.log(result);
         window.Select2.util.markMatch(
           result.text, 
           query.term, 

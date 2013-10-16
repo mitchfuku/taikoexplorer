@@ -101,7 +101,6 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
           React.DOM.ul( {className:"list-group"}, 
             metadata.map(
               function(song) {
-                console.log(song);
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
                     React.DOM.a( 

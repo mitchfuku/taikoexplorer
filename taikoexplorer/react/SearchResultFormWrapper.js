@@ -103,7 +103,6 @@ var SearchResultFormWrapper = React.createClass({
           <ul className="list-group">
             {metadata.map(
               function(song) {
-                console.log(song);
                 return (
                   <li className="list-group-item">
                     <a 
