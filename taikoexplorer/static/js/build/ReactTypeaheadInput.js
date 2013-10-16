@@ -54,15 +54,15 @@ var ReactTypeaheadInput =  React.createClass({displayName: 'ReactTypeaheadInput'
         if (!that.state.allowcreate) return null;
         //Comment out this if statement if you want to allow creating
         //even if the title is found
-        if (
-          $(data).filter(
-            function() { 
-              return this.text.localeCompare(term) === 0; 
-            }
-          ).length === 0
-        ) {
+        //if (
+          //$(data).filter(
+            //function() { 
+              //return this.text.localeCompare(term) === 0; 
+            //}
+          //).length === 0
+        //) {
           return {id:term, text:term + " *"};
-        } 
+        //} 
       },
       formatResult: that.props.outputformat
       //formatSelection: that.formatSelection
