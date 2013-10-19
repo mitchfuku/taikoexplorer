@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 
 {% block maincontent %}
-{% load dictionary_helpers %}
 {% if request.GET.type == "yt" and not request.GET.pageToken and not request.GET.overrideheader == "true" %}
 <div class="row">
   <div class="search-result col-md-12">
