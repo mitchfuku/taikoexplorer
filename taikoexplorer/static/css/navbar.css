@@ -6,9 +6,11 @@
 
 #main-search {
   float: left;
-  min-width: 500px;
+  min-width: 700px;
 }
 
 .advanced-search {
   line-height: 48px;
+  position: relative;
+  left: -20px;
 }
