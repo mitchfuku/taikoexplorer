@@ -1,4 +1,14 @@
 .search-button {
-  padding: 0;
   left: -10px;
+  padding: 0;
+  position: relative;
+}
+
+#main-search {
+  float: left;
+  min-width: 500px;
+}
+
+.advanced-search {
+  line-height: 48px;
 }

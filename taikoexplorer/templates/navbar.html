@@ -10,8 +10,8 @@
     <a class="navbar-brand" href="/">TaikoExplorer</a>
   </div>
   <div class="collapse navbar-collapse navbar-ex1-collapse row">
-    <form id="main-search" class="navbar-form" role="search">
-      <div class="col-md-5">
+    <form id="main-search" class="row navbar-form" role="search">
+      <div class="col-md-11">
         {% if request.GET.query %}
           <input 
             class="form-control" 
@@ -25,11 +25,12 @@
             type="text">
         {% endif %}
       </div>
-      <div class="col-md-1 search-button">
+      <div class="search-button col-md-1">
         <button type="submit" class="btn btn-default">
           <span class="glyphicon glyphicon-search"></span> 
         </button>
       </div>
     </form>
+    <a class="advanced-search"  href="/advanced-search">Advanced Search</a>
   </div>
 </nav>

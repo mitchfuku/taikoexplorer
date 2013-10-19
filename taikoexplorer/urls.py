@@ -8,6 +8,7 @@ import views, settings
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', views.home, name='home'),
+    url(r'^advanced-search', views.home, name='advancedSearch'),
     url(r'^yts/', views.youtubeSearch, name='yts'),
     url(r'^add-video-data/', views.editVideoData, name='editVideoData'),
     # Uncomment the admin/doc line below to enable admin documentation:

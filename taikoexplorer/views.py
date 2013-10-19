@@ -125,6 +125,9 @@ def rekeyAndFormatVideoData(videos):
     }
   return dataDict
 
+# serve the /advanced-search directory
+def home(request):
+  return render(request, 'advanced-search.html')
 
 # serve the / directory
 def home(request):
