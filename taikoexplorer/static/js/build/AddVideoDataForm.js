@@ -31,7 +31,11 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   getInputMarkup: function(name, placeholder, querytype) {
     var that = this;
     var multiple = true;
+    var focus = false;
     var selectingHandler = null;
+    if (querytype === "song" || querytype === "group") {
+      focus = true;
+    }
     if (querytype === "song") {
       // If this is the song input, "autofill" the composer and styles
       // on selection of a song
@@ -39,7 +43,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         var data = selection.object.data;
         var composers = data.composers;
         var styles = data.styles;
-        console.log(composers);
         that.composerInput.$select2
           .select2("data", composers)
           .trigger("change");
@@ -115,6 +118,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       ReactTypeaheadInput(
         {allowcreate:true,
         ajax:ajax,
+        focus:focus,
         outputformat:resultFormat,
         multiple:multiple,
         querytype:querytype,
@@ -168,7 +172,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     if (this.props.type === "songcomposer") {
       values["song_style"] = JSON.stringify(this.songStyleInput.val());
     }
-    console.log(values);
     var that = this;
     $.ajax({url:"/add-video-data/", type:"POST", data:values})
       .done(function(data) {

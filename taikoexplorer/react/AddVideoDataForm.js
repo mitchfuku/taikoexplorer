@@ -31,7 +31,11 @@ var AddVideoDataForm = React.createClass({
   getInputMarkup: function(name, placeholder, querytype) {
     var that = this;
     var multiple = true;
+    var focus = false;
     var selectingHandler = null;
+    if (querytype === "song" || querytype === "group") {
+      focus = true;
+    }
     if (querytype === "song") {
       // If this is the song input, "autofill" the composer and styles
       // on selection of a song
@@ -114,6 +118,7 @@ var AddVideoDataForm = React.createClass({
       <ReactTypeaheadInput
         allowcreate={true}
         ajax={ajax}
+        focus={focus}
         outputformat={resultFormat}
         multiple={multiple}
         querytype={querytype}

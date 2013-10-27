@@ -75,6 +75,9 @@ var ReactTypeaheadInput =  React.createClass({
     if (this.props.selectinghandler) {
       this.$select2.on("select2-selecting", this.props.selectinghandler);
     }
+    if (this.props.focus) {
+      this.$select2.select2("focus");
+    }
   },
 
   formatResult: function(result, container, query, escapeMarkup) { 
