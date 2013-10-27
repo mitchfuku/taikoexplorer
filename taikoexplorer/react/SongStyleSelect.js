@@ -16,8 +16,9 @@ var SongStyleSelect =  React.createClass({
         <option value="Miyake">Miyake</option>
         <option value="Naname">Naname</option>
         <option value="Odaiko">Odaiko</option>
-        <option value="Yatai">Yatai</option>
         <option value="Other">Other</option>
+        <option value="Shime">Shime</option>
+        <option value="Yatai">Yatai</option>
       </select>
     );
   }

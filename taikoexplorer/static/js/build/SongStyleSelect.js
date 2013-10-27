@@ -16,8 +16,9 @@ var SongStyleSelect =  React.createClass({displayName: 'SongStyleSelect',
         React.DOM.option( {value:"Miyake"}, "Miyake"),
         React.DOM.option( {value:"Naname"}, "Naname"),
         React.DOM.option( {value:"Odaiko"}, "Odaiko"),
-        React.DOM.option( {value:"Yatai"}, "Yatai"),
-        React.DOM.option( {value:"Other"}, "Other")
+        React.DOM.option( {value:"Other"}, "Other"),
+        React.DOM.option( {value:"Shime"}, "Shime"),
+        React.DOM.option( {value:"Yatai"}, "Yatai")
       )
     );
   }

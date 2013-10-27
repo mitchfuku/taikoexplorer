@@ -209,7 +209,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           ),
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-6"}, 
-              React.DOM.span( {className:"input-group-addon"}, "Style"), 
+              React.DOM.span( {className:"input-group-addon"}, "Styles In Song"), 
               SongStyleSelect( {ref:"songstyle"} )
             )
           ),
