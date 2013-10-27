@@ -84,6 +84,18 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     );
   },
 
+  deleteEntry: function(e) {
+    var entry = JSON.parse(e.target.getAttribute("data"));
+    $.ajax({url:"/delete-video-data/", type:"POST", data:entry})
+      .done(function(data) {
+      })
+      .fail(function() {
+      })
+      .always(function() {
+      });
+    return false;
+  },
+
   renderSongsAndComposers: function() {
     var metadata = this.state.songs;
     if (!metadata || !metadata.length) {
@@ -95,14 +107,28 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
         )
       );
     } else {
+      var that = this;
       return (
         React.DOM.div(null, 
           React.DOM.p(null, "Songs in this video"),
           React.DOM.ul( {className:"list-group"}, 
             metadata.map(
               function(song) {
+                var data = {
+                  "type": "song",
+                  "vid": that.props.videodata.id.videoId,
+                  "eid": song.pk
+                };
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
+                    React.DOM.button( 
+                      {type:"button", 
+                      data:JSON.stringify(data),
+                      onClick:that.deleteEntry,
+                      className:"close delete-entry", 
+                      'data-dismiss':"alert", 
+                      'aria-hidden':"true"}, 
+" × "                    ),
                     React.DOM.a( 
                       {href:"/?query=" + song.fields.title,
                       title:"Search other songs with the same name"}, 
@@ -131,14 +157,29 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
         )
       );
     } else {
+      var that = this;
       return (
         React.DOM.div(null, 
           React.DOM.p(null, "Groups in this video"),
           React.DOM.ul( {className:"list-group"}, 
             metadata.map(
               function(group) {
+                console.log(group);
+                var data = {
+                  "type": "group",
+                  "vid": that.props.videodata.id.videoId,
+                  "eid": group.pk
+                };
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
+                    React.DOM.button( 
+                      {type:"button", 
+                      data:JSON.stringify(data),
+                      onClick:that.deleteEntry,
+                      className:"close delete-entry", 
+                      'data-dismiss':"alert", 
+                      'aria-hidden':"true"}, 
+" × "                    ),
                     React.DOM.a( 
                       {href:"/?query=" + group.fields.name,
                       title:"Search other groups with the same name"}, 

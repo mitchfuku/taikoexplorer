@@ -212,6 +212,22 @@ def youtubeSearch(request):
   return HttpResponse(
       json.dumps(returnData), content_type='application/json')
 
+#serves the /delete-video-data async request
+def deleteVideoData(request):
+  if request.method == 'POST':
+    vid = request.POST.get("vid")
+    eid = request.POST.get("eid")
+    type = request.POST.get("type")
+    if type == "song":
+      song = Song.objects.get(pk=eid)
+      Video.objects.get(vid=vid).songs.remove(song)
+    elif type == "group":
+      group = Group.objects.get(pk=eid)
+      Video.objects.get(vid=vid).groups.remove(group)
+    return HttpResponse(json.dumps("success"), content_type='application/json')
+  # not a post
+  return HttpResponse(json.dumps("failure"), content_type='application/json')
+
 #serves the /add-video-data async requests
 def editVideoData(request):
   if request.method == 'POST':

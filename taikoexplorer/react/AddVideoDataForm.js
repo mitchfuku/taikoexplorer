@@ -71,14 +71,23 @@ var AddVideoDataForm = React.createClass({
         if (!result.data) {
           return markupMatch;
         } 
+        var src = "";
+        if (result.data.videos[0]) {
+          src = result.data.videos[0].fields.default_thumb_url;
+        }
+        var imageMarkup = "";
+        var searchTermClass = "";
+        if (src !== "") {
+          imageMarkup = 
+            '<div class="img-crop"> \
+              <img src="' + src + '" /> \
+            </div>';
+          searchTermClass = "search-term";
+        }
         return (
-          '<div class="typeahead-special-match"> \
-            <div class="img-crop"> \
-              <img src="' 
-                + result.data.videos[0].fields.default_thumb_url +
-              '" /> \
-            </div> \
-            <span class="search-term">'
+          '<div class="typeahead-special-match">'
+            + imageMarkup + 
+            '<span class="' + searchTermClass + '">'
               + markupMatch +
             '</span> \
           </div>'
@@ -159,7 +168,12 @@ var AddVideoDataForm = React.createClass({
       var array = wrapper.state.songs;
       if (!array) array = [];
       for (var i = 0; i < data.length; i++) {
-        var newData = {fields: {title: data[i]["title"]}};
+        var newData = {
+          "pk": data[i]["id"],
+          fields: {
+            "title": data[i]["title"]
+          }
+        };
         array.push(newData);
       }
       wrapper.setState({songs: array});
@@ -167,7 +181,12 @@ var AddVideoDataForm = React.createClass({
       var array = wrapper.state.groups;
       if (!array) array = [];
       for (var i = 0; i < data.length; i++) {
-        var newData = {fields: {name: data[i]["name"]}};
+        var newData = {
+          "pk": data[i]["id"],
+          fields: {
+            "name": data[i]["name"]
+          }
+        };
         array.push(newData);
       }
       wrapper.setState({groups: array});

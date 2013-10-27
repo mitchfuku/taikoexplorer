@@ -23,6 +23,13 @@
   margin-left: -1px;
 }
 
+.search-result .delete-entry {
+  position: absolute; 
+  right: 5px;
+  top: 0;
+  font-size: 18px;
+}
+
 h4.title {
   margin-top: 0;
 }
