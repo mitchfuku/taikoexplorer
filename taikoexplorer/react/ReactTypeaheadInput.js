@@ -50,6 +50,11 @@ var ReactTypeaheadInput =  React.createClass({
       multiple: true,
       width: "100%",
       ajax: that.props.ajax,
+      sortResults: function(results, container, query) {
+        var createdChoice = results.shift();
+        results.push(createdChoice);
+        return results;
+      },
       createSearchChoice: function(term, data) { 
         if (!that.state.allowcreate) return null;
         //Comment out this if statement if you want to allow creating
