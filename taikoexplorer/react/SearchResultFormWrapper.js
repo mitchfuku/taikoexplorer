@@ -91,6 +91,7 @@ var SearchResultFormWrapper = React.createClass({
       .done(function(data) {
       })
       .fail(function() {
+        alert("Failed to delete entry. Contact site administrator."); 
       })
       .always(function() {
       });
