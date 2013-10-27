@@ -167,7 +167,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     if (this.props.type === "songcomposer") {
       var array = wrapper.state.songs;
       if (!array) array = [];
-      console.log(data);
       for (var i = 0; i < data.length; i++) {
         var newData = {
           "pk": data[i]["id"],
@@ -181,7 +180,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     } else if (this.props.type === "group") {
       var array = wrapper.state.groups;
       if (!array) array = [];
-      console.log(data);
       for (var i = 0; i < data.length; i++) {
         var newData = {
           "pk": data[i]["id"],

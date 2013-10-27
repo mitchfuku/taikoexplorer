@@ -95,6 +95,23 @@ var SearchResultFormWrapper = React.createClass({
       })
       .always(function() {
       });
+    var state = null;
+    if (entry.type === "song") {
+      state = this.state.songs;
+    } else if (entry.type === "group") {
+      state = this.state.groups;
+    }
+    for (var i = 0; i < state.length; i++) {
+      if (state[i].pk == entry.eid) {
+        state.splice(i, 1);
+        break;
+      }
+    }
+    if (entry.type === "song") {
+      this.setState({songs: state});
+    } else if (entry.type === "group") {
+      this.setState({groups: state});
+    }
     return false;
   },
 
