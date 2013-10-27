@@ -2,7 +2,8 @@
 
 var SongStyleSelect =  React.createClass({
   componentDidMount: function() {
-    $(this.refs.songstyle.getDOMNode()).select2({
+    this.$select2 = $(this.refs.songstyle.getDOMNode());
+    this.$select2.select2({
       placeholder: "Add all styles in this song",
       width: "100%"
     });

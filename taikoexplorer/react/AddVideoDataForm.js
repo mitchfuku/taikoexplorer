@@ -29,6 +29,22 @@ var AddVideoDataForm = React.createClass({
   },
 
   getInputMarkup: function(name, placeholder, querytype) {
+    var that = this;
+    var multiple = true;
+    var selectingHandler = null;
+    if (querytype === "song") {
+      // If this is the song input, "autofill" the composer and styles
+      // on selection of a song
+      selectingHandler = function(selection) {
+        var data = selection.object.data;
+        var composers = data.composers;
+        var styles = data.styles;
+        that.composerInput.$select2
+          .select2("data", composers)
+          .trigger("change");
+        that.songStyleInput.select2("val", styles).trigger("change");
+      }
+    }
     var ajax = {
       url: "yts", 
       dataType: "json",
@@ -99,7 +115,9 @@ var AddVideoDataForm = React.createClass({
         allowcreate={true}
         ajax={ajax}
         outputformat={resultFormat}
+        multiple={multiple}
         querytype={querytype}
+        selectinghandler={selectingHandler}
         type="text"
         name={name}
         placeholder={placeholder}

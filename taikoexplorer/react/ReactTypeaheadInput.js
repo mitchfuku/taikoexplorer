@@ -47,7 +47,7 @@ var ReactTypeaheadInput =  React.createClass({
     this.$select2.select2({
       placeholder: that.props.placeholder,
       minimumInputLength: 1,
-      multiple: true,
+      multiple: that.props.multiple,
       width: "100%",
       ajax: that.props.ajax,
       sortResults: function(results, container, query) {
@@ -72,6 +72,9 @@ var ReactTypeaheadInput =  React.createClass({
       formatResult: that.props.outputformat
       //formatSelection: that.formatSelection
     });
+    if (this.props.selectinghandler) {
+      this.$select2.on("select2-selecting", this.props.selectinghandler);
+    }
   },
 
   formatResult: function(result, container, query, escapeMarkup) { 

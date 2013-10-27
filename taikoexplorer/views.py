@@ -193,6 +193,7 @@ def youtubeSearch(request):
     if data:
       # format the data
       for entry in data:
+        entity = entry
         entry = model_to_dict(entry)
         if query_type == 'composer':
           entry["text"] = entry["full_name"]
@@ -201,11 +202,38 @@ def youtubeSearch(request):
         elif query_type == 'song':
           entry["text"] = entry["title"]
           entry["videos"] = json.loads(
-            serializers.serialize("json", Video.objects.filter(
+            serializers.serialize(
+              "json", 
+              Video.objects.filter(
                 songs__title=entry["title"]
               ).all()
             )
           )
+          composerDict = json.loads(
+            serializers.serialize(
+              "json", 
+              entity.composers.all()
+            )
+          )
+          composerInfo = []
+          for composer in composerDict:
+            composerInfo.append({
+              "text": composer["fields"]["full_name"],
+              "id":composer["pk"]
+            })
+          entry["composers"] = composerInfo
+
+          styleDict = json.loads(
+            serializers.serialize(
+              "json", 
+              entity.styles.all()
+            )
+          )
+          styleNames = []
+          # We just need the name to set this
+          for style in styleDict:
+            styleNames.append(style["fields"]["name"])
+          entry["styles"]  = styleNames
 
         returnData.append(entry)
 
