@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
-  genRenderSongInput: function() {
+  renderSongInput: function() {
     this.songInput = this.getInputMarkup(
       "song_title", 
       "Enter a song title", 
@@ -10,7 +10,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     return this.songInput;
   },
 
-  genRenderComposerInput: function() {
+  renderComposerInput: function() {
     this.composerInput = this.getInputMarkup(
       "composer_name", 
       "Enter all composers of this song", 
@@ -19,7 +19,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     return this.composerInput;
   },
 
-  genRenderGroupInput: function() {
+  renderGroupInput: function() {
     this.groupInput = this.getInputMarkup(
       "group_name", 
       "Enter groups in this video", 
@@ -200,11 +200,11 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Song"), 
-              this.genRenderSongInput()
+              this.renderSongInput()
             ), 
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Composer"), 
-              this.genRenderComposerInput()
+              this.renderComposerInput()
             ) 
           ),
           React.DOM.div( {className:"row"}, 
@@ -231,7 +231,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
           React.DOM.div( {className:"row"}, 
             React.DOM.div( {className:"input-group col-md-6"},  
               React.DOM.span( {className:"input-group-addon"}, "Group"), 
-              this.genRenderGroupInput()
+              this.renderGroupInput()
             )
           ),
           React.DOM.div( {className:"row"}, 
