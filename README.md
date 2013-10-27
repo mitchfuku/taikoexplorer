@@ -93,6 +93,7 @@ Then manually go into heroku pg:psql and do:
     insert into taikoexplorer_db_songstyle (name, description) values ('Odaiko', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Yatai', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Other', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Shime', '');
 
 ## Database Help
 
