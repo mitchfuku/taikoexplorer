@@ -41,6 +41,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       // on selection of a song
       selectingHandler = function(selection) {
         var data = selection.object.data;
+        if (!data) return;
         var composers = data.composers;
         var styles = data.styles;
         that.composerInput.$select2
