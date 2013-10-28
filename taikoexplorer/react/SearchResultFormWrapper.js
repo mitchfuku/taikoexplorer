@@ -95,6 +95,8 @@ var SearchResultFormWrapper = React.createClass({
       })
       .always(function() {
       });
+
+    // Update the state of the video details
     var state = null;
     if (entry.type === "song") {
       state = this.state.songs;
@@ -139,6 +141,9 @@ var SearchResultFormWrapper = React.createClass({
                   "vid": that.props.videodata.id.videoId,
                   "eid": song.pk
                 };
+                var composers = song.fields.composers;
+                var byLabel = <span> by </span>;
+                if (!composers) byLabel = null;
                 return (
                   <li className="list-group-item">
                     <button 
@@ -155,6 +160,25 @@ var SearchResultFormWrapper = React.createClass({
                       title="Search other songs with the same name">
                       {song.fields.title}
                     </a>
+                    {byLabel}
+                    {composers.map(
+                      function(composer, idx, arr) {
+                        var connector = null;
+                        if (idx < arr.length - 1) {
+                          connector = <span>, </span>;
+                        }
+                        return (
+                          <span>
+                            <a 
+                              href={"/?query=" + composer.fields.full_name}
+                              title="Search other songs by this composer">
+                              {composer.fields.full_name}
+                            </a>
+                            {connector}
+                          </span>
+                        );
+                      }
+                    )}
                   </li>
                 );
               }

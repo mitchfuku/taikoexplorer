@@ -94,6 +94,8 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
       })
       .always(function() {
       });
+
+    // Update the state of the video details
     var state = null;
     if (entry.type === "song") {
       state = this.state.songs;
@@ -137,6 +139,9 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                   "vid": that.props.videodata.id.videoId,
                   "eid": song.pk
                 };
+                var composers = song.fields.composers;
+                var byLabel = React.DOM.span(null,  " by " );
+                if (!composers) byLabel = null;
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
                     React.DOM.button( 
@@ -151,6 +156,25 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                       {href:"/?query=" + song.fields.title,
                       title:"Search other songs with the same name"}, 
                       song.fields.title
+                    ),
+                    byLabel,
+                    composers.map(
+                      function(composer, idx, arr) {
+                        var connector = null;
+                        if (idx < arr.length - 1) {
+                          connector = React.DOM.span(null, ", " );
+                        }
+                        return (
+                          React.DOM.span(null, 
+                            React.DOM.a( 
+                              {href:"/?query=" + composer.fields.full_name,
+                              title:"Search other songs by this composer"}, 
+                              composer.fields.full_name
+                            ),
+                            connector
+                          )
+                        );
+                      }
                     )
                   )
                 );

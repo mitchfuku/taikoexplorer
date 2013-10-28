@@ -324,7 +324,8 @@ def editVideoData(request):
           style = SongStyle.objects.get(name=ss)
           song.styles.add(style)
         # adding the composers
-        for c in composerName :
+        songDict = model_to_dict(song)
+        for idx, c in enumerate(composerName) :
           composer = None
           if type(c['id']) is not int:
             print("new composer")
@@ -339,8 +340,13 @@ def editVideoData(request):
           if cs_created:
             print("new composer song association")
             cs.save()
+          if idx == 0:
+            songDict["composers"] = []
+          songDict["composers"].append({
+            "fields": model_to_dict(composer)
+          })
         video.songs.add(song)
-        songArr.append(model_to_dict(song))
+        songArr.append(songDict)
 
       import sys
       sys.stdout.flush()

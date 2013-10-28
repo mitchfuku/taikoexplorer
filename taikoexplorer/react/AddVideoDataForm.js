@@ -194,7 +194,8 @@ var AddVideoDataForm = React.createClass({
         var newData = {
           "pk": data[i]["id"],
           fields: {
-            "title": data[i]["title"]
+            "title": data[i]["title"],
+            "composers": data[i]["composers"]
           }
         };
         array.push(newData);
