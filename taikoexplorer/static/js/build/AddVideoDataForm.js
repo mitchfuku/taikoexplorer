@@ -53,7 +53,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     var ajax = {
       url: "yts", 
       dataType: "json",
-      quietMillis: 500,
+      quietMillis: 100,
       cache: true,
       data: function(term) {
         return {
