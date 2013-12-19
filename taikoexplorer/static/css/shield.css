@@ -5,7 +5,6 @@
   width: 100%;
   background: rgba(119, 119, 119, 0.5);
   z-index: 1000;
-  margin-top: -51px;
   text-align: center;
 }
 
@@ -20,6 +19,8 @@
 #shield .shield-content {
   display: inline-block;
   vertical-align: middle;
+  position: relative;
+  top: -51px; /* Size of the header */
 }
 
 #shield .shield-content .close {
