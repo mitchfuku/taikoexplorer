@@ -267,7 +267,7 @@ def editVideoData(request):
     cid = request.POST.get("cid", None)
     ctitle = request.POST.get("ctitle", None)
     groupName = request.POST.get("group_name", None)
-    songTitle = request.POST.get("song_title", None)
+    songData = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
     songStyle = request.POST.get("song_style", None)
     forceCreateSong = request.POST.get("force_create_song", False)
@@ -286,7 +286,7 @@ def editVideoData(request):
       print("new video")
       video.save()
 
-    if groupName is None and songTitle is None and composerName is None:
+    if groupName is None and songData is None and composerName is None:
       raise Exception("No data was provided")
 
     # add group
@@ -307,58 +307,56 @@ def editVideoData(request):
           json.dumps(groupArr), content_type='application/json')
 
     # add song and composer
-    if songTitle is not None:
-      songTitle = json.loads(songTitle)
+    if songData is not None:
+      songData = json.loads(songData)
       composerName = json.loads(composerName)
       songStyle = json.loads(songStyle)
-      songArr = []
-      for s in songTitle :
-        song = None
-        if type(s['id']) is not int or forceCreateSong:
-          print("new song")
-          if forceCreateSong:
-            song = Song(title=s['text'])
-            song.save()
-          else:
-            song = Song(title=s['id'])
-            song.save()
+
+      song = None
+      if type(songData['id']) is not int or forceCreateSong is True:
+        print("new song")
+        if forceCreateSong is True:
+          song = Song(title=songData['text'])
+          song.save()
         else:
-          song = Song.objects.get(pk=s['id'])
+          song = Song(title=songData['id'])
+          song.save()
+      else:
+        song = Song.objects.get(pk=songData['id'])
 
-        # adding styles
-        for ss in songStyle :
-          style = SongStyle.objects.get(name=ss)
-          song.styles.add(style)
+      # adding styles
+      for ss in songStyle :
+        style = SongStyle.objects.get(name=ss)
+        song.styles.add(style)
 
-        # adding the composers
-        songDict = model_to_dict(song)
-        for idx, c in enumerate(composerName) :
-          composer = None
-          if type(c['id']) is not int:
-            print("new composer")
-            composer = Composer(full_name=c['id'])
-            composer.save()
-          else:
-            composer = Composer.objects.get(pk=c['id'])
-          cs, cs_created = ComposerSong.objects.get_or_create(
-            composer=composer, 
-            song=song
-          )
-          if cs_created:
-            print("new composer song association")
-            cs.save()
-          if idx == 0:
-            songDict["composers"] = []
-          songDict["composers"].append({
-            "fields": model_to_dict(composer)
-          })
-        video.songs.add(song)
-        songArr.append(songDict)
+      # adding the composers
+      songDict = model_to_dict(song)
+      for idx, c in enumerate(composerName) :
+        composer = None
+        if type(c['id']) is not int:
+          print("new composer")
+          composer = Composer(full_name=c['id'])
+          composer.save()
+        else:
+          composer = Composer.objects.get(pk=c['id'])
+        cs, cs_created = ComposerSong.objects.get_or_create(
+          composer=composer, 
+          song=song
+        )
+        if cs_created:
+          print("new composer song association")
+          cs.save()
+        if idx == 0:
+          songDict["composers"] = []
+        songDict["composers"].append({
+          "fields": model_to_dict(composer)
+        })
+      video.songs.add(song)
 
       import sys
       sys.stdout.flush()
       return HttpResponse(
-          json.dumps(songArr), content_type='application/json')
+          json.dumps(songDict), content_type='application/json')
   
   # not a post
   return HttpResponse(json.dumps("failure"), content_type='application/json')

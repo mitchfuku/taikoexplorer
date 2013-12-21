@@ -240,6 +240,7 @@ var AddVideoDataForm = React.createClass({
     values["mthumb"] = data.snippet.thumbnails.medium.url;
     values["ctitle"] = data.snippet.channelTitle;
     values["cid"] = data.snippet.channelId;
+    values["force_create_song"] = false;
 
     if (songInputData) {
       values["song_title"] = JSON.stringify(songInputData);
@@ -277,16 +278,16 @@ var AddVideoDataForm = React.createClass({
     if (this.props.type === "songcomposer") {
       var array = wrapper.state.songs;
       if (!array) array = [];
-      for (var i = 0; i < data.length; i++) {
-        var newData = {
-          "pk": data[i]["id"],
-          fields: {
-            "title": data[i]["title"],
-            "composers": data[i]["composers"]
-          }
-        };
-        array.push(newData);
-      }
+
+      var newData = {
+        "pk": data["id"],
+        fields: {
+          "title": data["title"],
+          "composers": data["composers"]
+        }
+      };
+      array.push(newData);
+
       wrapper.setState({songs: array});
     } else if (this.props.type === "group") {
       var array = wrapper.state.groups;
