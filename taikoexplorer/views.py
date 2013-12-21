@@ -205,7 +205,7 @@ def youtubeSearch(request):
             serializers.serialize(
               "json", 
               Video.objects.filter(
-                songs__title=entry["title"]
+                songs__id=entry["id"]
               ).all()
             )
           )
@@ -270,6 +270,8 @@ def editVideoData(request):
     songTitle = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
     songStyle = request.POST.get("song_style", None)
+    forceCreateSong = request.POST.get("force_create_song", False)
+    print(forceCreateSong)
 
     video = None
     # add new video is it's not already in the db
@@ -313,16 +315,22 @@ def editVideoData(request):
       songArr = []
       for s in songTitle :
         song = None
-        if type(s['id']) is not int:
+        if type(s['id']) is not int or forceCreateSong:
           print("new song")
-          song = Song(title=s['id'])
-          song.save()
+          if forceCreateSong:
+            song = Song(title=s['text'])
+            song.save()
+          else:
+            song = Song(title=s['id'])
+            song.save()
         else:
           song = Song.objects.get(pk=s['id'])
+
         # adding styles
         for ss in songStyle :
           style = SongStyle.objects.get(name=ss)
           song.styles.add(style)
+
         # adding the composers
         songDict = model_to_dict(song)
         for idx, c in enumerate(composerName) :

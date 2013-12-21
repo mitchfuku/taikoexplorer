@@ -42,6 +42,7 @@ var AddVideoDataForm = React.createClass({
       selectingHandler = function(selection) {
         var data = selection.object.data;
         if (!data) return;
+        that.autofillData = data;
         var composers = data.composers;
         var styles = data.styles;
         that.composerInput.$select2
@@ -77,10 +78,11 @@ var AddVideoDataForm = React.createClass({
     var resultFormat = null;
     if (querytype == "song") {
       resultFormat = function formatResult(
-          result, 
-          container, 
-          query, 
-          escapeMarkup) { 
+        result, 
+        container, 
+        query, 
+        escapeMarkup
+      ) { 
         var markup=[]; 
         window.Select2.util.markMatch(
           result.text, 
@@ -93,25 +95,58 @@ var AddVideoDataForm = React.createClass({
           return markupMatch;
         } 
         var src = "";
+        var styles = null;
         if (result.data.videos[0]) {
+          console.log(result);
           src = result.data.videos[0].fields.default_thumb_url;
+          styles = result.data.styles;
+          composers = result.data.composers;
         }
         var imageMarkup = "";
         var searchTermClass = "";
+        var styleMarkup = "";
+        var composerMarkup = "";
         if (src !== "") {
           imageMarkup = 
             '<div class="img-crop"> \
-              <img src="' + src + '" /> \
+              <img class="image" src="' + src + '" /> \
             </div>';
           searchTermClass = "search-term";
+
+          // Only need to show this if we have a thumbnail which means
+          // that we have a matching song in the DB
+          if (styles) {
+            styleString = "";
+            styles.forEach(function(style) {
+              styleString += (style + ", ");
+            });
+            styleMarkup =
+              '<span class="styles">'
+                + 'Styles: ' + 
+                styleString.slice(0, styleString.length - 2) +
+              '</span>';
+          }
+          if (composers) {
+            composerString = "";
+            composers.forEach(function(composer) {
+              composerString += (composer.text + ", ");
+            });
+            composerMarkup =
+              '<span class="composers">'
+                + 'By: ' + 
+                composerString.slice(0, composerString.length - 2) +
+              '</span>';
+          }
         }
         return (
           '<div class="typeahead-special-match">'
             + imageMarkup + 
             '<span class="' + searchTermClass + '">'
               + markupMatch +
-            '</span> \
-          </div>'
+            '</span>'
+            + composerMarkup +
+            styleMarkup +
+          '</div>'
         );
       }
     }
@@ -138,6 +173,49 @@ var AddVideoDataForm = React.createClass({
     }
   },
 
+  /**
+   * returns false if both arrays do not have the same IDs
+   * returns true otherwise
+   */
+  compareArrayIDs: /* private */ function(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+
+    for (var i = 0; i < arr1.length; i++) {
+      var a1 = arr1[i];
+      var found = false;
+      for (var j = 0; j < arr2.length; j++) {
+        var a2 = arr2[j];
+        /**
+         * Hack but this compares values for song styles which
+         * do no have an ID
+         */
+        if (a1.id === undefined && a2.id === undefined) {
+          if (a1 === a2) {
+            found = true;
+            break;
+          }
+        } else {
+          if (a1.id === a2.id) {
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found) return false;
+    }
+    return true;
+  },
+
+  isAutofillDataEdited: function(composers, songStyles) {
+    if (!this.autofillData) return false;
+    var foundComposer = this.compareArrayIDs(
+      this.autofillData.composers, 
+      composers
+    );
+    var foundStyle = this.compareArrayIDs(this.autofillData.styles, songStyles);
+    return !(foundComposer && foundStyle);
+  },
+
   submitForm: function(e) {
     $(e.target).button('loading');
     e.preventDefault();
@@ -150,6 +228,8 @@ var AddVideoDataForm = React.createClass({
       this.composerInput.getData() : null;
     var groupInputData = this.groupInput ?
       this.groupInput.getData() : null;
+    var songStyleInputData = this.songStyleInput ?
+      this.songStyleInput.val() : null;
 
     //Add pseudo-form elements
     values["vid"] = data.id.videoId;
@@ -171,8 +251,14 @@ var AddVideoDataForm = React.createClass({
       values["group_name"] = JSON.stringify(groupInputData);
     }
     if (this.props.type === "songcomposer") {
-      values["song_style"] = JSON.stringify(this.songStyleInput.val());
+      values["song_style"] = JSON.stringify(songStyleInputData);
     }
+    if (this.autofillData) {
+      if (this.isAutofillDataEdited(composerInputData, songStyleInputData)) {
+        values["force_create_song"] = true;
+      }
+    }
+
     var that = this;
     $.ajax({url:"/add-video-data/", type:"POST", data:values})
       .done(function(data) {
