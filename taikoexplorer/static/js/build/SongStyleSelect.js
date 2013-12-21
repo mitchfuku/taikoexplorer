@@ -12,7 +12,7 @@ var SongStyleSelect =  React.createClass({displayName: 'SongStyleSelect',
   render: function() {
     return (
       React.DOM.select( {multiple:true, name:"song_style", ref:"songstyle"}, 
-        React.DOM.option( {value:"Betta"}, "Betta"),
+        React.DOM.option( {value:"Beta"}, "Beta"),
         React.DOM.option( {value:"Hachijo"}, "Hachijo"),
         React.DOM.option( {value:"Miyake"}, "Miyake"),
         React.DOM.option( {value:"Naname"}, "Naname"),

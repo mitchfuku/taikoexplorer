@@ -12,7 +12,7 @@ var SongStyleSelect =  React.createClass({
   render: function() {
     return (
       <select multiple name="song_style" ref="songstyle">
-        <option value="Betta">Betta</option>
+        <option value="Beta">Beta</option>
         <option value="Hachijo">Hachijo</option>
         <option value="Miyake">Miyake</option>
         <option value="Naname">Naname</option>
