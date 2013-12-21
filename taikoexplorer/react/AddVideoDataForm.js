@@ -98,7 +98,6 @@ var AddVideoDataForm = React.createClass({
         var src = "";
         var styles = null;
         if (result.data.videos[0]) {
-          console.log(result);
           src = result.data.videos[0].fields.default_thumb_url;
           styles = result.data.styles;
           composers = result.data.composers;

@@ -271,7 +271,6 @@ def editVideoData(request):
     composerName = request.POST.get("composer_name", None)
     songStyle = request.POST.get("song_style", None)
     forceCreateSong = request.POST.get("force_create_song", False)
-    print(forceCreateSong)
 
     video = None
     # add new video is it's not already in the db
