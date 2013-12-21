@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-import views, settings
+import views, data, settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -8,9 +8,9 @@ import views, settings
 urlpatterns = patterns('',
     url(r'^$', views.home, name='home'),
     url(r'^advanced-search', views.advancedSearch, name='advancedSearch'),
-    url(r'^yts/', views.youtubeSearch, name='yts'),
-    url(r'^add-video-data/', views.editVideoData, name='editVideoData'),
-    url(r'^delete-video-data/', views.deleteVideoData, name='deleteVideoData'),
+    url(r'^yts/', data.youtubeSearch, name='yts'),
+    url(r'^add-video-data/', data.editVideoData, name='editVideoData'),
+    url(r'^delete-video-data/', data.deleteVideoData, name='deleteVideoData'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
