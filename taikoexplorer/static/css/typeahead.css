@@ -31,3 +31,16 @@
   width: 60px;
   overflow: hidden;
 }
+
+.select2-dropdown.select2-dropdown .select2-choice {
+  border-radius: 0 4px 4px 0;
+  height: 34px;
+}
+
+.select2-dropdown.select2-dropdown .select2-choice .select2-chosen {
+  line-height: 32px;
+}
+
+.select2-dropdown.select2-dropdown .select2-dropdown-open .select2-choice {
+  border-radius: 0;
+}

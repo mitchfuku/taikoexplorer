@@ -39,6 +39,7 @@ var AddVideoDataForm = React.createClass({
     if (querytype === "song") {
       // If this is the song input, "autofill" the composer and styles
       // on selection of a song
+      multiple = false;
       selectingHandler = function(selection) {
         var data = selection.object.data;
         if (!data) return;

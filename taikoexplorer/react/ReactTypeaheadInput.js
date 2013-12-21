@@ -96,6 +96,10 @@ var ReactTypeaheadInput =  React.createClass({
   },
 
   render: function() {
-    return <div ref="select2" />;
+    var c = "";
+    if (!this.props.multiple) {
+      c = "select2-dropdown";
+    }
+    return <div className={c} ref="select2" />;
   }
 });
