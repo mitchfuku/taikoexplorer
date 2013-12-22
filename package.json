@@ -1,0 +1,22 @@
+{
+  "name": "taikoexplorer",
+  "version": "0.0.0",
+  "description": "There are many plugins working together to make this work.  Check out requirements.txt to see them all.",
+  "main": "index.js",
+  "dependencies": {
+    "yuglify": "~0.1.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mitchfuku/taikoexplorer.git"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/mitchfuku/taikoexplorer/issues"
+  }
+}
