@@ -6,6 +6,9 @@ import json
 
 from data import dbSearchResults, youtubeSearchResults, rekeyAndFormatVideoData
 
+from django.views.decorators.csrf import ensure_csrf_cookie
+@ensure_csrf_cookie
+
 # serve the /advanced-search directory
 def advancedSearch(request):
   return render(request, 'advanced-search.html')

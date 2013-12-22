@@ -19,7 +19,12 @@ SITE_NAME = basename(DJANGO_ROOT)
 path.append(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 
-DEBUG = True
+import socket
+if socket.gethostname() == 'taikoexplorer.com':
+  DEBUG = False
+else:
+  DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -118,6 +123,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'pipeline.middleware.MinifyHTMLMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -131,6 +137,7 @@ SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
+    'taikoexplorer.context_processors.debug',
 )
 
 TEMPLATE_DIRS = (
@@ -149,6 +156,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'taikoexplorer_db',
+    'pipeline',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -193,6 +201,26 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
+PIPELINE_CSS = {
+  'all': {
+    'source_filenames': (
+      'css/*.css',
+    ),
+    'output_filename': 'css/all.css',
+  }
+}
+
+PIPELINE_JS = {
+  'reactSearch': {
+    'source_filenames': (
+      'js/build/*.js',
+      'js/search-results-init.js',
+    ),
+    'output_filename': 'js/reactSearch.js',
+  }
+}
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 # Static asset configuration
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
