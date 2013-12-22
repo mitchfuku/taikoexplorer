@@ -199,9 +199,6 @@ ALLOWED_HOSTS = ['*']
 import os
 local_path = lambda path: os.path.join(os.path.dirname(__file__), path)
 
-#need to specify the binary cuz fuck yuglify
-PIPELINE_YUGLIFY_BINARY = local_path('../node_modules/yuglify/bin/yuglify')
-
 PIPELINE_CSS = {
   'all': {
     'source_filenames': (
