@@ -196,7 +196,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
-PIPELINE_YUGLIFY_BINARY = '/app/node_modules/yuglify/bin/yuglify'
+import os
+local_path = lambda path: os.path.join(os.path.dirname(__file__), path)
+
+PIPELINE_YUGLIFY_BINARY = local_path('../node_modules/yuglify/bin/yuglify')
 
 PIPELINE_CSS = {
   'all': {
