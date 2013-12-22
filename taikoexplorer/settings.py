@@ -196,6 +196,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
+PIPELINE_YUGLIFY_BINARY = '/app/node_modules/yuglify/bin/yuglify'
+
 PIPELINE_CSS = {
   'all': {
     'source_filenames': (
