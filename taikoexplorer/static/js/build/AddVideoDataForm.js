@@ -310,29 +310,37 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       return (
         React.DOM.div(null, 
           React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"},  
-              React.DOM.span( {className:"input-group-addon"}, "Song"), 
-              this.renderSongInput()
+            React.DOM.div( {className:"col-md-6 video-data-form-input"},  
+              React.DOM.div( {className:"input-group"}, 
+                React.DOM.span( {className:"input-group-addon"}, "Song"), 
+                this.renderSongInput()
+              ) 
             ), 
-            React.DOM.div( {className:"input-group col-md-6"},  
-              React.DOM.span( {className:"input-group-addon"}, "Composer"), 
-              this.renderComposerInput()
+            React.DOM.div( {className:"col-md-6 video-data-form-input"},  
+              React.DOM.div( {className:"input-group"}, 
+                React.DOM.span( {className:"input-group-addon"}, "Composer"), 
+                this.renderComposerInput()
+              ) 
             ) 
           ),
           React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-6"}, 
-              React.DOM.span( {className:"input-group-addon"}, "Styles In Song"), 
-              SongStyleSelect( {ref:"songstyle"} )
+            React.DOM.div( {className:"col-md-6 video-data-form-input"},  
+              React.DOM.div( {className:"input-group"}, 
+                React.DOM.span( {className:"input-group-addon"}, "Styles In Song"), 
+                SongStyleSelect( {ref:"songstyle"} )
+              )
             )
           ),
           React.DOM.div( {className:"row"}, 
-            React.DOM.div( {className:"input-group col-md-1"},  
-              React.DOM.button( 
-                {type:"submit", 
-                className:"btn btn-primary add-song",
-                'data-loading-text':"Submitting...",
-                onClick:this.submitForm}, 
-                " Submit "
+            React.DOM.div( {className:"col-md-1"},  
+              React.DOM.div( {className:"input-group"},  
+                React.DOM.button( 
+                  {type:"submit", 
+                  className:"btn btn-primary add-song",
+                  'data-loading-text':"Submitting...",
+                  onClick:this.submitForm}, 
+                  " Submit "
+                )
               )
             )
           )

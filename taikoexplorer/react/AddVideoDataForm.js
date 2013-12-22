@@ -310,30 +310,38 @@ var AddVideoDataForm = React.createClass({
       return (
         <div>
           <div className="row">
-            <div className="input-group col-md-6"> 
-              <span className="input-group-addon">Song</span> 
-              {this.renderSongInput()}
+            <div className="col-md-6 video-data-form-input"> 
+              <div className="input-group">
+                <span className="input-group-addon">Song</span> 
+                {this.renderSongInput()}
+              </div> 
             </div> 
-            <div className="input-group col-md-6"> 
-              <span className="input-group-addon">Composer</span> 
-              {this.renderComposerInput()}
+            <div className="col-md-6 video-data-form-input"> 
+              <div className="input-group">
+                <span className="input-group-addon">Composer</span> 
+                {this.renderComposerInput()}
+              </div> 
             </div> 
           </div>
           <div className="row">
-            <div className="input-group col-md-6">
-              <span className="input-group-addon">Styles In Song</span> 
-              <SongStyleSelect ref="songstyle" />
+            <div className="col-md-6 video-data-form-input"> 
+              <div className="input-group">
+                <span className="input-group-addon">Styles In Song</span> 
+                <SongStyleSelect ref="songstyle" />
+              </div>
             </div>
           </div>
           <div className="row">
-            <div className="input-group col-md-1"> 
-              <button 
-                type="submit" 
-                className="btn btn-primary add-song"
-                data-loading-text="Submitting..."
-                onClick={this.submitForm}>
-                Submit
-              </button>
+            <div className="col-md-1"> 
+              <div className="input-group"> 
+                <button 
+                  type="submit" 
+                  className="btn btn-primary add-song"
+                  data-loading-text="Submitting..."
+                  onClick={this.submitForm}>
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>
