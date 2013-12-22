@@ -196,7 +196,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
-PIPELINE_CSS_COMPRESSOR = PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
+PIPELINE_YUGLIFY_BINARY = '/app/node_modules/yuglify/bin/yuglify'
 
 PIPELINE_CSS = {
   'all': {
