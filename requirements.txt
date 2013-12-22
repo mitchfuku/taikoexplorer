@@ -18,3 +18,4 @@ static==0.4
 wsgiref==0.1.2
 yuicompressor==2.4.8
 git+https://github.com/wnh/dj-static.git@feature/django-1.4-compat#egg=dj-static
+npm -g install yuglify

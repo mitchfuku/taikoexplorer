@@ -20,7 +20,7 @@ path.append(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 
 import socket
-if socket.gethostname() == 'taikoexplorer.com':
+if socket.gethostname() == 'taikoexplorer.herokuapp.com' or socket.gethostname() == 'taikoexplorer.com':
   DEBUG = False
 else:
   DEBUG = True
