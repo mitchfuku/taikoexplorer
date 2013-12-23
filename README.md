@@ -118,6 +118,6 @@ New Relic's main functionality is to provide insights on your site's performance
 
 ## django-pipeline
 
-I'll probably have to write a blog post some day about this one because it was a doozy.  Basically, I'm using django-pipeline to automatically minify the javascript, css and html files being served.  Getting the pipeline up was crazy, but this stack overflow post finally solved the riddle for me: http://stackoverflow.com/questions/9381196/creating-an-app-on-heroku-with-django-and-npm (see the bottom post)
+I'll probably have to write a blog post some day about this one because it was a doozy.  Basically, I'm using django-pipeline to automatically minify the javascript, css and html files being served.  Getting the pipeline up was crazy, but this stack overflow post finally solved the riddle for me: http://stackoverflow.com/questions/9381196/creating-an-app-on-heroku-with-django-and-npm (see the bottom post).  More importantly, here's the github link that has the actual solution: https://github.com/nigma/heroku-django-cookbook.  post_compile ftw!
 
 Basically, the problem is that yuglify (the tool used to compress the files) is run in a node npm environment and Django apps on heroku don't really have support for Node.  So stupid.
