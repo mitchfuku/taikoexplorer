@@ -10,29 +10,27 @@
     <a class="navbar-brand" href="/">TaikoExplorer</a>
   </div>
   <div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav navbar-left">
-      <form id="main-search" class="row navbar-form navbar-left" role="search">
-        <div class="col-md-11">
-          {% if request.GET.query %}
-            <input 
-              class="form-control" 
-              name="query" placeholder="Search"
-              type="text" 
-              value="{{request.GET.query}}">
-          {% else %}
-            <input 
-              class="form-control" 
-              name="query" placeholder="Search"
-              type="text">
-          {% endif %}
-        </div>
-        <div class="col-md-1">
+    <form id="main-search" class="navbar-form navbar-left" role="search">
+      <div class="input-group">
+        {% if request.GET.query %}
+          <input 
+            class="form-control" 
+            name="query" placeholder="Search"
+            type="text" 
+            value="{{request.GET.query}}">
+        {% else %}
+          <input 
+            class="form-control" 
+            name="query" placeholder="Search"
+            type="text">
+        {% endif %}
+        <span class="input-group-btn">
           <button type="submit" class="btn btn-default">
             <span class="glyphicon glyphicon-search"></span> 
           </button>
-        </div>
-      </form>
-    </ul>
+        </span>
+      </div>
+    </form>
     <ul class="nav navbar-nav navbar-left">
       <li>
         <a id="advanced-search" href="/advanced-search">Advanced Search</a>
