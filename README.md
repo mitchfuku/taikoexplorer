@@ -72,9 +72,12 @@ migrations too.  DO NOT DO MIGRATIONS ANY OTHER WAY.
 ## Deleting the database
 DO NOT DO THIS UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING!
 YOU WILL BE DELETING THE ENTIRE DATABASE AND RESETTING IT FROM SCRATCH!
+
 Stop and think for one second...
 
 Last chance...
+
+Do you really need to do this.....okay but BE CAREFUL!
 
 Run these commands from /taikoexplorer: 
 
@@ -86,7 +89,7 @@ Run these commands from /taikoexplorer:
     
 Then manually go into heroku pg:psql and do:
 
-    insert into taikoexplorer_db_songstyle (name, description) values ('Betta', '');
+    insert into taikoexplorer_db_songstyle (name, description) values ('Beta', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Naname', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Hachijo', '');
     insert into taikoexplorer_db_songstyle (name, description) values ('Miyake', '');
@@ -109,3 +112,15 @@ To query all tables in the database, enter:
     FROM information_schema.tables 
     WHERE table_schema='public' 
     AND table_type='BASE TABLE';
+    
+## New Relic
+
+Heroku doesn't idle the app anymore!  Why you ask?  Because of this awesome thing called New Relic.  See this post for more information on they why and how: http://stackoverflow.com/questions/5480337/easy-way-to-prevent-heroku-idling
+
+New Relic's main functionality is to provide insights on your site's performance across page loading, SQL querying, etc.  I've yet to use it intensively, but there are a ton of helpful tools (including pinging the site every few minutes to make sure it is still up...hooray!).
+
+## django-pipeline
+
+I'll probably have to write a blog post some day about this one because it was a doozy.  Basically, I'm using django-pipeline to automatically minify the javascript, css and html files being served.  Getting the pipeline up was crazy, but this stack overflow post finally solved the riddle for me: http://stackoverflow.com/questions/9381196/creating-an-app-on-heroku-with-django-and-npm (see the bottom post).  More importantly, here's the github link that has the actual solution: https://github.com/nigma/heroku-django-cookbook.  post_compile ftw!
+
+Basically, the problem is that yuglify (the tool used to compress the files) is run in a node npm environment and Django apps on heroku don't really have support for Node.  So stupid.  django-pipeline also has to be run on an older version of Django as of (12/22/2013).  What the what...
