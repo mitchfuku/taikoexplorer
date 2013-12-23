@@ -12,19 +12,26 @@
     <title>TaikoExplorer</title>
   </head>
   <body>
-    {% include "navbar.html" %}
-    <div id="shield-container"></div>
-    <div id="main-content" class="container">
-      {% block maincontent %}
-      <div id="main-jumbotron" class="jumbotron">
-        <div class="container">
-          <h1>Welcome to TaikoExplorer</h1>
-          <p>
-            TaikoExplorer makes finding online taiko videos easier! Help tag other taiko videos to make them more searchable. Start now by searching a video above. 
-          </p>
+    <div id="content-wrapper">
+      {% include "navbar.html" %}
+      <div id="shield-container"></div>
+      <div id="main-content" class="container">
+        {% block maincontent %}
+        <div id="main-jumbotron" class="jumbotron">
+          <div class="container">
+            <h1>Welcome to TaikoExplorer</h1>
+            <p>
+              TaikoExplorer makes finding online taiko videos easier! Help tag other taiko videos to make them more searchable. Start now by searching a video above. 
+            </p>
+          </div>
         </div>
+        {% endblock maincontent %}
       </div>
-      {% endblock maincontent %}
+      {% block footer %}
+      <div id="footer">
+        <a href="http://blog.taikoexplorer.com" class="navbar-text">Blog</a>
+      </div>
+      {% endblock footer %}
     </div>
   </body>
   {% block js %}

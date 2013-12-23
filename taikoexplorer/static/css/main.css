@@ -1,7 +1,27 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#content-wrapper {
+  min-height: 100%;
+  position: relative;
+}
+
 #main-content {
-  margin-top: 51px;
+  padding-top: 51px;
+  padding-bottom: 50px;
 }
 
 #main-jumbotron {
   margin-top: 50px;
+}
+
+#footer {
+  border-top: 1px solid #e7e7e7;
+  bottom: 0;
+  height: 50px;
+  position: absolute;
+  width: 100%;
 }
