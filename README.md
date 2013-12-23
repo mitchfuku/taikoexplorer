@@ -109,3 +109,15 @@ To query all tables in the database, enter:
     FROM information_schema.tables 
     WHERE table_schema='public' 
     AND table_type='BASE TABLE';
+    
+## New Relic
+
+Heroku doesn't idle the app anymore!  Why you ask?  Because of this awesome thing called New Relic.  See this post for more information on they why and how: http://stackoverflow.com/questions/5480337/easy-way-to-prevent-heroku-idling
+
+New Relic's main functionality is to provide insights on your site's performance across page loading, SQL querying, etc.  I've yet to use it intensively, but there are a ton of helpful tools (including pinging the site every few minutes to make sure it is still up...hooray!).
+
+## django-pipeline
+
+I'll probably have to write a blog post some day about this one because it was a doozy.  Basically, I'm using django-pipeline to automatically minify the javascript, css and html files being served.  Getting the pipeline up was crazy, but this stack overflow post finally solved the riddle for me: http://stackoverflow.com/questions/9381196/creating-an-app-on-heroku-with-django-and-npm (see the bottom post)
+
+Basically, the problem is that yuglify (the tool used to compress the files) is run in a node npm environment and Django apps on heroku don't really have support for Node.  So stupid.
