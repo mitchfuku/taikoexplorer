@@ -194,7 +194,11 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                           }
                           return (
                             React.DOM.span(null, 
-                              style.fields.name,
+                              React.DOM.a( 
+                                {href:"/?query=" + style.fields.name,
+                                title:"Search other songs in the same style"}, 
+                                style.fields.name
+                              ),
                               connector
                             )
                           );
