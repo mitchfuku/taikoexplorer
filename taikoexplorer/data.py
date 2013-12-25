@@ -57,7 +57,8 @@ def editVideoData(request):
           json.dumps(groupArr), content_type='application/json')
 
     # add song and composer
-    if songData is not None:
+    # must have a song title and a song style
+    if songData is not None and songStyle is not None:
       songData = json.loads(songData)
       composerName = json.loads(composerName)
       songStyle = json.loads(songStyle)

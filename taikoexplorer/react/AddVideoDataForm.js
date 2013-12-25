@@ -1,31 +1,41 @@
 /** @jsx React.DOM */
 
 var AddVideoDataForm = React.createClass({
-  renderSongInput: function() {
-    this.songInput = this.getInputMarkup(
-      "song_title", 
-      "Enter a song title", 
-      "song"
-    );
-    return this.songInput;
+  getInitialState: function() {
+    return {
+      alert: "",
+      songInputData: null,
+      composerInputData: null,
+      songStyleInputData: null,
+    };
   },
 
-  renderComposerInput: function() {
-    this.composerInput = this.getInputMarkup(
-      "composer_name", 
-      "Enter all composers of this song", 
-      "composer"
-    );
-    return this.composerInput;
+  componentDidMount: function() {
+    this.submitButton = $(this.refs.submitbutton.getDOMNode());
+    this.submitAlert = $(this.refs.submitalert.getDOMNode());
+    console.log(this);
+    if (this.props.type === "songcomposer") {
+      this.songStyleInput = $(this.refs.songstyle.getDOMNode());
+      this.songStyleInput.select2("data", this.state.songStyleInputData);
+
+      this.songInput = this.refs.songinput;
+      this.songInput.$select2.select2("data", this.state.songInputData);
+
+      this.composerInput = this.refs.composerinput;
+      this.composerInput.$select2.select2("data", this.state.composerInputData);
+    } else {
+      this.groupInput = this.refs.groupinput;
+    }
   },
 
-  renderGroupInput: function() {
-    this.groupInput = this.getInputMarkup(
-      "group_name", 
-      "Enter groups in this video", 
-      "group"
-    );
-    return this.groupInput;
+  componentDidUpdate: function() {
+    // We need to do this so that entries in the form are maintained if the 
+    // alert box is shown
+    if (this.props.type === "songcomposer") {
+      this.songStyleInput.select2("data", this.state.songStyleInputData);
+      this.songInput.$select2.select2("data", this.state.songInputData);
+      this.composerInput.$select2.select2("data", this.state.composerInputData);
+    } 
   },
 
   getInputMarkup: function(name, placeholder, querytype) {
@@ -50,6 +60,7 @@ var AddVideoDataForm = React.createClass({
           .select2("data", composers)
           .trigger("change");
         that.songStyleInput.select2("val", styles).trigger("change");
+        that.submitAlert.addClass("hidden");
       }
     }
     var ajax = {
@@ -158,6 +169,7 @@ var AddVideoDataForm = React.createClass({
         outputformat={resultFormat}
         multiple={multiple}
         querytype={querytype}
+        ref={querytype + "input"}
         selectinghandler={selectingHandler}
         type="text"
         name={name}
@@ -165,12 +177,6 @@ var AddVideoDataForm = React.createClass({
         value=""
       />
     );
-  },
-
-  componentDidMount: function() {
-    if (this.props.type === "songcomposer") {
-      this.songStyleInput = $(this.refs.songstyle.getDOMNode());
-    }
   },
 
   /**
@@ -231,7 +237,39 @@ var AddVideoDataForm = React.createClass({
     var songStyleInputData = this.songStyleInput ?
       this.songStyleInput.val() : null;
 
-    //Add pseudo-form elements
+    //Form validation
+    if (this.songInput) {
+      if (!songInputData) {
+        this.submitButton.button('reset');
+        this.setState({
+          alert: "Please add a song title.",
+          composerInputData: composerInputData,
+          songStyleInputData: songStyleInputData.map(function(name) {
+            return {"id": name, "text": name};
+          })
+        });
+        this.submitAlert.removeClass('hidden');
+        return;
+      } else if (!songStyleInputData || songStyleInputData.length === 0) {
+        this.submitButton.button('reset');
+        this.setState({
+          alert: "Please add at least one style.",
+          composerInputData: composerInputData,
+          songInputData: songInputData
+        });
+        this.submitAlert.removeClass('hidden');
+        return;
+      }
+    } else if (this.groupInput) {
+      if (!groupInputData || groupInputData.length === 0) {
+        this.submitButton.button('reset');
+        this.setState({alert: "Please add at least one group."});
+        this.submitAlert.removeClass('hidden');
+        return;
+      }
+    }
+
+    //Add pseudo-form elements for the Youtube video
     values["vid"] = data.id.videoId;
     values["csrfmiddlewaretoken"] = this.props.csrftoken;
     values["vdesc"] = data.snippet.description;
@@ -306,41 +344,63 @@ var AddVideoDataForm = React.createClass({
   },
 
   renderFormInputs: function() {
+    var submitButton = 
+      <button 
+        type="submit" 
+        className="btn btn-primary"
+        data-loading-text="Submitting..."
+        onClick={this.submitForm}
+        ref="submitbutton">
+        Submit
+      </button>;
+
+    var alert = 
+      <div ref="submitalert" className="row hidden">
+        <div className="col-md-12"> 
+          <div className="alert alert-danger add-data-alert">
+            <strong>Warning!</strong>{' '}{this.state.alert}
+          </div>
+        </div>
+      </div>;
+
     if (this.props.type === "songcomposer") {
       return (
         <div>
           <div className="row">
-            <div className="col-md-6 video-data-form-input"> 
+            <div className="col-md-6"> 
               <div className="input-group">
                 <span className="input-group-addon">Song</span> 
-                {this.renderSongInput()}
+                {this.getInputMarkup(
+                  "song_title", 
+                  "Enter a song title", 
+                  "song"
+                )}
               </div> 
             </div> 
-            <div className="col-md-6 video-data-form-input"> 
+            <div className="col-md-6"> 
               <div className="input-group">
                 <span className="input-group-addon">Composer</span> 
-                {this.renderComposerInput()}
+                {this.getInputMarkup(
+                  "composer_name", 
+                  "Enter all composers of this song", 
+                  "composer"
+                )}
               </div> 
             </div> 
           </div>
           <div className="row">
-            <div className="col-md-6 video-data-form-input"> 
+            <div className="col-md-6"> 
               <div className="input-group">
                 <span className="input-group-addon">Styles In Song</span> 
                 <SongStyleSelect ref="songstyle" />
               </div>
             </div>
           </div>
+          {alert}
           <div className="row">
             <div className="col-md-1"> 
               <div className="input-group"> 
-                <button 
-                  type="submit" 
-                  className="btn btn-primary add-song"
-                  data-loading-text="Submitting..."
-                  onClick={this.submitForm}>
-                  Submit
-                </button>
+                {submitButton}
               </div>
             </div>
           </div>
@@ -350,20 +410,23 @@ var AddVideoDataForm = React.createClass({
       return (
         <div>
           <div className="row">
-            <div className="input-group col-md-6"> 
-              <span className="input-group-addon">Group</span> 
-              {this.renderGroupInput()}
+            <div className="col-md-6"> 
+              <div className="input-group">
+                <span className="input-group-addon">Group</span> 
+                {this.getInputMarkup(
+                  "group_name", 
+                  "Enter groups in this video", 
+                  "group"
+                )}
+              </div>
             </div>
           </div>
+          {alert}
           <div className="row">
-            <div className="input-group col-md-1"> 
-              <button 
-                type="submit" 
-                className="btn btn-primary add-song"
-                data-loading-text="Submitting..."
-                onClick={this.submitForm}>
-                Submit
-              </button>
+            <div className="col-md-1"> 
+              <div className="input-group">
+                {submitButton}
+              </div>
             </div>
           </div>
         </div>
