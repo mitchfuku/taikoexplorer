@@ -143,8 +143,6 @@ var SearchResultFormWrapper = React.createClass({
                 };
                 var composers = song.fields.composers;
                 var styles = song.fields.styles;
-                console.log(song);
-                console.log(styles);
                 var byLabel = <span> by </span>;
                 if (!composers) byLabel = null;
                 return (
