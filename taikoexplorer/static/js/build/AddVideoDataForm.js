@@ -43,9 +43,11 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     var multiple = true;
     var focus = false;
     var selectingHandler = null;
+
     if (querytype === "song" || querytype === "group") {
       focus = true;
     }
+
     if (querytype === "song") {
       // If this is the song input, "autofill" the composer and styles
       // on selection of a song
@@ -63,6 +65,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         that.submitAlert.addClass("hidden");
       }
     }
+
     var ajax = {
       url: "yts", 
       dataType: "json",
@@ -71,7 +74,8 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       data: function(term) {
         return {
           q: term,
-          type: querytype
+          type: querytype,
+          vid: that.props.videodata.id.videoId
         }
       },
       results: function(data) {

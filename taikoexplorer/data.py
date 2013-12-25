@@ -224,6 +224,7 @@ def rekeyAndFormatVideoData(videos):
 def youtubeSearch(request):
   query = request.GET.get("q", None)
   query_type = request.GET.get("type", None)
+  vid = request.GET.get("vid", None)
   type_dict = {
     'composer': Composer, 
     'group': Group,
