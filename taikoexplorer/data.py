@@ -3,11 +3,13 @@ from django.template import RequestContext
 from taikoexplorer_db.models import Video, Composer, Song, Group, SongStyle, ComposerSong
 from django.core import serializers
 from django.forms.models import model_to_dict
+from django.db.models import Count
 
-import youtube, json
+import youtube, json, sys
 
 #serves the /add-video-data async requests
 def editVideoData(request):
+  print("edit video data")
   if request.method == 'POST':
     vid = request.POST.get("vid")
     vtitle = request.POST.get("vtitle", None)
@@ -20,7 +22,9 @@ def editVideoData(request):
     songData = request.POST.get("song_title", None)
     composerName = request.POST.get("composer_name", None)
     songStyle = request.POST.get("song_style", None)
-    forceCreateSong = request.POST.get("force_create_song", False)
+    forceCreateSong = json.loads(
+      request.POST.get("force_create_song", False)
+    )
 
     video = None
     # add new video is it's not already in the db
@@ -65,20 +69,62 @@ def editVideoData(request):
 
       song = None
       if type(songData['id']) is not int or forceCreateSong is True:
-        print("new song")
+        # force create is disgusting and expensive as fuck
+        # since we query for all the songs first, we should probably store that
+        # info somewhere and check it again before assuming the user is a jerk
         if forceCreateSong is True:
-          song = Song(title=songData['text'])
-          song.save()
+          print("force create")
+          composerIDs = []
+          for c in composerName:
+            composerIDs.append(c['id'])
+          styles = SongStyle.objects.filter(name__in=songStyle)
+          composers = Composer.objects.filter(id__in=composerIDs)
+          try:
+            # Good lord this query looks like shit...necessary though 
+            # http://stackoverflow.com/questions/8618068/django-filter-queryset-in-for-every-item-in-list
+            # If the user forces a create, we need to check if the song they
+            # eventually enter is actually a real song.  Only triggered if 
+            # the user is actually kind of a jackass.
+
+            # still stupid that we have to do this...it'll work for now
+            songs = Song.objects.filter(
+              title=songData['text']
+            ).filter(
+              styles__in=styles
+            ).annotate(
+              num_styles=Count('styles', distinct=True)
+            ).filter(
+              num_styles=len(styles)
+            ).filter(
+              composers__in=composers
+            ).annotate(
+              num_composers=Count('composers', distinct=True)
+            ).filter(
+              num_composers=len(composers)
+            )
+            # there should only be one.  this assumes that there would never be 
+            # more than two songs titled the same thing with the same styles
+            # and the same composers
+            # if there's not...well we're fucked :P
+            song = list(songs[:1])[0]
+
+          except Song.DoesNotExist:
+            song = Song(title=songData['text'])
+            print("new song")
+            song.save()
         else:
           song = Song(title=songData['id'])
+          print("new song")
           song.save()
       else:
         song = Song.objects.get(pk=songData['id'])
 
       # adding styles
-      for ss in songStyle :
-        style = SongStyle.objects.get(name=ss)
-        song.styles.add(style)
+      print(model_to_dict(song))
+      print(songStyle)
+      #for ss in songStyle :
+        #style = SongStyle.objects.get(name=ss)
+        #song.styles.add(style)
 
       # adding the composers
       songDict = model_to_dict(song)
@@ -90,6 +136,7 @@ def editVideoData(request):
           composer.save()
         else:
           composer = Composer.objects.get(pk=c['id'])
+
         cs, cs_created = ComposerSong.objects.get_or_create(
           composer=composer, 
           song=song
@@ -104,7 +151,6 @@ def editVideoData(request):
         })
       video.songs.add(song)
 
-      import sys
       sys.stdout.flush()
       return HttpResponse(
           json.dumps(songDict), content_type='application/json')

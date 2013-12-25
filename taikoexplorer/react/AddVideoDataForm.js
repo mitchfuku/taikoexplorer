@@ -68,7 +68,7 @@ var AddVideoDataForm = React.createClass({
     var ajax = {
       url: "yts", 
       dataType: "json",
-      quietMillis: 100,
+      quietMillis: 200,
       cache: true,
       data: function(term) {
         return {
@@ -113,8 +113,9 @@ var AddVideoDataForm = React.createClass({
         } 
         var src = "";
         var styles = null;
-        if (result.data.videos[0]) {
-          src = result.data.videos[0].fields.default_thumb_url;
+        if (result.data.videos) {
+          src = result.data.videos[result.data.videos.length - 1]
+            .fields.default_thumb_url;
           styles = result.data.styles;
           composers = result.data.composers;
         }
@@ -227,7 +228,10 @@ var AddVideoDataForm = React.createClass({
       this.autofillData.composers, 
       composers
     );
-    var foundStyle = this.compareArrayIDs(this.autofillData.styles, songStyles);
+    var foundStyle = this.compareArrayIDs(
+      this.autofillData.styles, 
+      songStyles
+    );
     return !(foundComposer && foundStyle);
   },
 
