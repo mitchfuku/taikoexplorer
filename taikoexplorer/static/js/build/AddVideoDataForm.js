@@ -13,7 +13,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
   componentDidMount: function() {
     this.submitButton = $(this.refs.submitbutton.getDOMNode());
     this.submitAlert = $(this.refs.submitalert.getDOMNode());
-    console.log(this);
     if (this.props.type === "songcomposer") {
       this.songStyleInput = $(this.refs.songstyle.getDOMNode());
       this.songStyleInput.select2("data", this.state.songStyleInputData);
@@ -82,10 +81,12 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         if (data) data["query_type"] = querytype
         var results = [];
         for (var i = 0; i < data.length; i++) {
+          var alreadyTagged = data[i]['already_tagged']
           results.push({
             id: data[i].id,
             text: data[i].text,
-            data: data[i]
+            data: data[i],
+            disabled: data[i]['already_tagged']
           });
         };
         return {results: results}
@@ -128,29 +129,33 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
             </div>';
           searchTermClass = "search-term";
 
-          // Only need to show this if we have a thumbnail which means
-          // that we have a matching song in the DB
-          if (styles) {
-            styleString = "";
-            styles.forEach(function(style) {
-              styleString += (style + ", ");
-            });
-            styleMarkup =
-              '<span class="styles">'
-                + 'Styles: ' + 
-                styleString.slice(0, styleString.length - 2) +
-              '</span>';
-          }
-          if (composers) {
-            composerString = "";
-            composers.forEach(function(composer) {
-              composerString += (composer.text + ", ");
-            });
-            composerMarkup =
-              '<span class="composers">'
-                + 'By: ' + 
-                composerString.slice(0, composerString.length - 2) +
-              '</span>';
+          if (result.disabled) {
+            styleMarkup = '<span class="disabled">Already added</span>';
+          } else {
+            // Only need to show this if we have a thumbnail which means
+            // that we have a matching song in the DB
+            if (composers) {
+              composerString = "";
+              composers.forEach(function(composer) {
+                composerString += (composer.text + ", ");
+              });
+              composerMarkup =
+                '<span class="composers">'
+                  + 'By: ' + 
+                  composerString.slice(0, composerString.length - 2) +
+                '</span>';
+            }
+            if (styles) {
+              styleString = "";
+              styles.forEach(function(style) {
+                styleString += (style + ", ");
+              });
+              styleMarkup =
+                '<span class="styles">'
+                  + 'Styles: ' + 
+                  styleString.slice(0, styleString.length - 2) +
+                '</span>';
+            }
           }
         }
         return (

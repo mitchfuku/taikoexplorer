@@ -271,6 +271,14 @@ def youtubeSearch(request):
               ).all()
             )
           )
+          entry["already_tagged"] = False
+
+          if vid is not None:
+            # whether or not the song is already tagged in the specified video
+            for video in entry["videos"]:
+              if video["fields"]["vid"] == vid:
+                entry["already_tagged"] = True
+
           composerDict = json.loads(
             serializers.serialize(
               "json", 

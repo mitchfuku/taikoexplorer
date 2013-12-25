@@ -8,7 +8,7 @@
   margin-left: -40px;
 }
 
-.typeahead-special-match .search-term, .typeahead-special-match .styles, .typeahead-special-match .composers {
+.typeahead-special-match .search-term, .typeahead-special-match .styles, .typeahead-special-match .composers, .typeahead-special-match .disabled {
   position: absolute;
   top: 0;
   left: 70px;
@@ -18,7 +18,7 @@
   white-space: nowrap;
 }
 
-.typeahead-special-match .composers {
+.typeahead-special-match .composers, .typeahead-special-match .disabled {
   top: 20px;
 }
 
