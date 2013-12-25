@@ -13,7 +13,6 @@ var AddVideoDataForm = React.createClass({
   componentDidMount: function() {
     this.submitButton = $(this.refs.submitbutton.getDOMNode());
     this.submitAlert = $(this.refs.submitalert.getDOMNode());
-    console.log(this);
     if (this.props.type === "songcomposer") {
       this.songStyleInput = $(this.refs.songstyle.getDOMNode());
       this.songStyleInput.select2("data", this.state.songStyleInputData);
