@@ -142,6 +142,9 @@ var SearchResultFormWrapper = React.createClass({
                   "eid": song.pk
                 };
                 var composers = song.fields.composers;
+                var styles = song.fields.styles;
+                console.log(song);
+                console.log(styles);
                 var byLabel = <span> by </span>;
                 if (!composers) byLabel = null;
                 return (
@@ -155,30 +158,49 @@ var SearchResultFormWrapper = React.createClass({
                       aria-hidden="true">
                       &times;
                     </button>
-                    <a 
-                      href={"/?query=" + song.fields.title}
-                      title="Search other songs with the same name">
-                      {song.fields.title}
-                    </a>
-                    {byLabel}
-                    {composers.map(
-                      function(composer, idx, arr) {
-                        var connector = null;
-                        if (idx < arr.length - 1) {
-                          connector = <span>, </span>;
+                    <div className="song-tag">
+                      <a 
+                        href={"/?query=" + song.fields.title}
+                        title="Search other songs with the same name">
+                        {song.fields.title}
+                      </a>
+                      {byLabel}
+                      {composers.map(
+                        function(composer, idx, arr) {
+                          var connector = null;
+                          if (idx < arr.length - 1) {
+                            connector = <span>, </span>;
+                          }
+                          return (
+                            <span>
+                              <a 
+                                href={"/?query=" + composer.fields.full_name}
+                                title="Search other songs by this composer">
+                                {composer.fields.full_name}
+                              </a>
+                              {connector}
+                            </span>
+                          );
                         }
-                        return (
-                          <span>
-                            <a 
-                              href={"/?query=" + composer.fields.full_name}
-                              title="Search other songs by this composer">
-                              {composer.fields.full_name}
-                            </a>
-                            {connector}
-                          </span>
-                        );
-                      }
-                    )}
+                      )}
+                    </div>
+                    <div className="song-tag">
+                      Styles:{' '}
+                      {styles.map(
+                        function(style, idx, arr) {
+                          var connector = null;
+                          if (idx < arr.length - 1) {
+                            connector = <span>, </span>;
+                          }
+                          return (
+                            <span>
+                              {style.fields.name}
+                              {connector}
+                            </span>
+                          );
+                        }
+                      )}
+                    </div>
                   </li>
                 );
               }
@@ -264,7 +286,7 @@ var SearchResultFormWrapper = React.createClass({
           </div>
           <div 
             id={"collapse" + this.props.index} 
-            className="panel-collapse collapse">
+            className="panel-collapse collapse in">
             <div className="panel-body">
               <div className="row video-db-details">
                 <div className="col-md-6 songs-and-composers">

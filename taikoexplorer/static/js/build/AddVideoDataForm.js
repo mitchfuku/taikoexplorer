@@ -310,7 +310,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         values["force_create_song"] = true;
       }
     }
-    console.log(values);
 
     var that = this;
     $.ajax({url:"/add-video-data/", type:"POST", data:values})
@@ -335,7 +334,8 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         "pk": data["id"],
         fields: {
           "title": data["title"],
-          "composers": data["composers"]
+          "composers": data["composers"],
+          "styles": data["styles"]
         }
       };
       array.push(newData);

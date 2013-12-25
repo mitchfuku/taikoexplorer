@@ -142,6 +142,9 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                   "eid": song.pk
                 };
                 var composers = song.fields.composers;
+                var styles = song.fields.styles;
+                console.log(song);
+                console.log(styles);
                 var byLabel = React.DOM.span(null,  " by " );
                 if (!composers) byLabel = null;
                 return (
@@ -155,29 +158,48 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                       'aria-hidden':"true"}, 
                       " × "
                     ),
-                    React.DOM.a( 
-                      {href:"/?query=" + song.fields.title,
-                      title:"Search other songs with the same name"}, 
-                      song.fields.title
-                    ),
-                    byLabel,
-                    composers.map(
-                      function(composer, idx, arr) {
-                        var connector = null;
-                        if (idx < arr.length - 1) {
-                          connector = React.DOM.span(null, ", " );
+                    React.DOM.div( {className:"song-tag"}, 
+                      React.DOM.a( 
+                        {href:"/?query=" + song.fields.title,
+                        title:"Search other songs with the same name"}, 
+                        song.fields.title
+                      ),
+                      byLabel,
+                      composers.map(
+                        function(composer, idx, arr) {
+                          var connector = null;
+                          if (idx < arr.length - 1) {
+                            connector = React.DOM.span(null, ", " );
+                          }
+                          return (
+                            React.DOM.span(null, 
+                              React.DOM.a( 
+                                {href:"/?query=" + composer.fields.full_name,
+                                title:"Search other songs by this composer"}, 
+                                composer.fields.full_name
+                              ),
+                              connector
+                            )
+                          );
                         }
-                        return (
-                          React.DOM.span(null, 
-                            React.DOM.a( 
-                              {href:"/?query=" + composer.fields.full_name,
-                              title:"Search other songs by this composer"}, 
-                              composer.fields.full_name
-                            ),
-                            connector
-                          )
-                        );
-                      }
+                      )
+                    ),
+                    React.DOM.div( {className:"song-tag"}, 
+                      " Styles:",' ',
+                      styles.map(
+                        function(style, idx, arr) {
+                          var connector = null;
+                          if (idx < arr.length - 1) {
+                            connector = React.DOM.span(null, ", " );
+                          }
+                          return (
+                            React.DOM.span(null, 
+                              style.fields.name,
+                              connector
+                            )
+                          );
+                        }
+                      )
                     )
                   )
                 );
@@ -264,7 +286,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
           ),
           React.DOM.div( 
             {id:"collapse" + this.props.index, 
-            className:"panel-collapse collapse"}, 
+            className:"panel-collapse collapse in"}, 
             React.DOM.div( {className:"panel-body"}, 
               React.DOM.div( {className:"row video-db-details"}, 
                 React.DOM.div( {className:"col-md-6 songs-and-composers"}, 

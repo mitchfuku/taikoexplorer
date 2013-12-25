@@ -119,15 +119,20 @@ def editVideoData(request):
       else:
         song = Song.objects.get(pk=songData['id'])
 
+      songDict = model_to_dict(song)
       # adding styles
       print(model_to_dict(song))
       print(songStyle)
-      #for ss in songStyle :
-        #style = SongStyle.objects.get(name=ss)
-        #song.styles.add(style)
+      for idx, ss in enumerate(songStyle):
+        style = SongStyle.objects.get(name=ss)
+        song.styles.add(style)
+        if idx == 0:
+          songDict["styles"] = []
+        songDict["styles"].append({
+          "fields": model_to_dict(style)
+        })
 
       # adding the composers
-      songDict = model_to_dict(song)
       for idx, c in enumerate(composerName) :
         composer = None
         if type(c['id']) is not int:
@@ -254,6 +259,12 @@ def rekeyAndFormatVideoData(videos):
         serializers.serialize(
           "json",
           video.songs.all()[idx].composers.all()
+        )
+      )
+      song["fields"]["styles"] = json.loads(
+        serializers.serialize(
+          "json",
+          video.songs.all()[idx].styles.all()
         )
       )
 
