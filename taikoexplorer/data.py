@@ -121,8 +121,6 @@ def editVideoData(request):
 
       songDict = model_to_dict(song)
       # adding styles
-      print(model_to_dict(song))
-      print(songStyle)
       for idx, ss in enumerate(songStyle):
         style = SongStyle.objects.get(name=ss)
         song.styles.add(style)

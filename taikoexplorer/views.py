@@ -42,9 +42,6 @@ def searchRouter(getrequest):
 # serve the / directory
 def home(request):
   query = request.GET.get("query", None)
-  request.session["query"] = query
-  # session expires in 24 hours
-  request.session.set_expiry(86400)
   if request.method == 'GET':
     if query is not None :
       searchData = searchRouter(request.GET)
