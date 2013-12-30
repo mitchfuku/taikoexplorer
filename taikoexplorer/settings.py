@@ -18,8 +18,14 @@ SITE_NAME = basename(DJANGO_ROOT)
 # name in our dotted import paths:
 path.append(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
+import socket
+ 
+if socket.gethostname() == 'taikoexplorer.com':
+  DEBUG = False
+else:
+  DEBUG = True
 
-DEBUG = False
+print(socket.gethostname())
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

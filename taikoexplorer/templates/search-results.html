@@ -5,17 +5,17 @@
 {% if request.GET.type == "yt" and not request.GET.pageToken and not request.GET.overrideheader == "true" %}
 <div class="row">
   <div class="search-result col-md-12">
-    <h5>
+    <h4>
       No tagged videos were found for the search term "{{request.GET.query}}".  Here are some related videos found on Youtube:
-    </h5>
+    </h4>
   </div>
 </div>
 {% elif request.GET.type == "db" and not request.GET.pageToken and not request.GET.overrideheader == "true" %}
 <div class="row">
   <div class="search-result col-md-12">
-    <h5>
+    <h4>
       Here are tagged videos found for the search term "{{request.GET.query}}":
-    </h5>
+    </h4>
   </div>
 </div>
 {% endif %}
