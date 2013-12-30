@@ -20,12 +20,11 @@ path.append(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 import socket
  
-if socket.gethostname() == 'taikoexplorer.com':
-  DEBUG = False
-else:
+if socket.gethostname() == 'Mitchells-MacBook-Pro-2.local':
   DEBUG = True
+else:
+  DEBUG = False
 
-print(socket.gethostname())
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
