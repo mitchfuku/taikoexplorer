@@ -15,13 +15,15 @@
         {% if request.GET.query %}
           <input 
             class="form-control" 
-            name="query" placeholder="Search"
+            name="query" 
+            placeholder="Search"
             type="text" 
             value="{{request.GET.query}}">
         {% else %}
           <input 
             class="form-control" 
-            name="query" placeholder="Search"
+            name="query" 
+            placeholder="Search"
             type="text">
         {% endif %}
         <span class="input-group-btn">

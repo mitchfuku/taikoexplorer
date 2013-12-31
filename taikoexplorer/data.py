@@ -227,10 +227,12 @@ def dbSearchResults(query):
     formattedVideos.append(formattedVideoData(video))
   return [{"items" : formattedVideos}, videos]
 
-def youtubeSearchResults(getrequest):
+def youtubeSearchResults(getrequest, results = 10):
+  if results <= 0:
+    return None
   options = dict({
     "q" : getrequest.get("query", None),
-    "maxResults" : getrequest.get("maxResults", 10),
+    "maxResults" : getrequest.get("maxResults", results),
     "pageToken" : getrequest.get("pageToken", "")
   })
   searchResults = youtube.youtube_search(options)

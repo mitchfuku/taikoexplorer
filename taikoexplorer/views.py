@@ -19,12 +19,27 @@ def advancedSearch(request):
 def searchRouter(getrequest):
   query = getrequest.get("query", None)
   type = getrequest.get("type", None)
+
   if type == "db":
     # search only db
     return dbSearchResults(query)
   elif type == "ytdb":
     # search both
-    return None
+    dbResults = dbSearchResults(query)
+    print(dbResults[0])
+    ytResults = youtubeSearchResults(getrequest)
+    dbResultsKeySet = set([i['id']['videoId'] for i in dbResults[0]["items"]])
+    videos = list(dbResults[0]["items"])
+    for video in ytResults[0]["items"]:
+      if video['id']['videoId'] not in dbResultsKeySet:
+        videos.append(video)
+
+    fuck = [
+      {'items':videos},
+      list(set(dbResults[1]) | set(ytResults[1]))
+    ]
+    print(fuck)
+    return fuck
   elif type == "yt":
     # search only youtube
     return youtubeSearchResults(getrequest)
@@ -37,7 +52,6 @@ def searchRouter(getrequest):
   else:
     getrequest.type = "db"
     return dbResults
-
 
 # serve the / directory
 def home(request):
