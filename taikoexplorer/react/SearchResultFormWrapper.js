@@ -41,6 +41,10 @@ var SearchResultFormWrapper = React.createClass({
   },
 
   renderAddNewEntryNotice: function() {
+    // Test rendering no new entry notice.  People are adding the * manually.
+    // Or maybe change the message?
+    return null;
+
     var toadd = "";
     if (this.props.type === "group") toadd = "group";
     else toadd = "song or composer";
