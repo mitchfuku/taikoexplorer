@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+{% block maincontent %}
+<div id="song-list">
+  <h3>All Songs:</h3>
+  {% for i in data %}
+  <div class="song-list-thumb">
+    <a href="/?query={{i.title}}">
+      <img src="{{i.videos__medium_thumb_url}}" />
+      <div class="song-list-title">{{i.title}}</div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock maincontent %}

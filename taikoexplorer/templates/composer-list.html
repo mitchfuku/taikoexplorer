@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block maincontent %}
+<div id="composer-list">
+  <h3>All Composers:</h3>
+  <ul>
+    {% for i in data %}
+    <li>
+      <a href="/?query={{i.full_name}}">
+        {{i.full_name}}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock maincontent %}

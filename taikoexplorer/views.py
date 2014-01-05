@@ -79,3 +79,19 @@ def home(request):
 
   # if no query param, show landing page
   return render(request, 'index.html')
+
+# serve the /songs directory
+def songs(request):
+  return render(
+    request, 
+    'song-list.html',
+    {"data": Song.objects.values('title', 'videos__medium_thumb_url').order_by('title').distinct('title').all()}
+  )
+
+# serve the /composers directory
+def composers(request):
+  return render(
+    request, 
+    'composer-list.html',
+    {"data": Composer.objects.values('full_name').order_by('full_name').all()}
+  )

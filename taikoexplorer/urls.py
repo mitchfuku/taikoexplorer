@@ -7,6 +7,8 @@ import views, data, settings
 
 urlpatterns = patterns('',
     url(r'^$', views.home, name='home'),
+    url(r'^songs', views.songs, name='songs'),
+    url(r'^composers', views.composers, name='composers'),
     url(r'^advanced-search', views.advancedSearch, name='advancedSearch'),
     url(r'^yts/', data.youtubeSearch, name='yts'),
     url(r'^add-video-data/', data.editVideoData, name='editVideoData'),
