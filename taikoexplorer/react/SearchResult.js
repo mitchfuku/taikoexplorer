@@ -43,14 +43,10 @@ var SearchResult = React.createClass({
     }
     return (
       <div>
-        <div className="col-md-4"> 
-        <iframe 
-          width="320" 
-          height="180" 
-          src={'//www.youtube.com/embed/' + data.id.videoId}
-          frameborder="0" 
-          allowfullscreen
-        />
+        <div className="col-md-4 video-thumb"> 
+          <a href={'https://www.youtube.com/' + urlmod}> 
+            <img src={data.snippet.thumbnails.medium.url} /> 
+          </a> 
         </div> 
         <div className="col-md-8 video-details"> 
           <h4 className="title"> 

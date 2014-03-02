@@ -43,14 +43,10 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
     }
     return (
       React.DOM.div(null, 
-        React.DOM.div( {className:"col-md-4"},  
-        React.DOM.iframe( 
-          {width:"320", 
-          height:"180", 
-          src:'//www.youtube.com/embed/' + data.id.videoId,
-          frameborder:"0", 
-          allowfullscreen:true}
-        )
+        React.DOM.div( {className:"col-md-4 video-thumb"},  
+          React.DOM.a( {href:'https://www.youtube.com/' + urlmod},  
+            React.DOM.img( {src:data.snippet.thumbnails.medium.url} ) 
+          ) 
         ), 
         React.DOM.div( {className:"col-md-8 video-details"},  
           React.DOM.h4( {className:"title"},  
