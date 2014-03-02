@@ -95,3 +95,11 @@ def composers(request):
     'composer-list.html',
     {"data": Composer.objects.values('full_name').order_by('full_name').all()}
   )
+
+# serve the /groups directory
+def groups(request):
+  return render(
+    request, 
+    'group-list.html',
+    {"data": Group.objects.values('name').order_by('name').all()}
+  )

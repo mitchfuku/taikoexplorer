@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block maincontent %}
+<div id="group-list">
+  <h3>All Groups:</h3>
+  <ul>
+    {% for i in data %}
+    <li>
+      <a href="/?query={{i.name}}">
+        {{i.name}}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock maincontent %}
