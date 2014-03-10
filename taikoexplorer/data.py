@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import RequestContext
-from taikoexplorer_db.models import Video, Composer, Song, Group, SongStyle, ComposerSong
+from taikoexplorer_db.models import Video, Composer, Song, Group, SongStyle, ComposerSong, VideoSong, VideoGroup
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.db.models import Count
@@ -55,7 +55,14 @@ def editVideoData(request):
           group.save()
         else:
           group = Group.objects.get(pk=g['id'])
-        video.groups.add(group)
+        videoGroup, vg_created = VideoGroup.objects.get_or_create(
+          video=video,
+          group=group
+        )
+        if vg_created:
+          print("new video group association")
+          videoGroup.save()
+
         groupArr.append(model_to_dict(group))
       return HttpResponse(
           json.dumps(groupArr), content_type='application/json')
@@ -152,7 +159,13 @@ def editVideoData(request):
         songDict["composers"].append({
           "fields": model_to_dict(composer)
         })
-      video.songs.add(song)
+      videoSong, vs_created = VideoSong.objects.get_or_create(
+        video=video,
+        song=song
+      )
+      if vs_created:
+        print("new video song association")
+        videoSong.save()
 
       sys.stdout.flush()
       return HttpResponse(

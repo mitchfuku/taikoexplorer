@@ -103,3 +103,15 @@ def groups(request):
     'group-list.html',
     {"data": Group.objects.values('name').order_by('name').all()}
   )
+
+# serve the /admin directory
+def admin(request):
+  return render(
+    request, 
+    'unconfirmed-list.html',
+    {
+      "data": {
+        "songs": Song.objects.exclude(is_confirmed=True).order_by('title').all(),
+      }
+    }
+  )

@@ -19,8 +19,9 @@ class Song(models.Model):
   description = models.TextField(blank=True)
   date_composed = models.DateField(blank=True, null=True)
   is_open_source = models.BooleanField(blank=True, default = False)
-  is_drill = models.BooleanField(blank=True, default = False)
-  is_original_arrangement = models.BooleanField(blank=True, default = True)
+  is_drill = models.BooleanField(blank=True, default=False)
+  is_original_arrangement = models.BooleanField(blank=True, default=True)
+  is_confirmed = models.BooleanField(blank=True, default=False)
   composers = models.ManyToManyField(Composer, related_name='songs', through='ComposerSong')
   styles = models.ManyToManyField(SongStyle, related_name='songs')
 
@@ -48,17 +49,34 @@ class Video(models.Model):
   default_thumb_url = models.CharField(max_length=100, blank=True)
   medium_thumb_url = models.CharField(max_length=100, blank=True)
   high_thumb_url = models.CharField(max_length=100, blank=True)
-  songs = models.ManyToManyField(Song, related_name="videos")
+  songs = models.ManyToManyField(Song, related_name="videos", through="VideoSong")
   groups = models.ManyToManyField(Group, related_name="videos")
   @property
   def composers(self):
     return Composer.objects.filter(songs__videos=self)
+
+# a song tag in a video
+class VideoSong(models.Model):
+  video = models.ForeignKey(Video)
+  song = models.ForeignKey(Song)
+  is_confirmed = models.BooleanField(blank=True, default=False)
+  class Meta:
+    db_table = 'taikoexplorer_db_video_songs'
+
+# a group tag in a video
+class VideoGroup(models.Model):
+  video = models.ForeignKey(Video)
+  group = models.ForeignKey(Group)
+  is_confirmed = models.BooleanField(blank=True, default=False)
+  class Meta:
+    db_table = 'taikoexplorer_db_video_groups'
 
 # Songs written by composer and composers of a song
 class ComposerSong(models.Model):
   composer = models.ForeignKey(Composer)
   song = models.ForeignKey(Song)
   is_original_composer = models.BooleanField(blank=True, default=True)
+  is_confirmed = models.BooleanField(blank=True, default=False)
   date_rearranged = models.DateField(blank=True, null=True)
   
 # Group nicknames

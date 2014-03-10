@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block maincontent %}
+<div id=unconfirmed-list">
+  <h3>Unconfirmed Songs:</h3>
+  <ul>
+    {% for i in data.songs %}
+    <li>
+      <a href="/?query={{i.title}}">
+        {{i.title}}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock maincontent %}
