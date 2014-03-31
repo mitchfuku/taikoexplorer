@@ -1,12 +1,18 @@
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from taikoexplorer_db.models import Video, Composer, Song, Group, SongStyle, ComposerSong
 import json
 
 from data import dbSearchResults, youtubeSearchResults, rekeyAndFormatVideoData
+from forms import AdminLoginForm
 
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+ADMIN_COOKIE = 'is_logged_in_admin'
+ADMIN_COOKIE_EXPIRE = 1800 #seconds
+ADMIN_PASSWORD = 'TaikoEx14'
+
 @ensure_csrf_cookie
 
 # serve the /advanced-search directory
@@ -106,7 +112,7 @@ def groups(request):
 
 # serve the /admin directory
 def admin(request):
-  return render(
+  response = render(
     request, 
     'unconfirmed-list.html',
     {
@@ -115,3 +121,20 @@ def admin(request):
       }
     }
   )
+  if request.COOKIES.get(ADMIN_COOKIE, False):
+    return response
+  elif request.method == 'POST':
+    form = AdminLoginForm(request.POST)
+    if form.is_valid():
+      if form.cleaned_data['password'] == ADMIN_PASSWORD:
+        response.set_cookie(
+          key=ADMIN_COOKIE, 
+          value=True, 
+          max_age=ADMIN_COOKIE_EXPIRE
+        )
+        return response
+  else:
+    form = AdminLoginForm()
+
+  return render(request, 'admin-login.html', {'form': form})
+

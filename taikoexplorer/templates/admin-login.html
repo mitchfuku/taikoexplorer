@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{% block maincontent %}
+<div id="admin-login">
+  <h3>Please Login</h3>
+  <form action="/admin/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+{% endblock maincontent %}
