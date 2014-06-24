@@ -1,10 +1,56 @@
 {% extends "index.html" %}
 
+{% autoescape off %}
 {% block maincontent %}
-<div id="unconfirmed-list">
-  <h3>Unconfirmed Songs:</h3>
+<div id="song-list">
+  <h3>Unconfirmed Song Tags:</h3>
+  {% if data.unconfirmed_songs %}
+  {% for song in data.unconfirmed_songs %}
+    <!--<a href="/?query={{i.title}}">-->
+      <!--{{i.title}}-->
+    <!--</a>-->
+  {% for video in song.videos %}
+  <div class="row search-result">
+    <div class="col-md-4 video-thumb"> 
+      <a href='https://www.youtube.com/'{{video.vid}} target="_blank"> 
+        <img src={{video.medium_thumb_url}} /> 
+      </a> 
+    </div> 
+    <div class="col-md-8 video-details"> 
+      <h4 class="title"> 
+        <a href="/?query={{song.title}}">{{song.title}}</a>
+        <span> by </span>
+        {% for composer in song.composers %}
+        {% if not forloop.first %}
+        <span>, </span>
+        {% endif %}
+        <a href="/?query={{composer.full_name}}">{{composer.full_name}}</a>
+        {% endfor %}
+      </h4> 
+      <p>Styles:&nbsp;
+        {% for style in song.styles %}
+        {% if not forloop.first %}
+        <span>, </span>
+        {% endif %}
+        <span>{{style.name}}</span>
+        {% endfor %}
+      </p> 
+      <div class="edit-admin-song"></div>
+      <!--{this.renderVideoDescription(data.snippet.description)}-->
+      <!--<div className="row">-->
+        <!--{form}-->
+      <!--</div>-->
+    </div>
+  </div>
+  {% endfor %}
+  {% endfor %}
+  {% else %}
+  <h4>None</h4>
+  {% endif %}
+  <h3>Confirmed Tags:</h3>
+  {% if data.confirmed_songs %}
   <ul>
-    {% for i in data.songs %}
+    {% for i in data.confirmed_songs %}
     <li>
       <a href="/?query={{i.title}}">
         {{i.title}}
@@ -12,5 +58,27 @@
     </li>
     {% endfor %}
   </ul>
+  {% else %}
+  <h4>None</h4>
+  {% endif %}
 </div>
 {% endblock maincontent %}
+{% endautoescape %}
+
+{% block js %}
+<script>
+  var test = {{data|safe}};
+  var items = test.unconfirmed_songs.videos.items;
+  for (var i = 0; i < items.length; i++) {
+    if (Object.keys(test.unconfirmed_songs.videos.metadata).indexOf(items[i].id.videoId) === -1) {
+      console.log("not a key");
+    } else {
+      console.log("here");
+    }
+  }
+  console.log(test);
+</script>
+<script src="/static/js/build/Shield.js"></script>
+<script src="/static/js/build/AdminSongResult.js"></script>
+<script src="/static/js/admin-results-init.js"></script>
+{% endblock js %}

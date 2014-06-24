@@ -1,10 +1,11 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
+from django.core import serializers
 from taikoexplorer_db.models import Video, Composer, Song, Group, SongStyle, ComposerSong
 import json
 
-from data import dbSearchResults, youtubeSearchResults, rekeyAndFormatVideoData
+from data import dbSearchResults, youtubeSearchResults, rekeyAndFormatVideoData, formattedVideoData
 from forms import AdminLoginForm
 
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -68,19 +69,15 @@ def home(request):
       searchResults = searchData[0]
       metadata = searchData[1]
 
-      dataDict = rekeyAndFormatVideoData(metadata)
-
-      data = {
-        "videos" : searchResults,
-        "metadata" : dataDict,
-        "query" : query,
-        "pageToken" : request.GET.get("pageToken", "")
-      }
-
       return render(
         request,
         'search-results.html',
-        {"data" : json.dumps(data)}
+        {"data" : json.dumps({
+          "videos" : searchResults,
+          "metadata" : rekeyAndFormatVideoData(metadata),
+          "query" : query,
+          "pageToken" : request.GET.get("pageToken", "")
+        })}
       )
 
   # if no query param, show landing page
@@ -112,15 +109,34 @@ def groups(request):
 
 # serve the /admin directory
 def admin(request):
+  #unconfirmedSongs = Song.objects.exclude(is_confirmed=True).order_by('title').all()
+  #confirmedSongs = Song.objects.exclude(is_confirmed=False).order_by('title').all()
+  unconfirmedSongVideos = Video.objects.filter(
+    songs__is_confirmed__exact=False
+  ).prefetch_related(
+    'songs', 'songs__composers', 'songs__styles', 'groups'
+  ).order_by('title')
+  confirmedSongVideos = Video.objects.filter(
+    songs__is_confirmed__exact=True
+  ).order_by('title')
+
+  formattedUnconfirmedVideos = []
+  for video in unconfirmedSongVideos :
+    formattedUnconfirmedVideos.append(formattedVideoData(video))
+
   response = render(
     request, 
     'unconfirmed-list.html',
-    {
-      "data": {
-        "songs": Song.objects.exclude(is_confirmed=True).order_by('title').all(),
-      }
-    }
+    {"data": json.dumps({
+      "unconfirmed_songs": {
+        "videos" : {
+          "items" : formattedUnconfirmedVideos,
+          "metadata" : rekeyAndFormatVideoData(unconfirmedSongVideos),
+        },
+      },
+    })}
   )
+
   if request.COOKIES.get(ADMIN_COOKIE, False):
     return response
   elif request.method == 'POST':
