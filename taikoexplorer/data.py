@@ -221,10 +221,10 @@ def dbSearchResults(query):
   )
   composers = Composer.objects.filter(
     full_name__icontains=query
-  )
+  ).prefetch_related('songs__videos')
   songStyles = SongStyle.objects.filter(
     name__icontains=query
-  )
+  ).prefetch_related('songs__videos')
   composerVideos = []
   for c in composers:
     composerVideos.extend(c.videos)
