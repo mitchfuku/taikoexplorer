@@ -365,7 +365,7 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         'data-loading-text':"Submitting...",
         onClick:this.submitForm,
         ref:"submitbutton"}, 
-        " Submit "
+        "Submit"
       );
 
     var alert = 

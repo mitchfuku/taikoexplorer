@@ -1,4 +1,3 @@
-var data = dataSafe;
 var shield = React.renderComponent(
   Shield({}),
   document.getElementById('shield-container')
@@ -6,7 +5,7 @@ var shield = React.renderComponent(
 React.renderComponent(
   SearchResultContainer(
     {
-      data:data,
+      data:dataSafe,
       csrftoken:csrfToken, 
       shield: shield
     }
@@ -16,9 +15,9 @@ React.renderComponent(
 React.renderComponent(
   SearchResultsPager(
     {
-      nextpagetoken:data.videos.nextPageToken,
-      prevpagetoken:data.videos.prevPageToken,
-      query:data.query,
+      nextpagetoken:dataSafe.videos.nextPageToken,
+      prevpagetoken:dataSafe.videos.prevPageToken,
+      query:dataSafe.query,
       type:queryType,
     }
   ),

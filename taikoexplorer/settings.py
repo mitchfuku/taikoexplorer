@@ -220,8 +220,17 @@ PIPELINE_JS = {
     'source_filenames': (
       'js/build/*.js',
       'js/search-results-init.js',
+      'js/data-and-csrf-init.js',
     ),
     'output_filename': 'js/reactSearch.js',
+  },
+  'adminSearch': {
+    'source_filenames': (
+      'js/build/*.js',
+      'js/admin-results-init.js',
+      'js/data-and-csrf-init.js',
+    ),
+    'output_filename': 'js/adminSearch.js',
   }
 }
 

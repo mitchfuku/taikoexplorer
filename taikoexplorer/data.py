@@ -259,7 +259,6 @@ def youtubeSearchResults(getrequest, results = 10):
 
 # iterate through tags and create a map with the vid as the key
 def rekeyAndFormatVideoData(videos):
-  print(videos)
   dataDict = {}
   for video in videos :
     songArr = json.loads(

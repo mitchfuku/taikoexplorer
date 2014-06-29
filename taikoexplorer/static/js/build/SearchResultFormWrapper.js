@@ -67,7 +67,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
               className:"close", 
               'data-dismiss':"alert", 
               'aria-hidden':"true"}, 
-              " × "
+              "×"
             ),
             React.DOM.div( {className:"row"}, 
               React.DOM.h4(null, label)
@@ -128,7 +128,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
         React.DOM.div(null, 
           React.DOM.p(null, React.DOM.i(null, "No songs or composers listed")),
           React.DOM.a( {onClick:this.addSongOrComposer}, 
-            " Add a song or composer "
+            "Add a song or composer"
           )
         )
       );
@@ -158,7 +158,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                       className:"close delete-entry", 
                       'data-dismiss':"alert", 
                       'aria-hidden':"true"}, 
-                      " × "
+                      "×"
                     ),
                     React.DOM.div( {className:"song-tag"}, 
                       React.DOM.a( 
@@ -187,7 +187,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                       )
                     ),
                     React.DOM.div( {className:"song-tag"}, 
-                      " Styles:",' ',
+                      "Styles:",' ',
                       styles.map(
                         function(style, idx, arr) {
                           var connector = null;
@@ -213,7 +213,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
             )
           ),
           React.DOM.a( {onClick:this.addSongOrComposer}, 
-            " Add a song or composer "
+            "Add a song or composer"
           )
         )
       );
@@ -227,7 +227,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
         React.DOM.div(null, 
           React.DOM.p(null, React.DOM.i(null, "No groups listed")),
           React.DOM.a( {onClick:this.addGroup}, 
-            " Add a group "
+            "Add a group"
           )
         )
       );
@@ -253,7 +253,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                       className:"close delete-entry", 
                       'data-dismiss':"alert", 
                       'aria-hidden':"true"}, 
-                      " × "
+                      "×"
                     ),
                     React.DOM.a( 
                       {href:"/?query=" + group.fields.name,
@@ -266,7 +266,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
             )
           ),
           React.DOM.a( {onClick:this.addGroup}, 
-            " Add a group "
+            "Add a group"
           )
         )
       );
@@ -286,7 +286,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 'data-toggle':"collapse", 
                 'data-parent':"#accordion" + this.props.index, 
                 href:"#collapse" + this.props.index}, 
-                " Video Information "
+                "Video Information"
               )
             )
           ),

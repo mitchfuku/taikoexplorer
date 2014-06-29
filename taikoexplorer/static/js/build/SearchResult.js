@@ -55,7 +55,7 @@ var SearchResult = React.createClass({displayName: 'SearchResult',
             ) 
           ), 
           React.DOM.p( {className:"info"},  
-            " by ", this.renderVideoUploaderLink(data)
+            "by ", this.renderVideoUploaderLink(data)
           ), 
           this.renderVideoDescription(data.snippet.description),
           React.DOM.div( {className:"row"}, 
