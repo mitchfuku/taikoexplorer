@@ -71,7 +71,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
       quietMillis: 200,
       cache: true,
       data: function(term) {
-        console.log(term);
         return {
           q: term,
           type: querytype,
@@ -79,7 +78,6 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         }
       },
       results: function(data) {
-        console.log(data);
         if (data) {
           data["query_type"] = querytype;
         }
