@@ -66,11 +66,12 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
     }
 
     var ajax = {
-      url: "yts", 
+      url: "/yts", 
       dataType: "json",
       quietMillis: 200,
       cache: true,
       data: function(term) {
+        console.log(term);
         return {
           q: term,
           type: querytype,
@@ -78,7 +79,10 @@ var AddVideoDataForm = React.createClass({displayName: 'AddVideoDataForm',
         }
       },
       results: function(data) {
-        if (data) data["query_type"] = querytype
+        console.log(data);
+        if (data) {
+          data["query_type"] = querytype;
+        }
         var results = [];
         for (var i = 0; i < data.length; i++) {
           var alreadyTagged = data[i]['already_tagged']

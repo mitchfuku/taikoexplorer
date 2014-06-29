@@ -2,6 +2,7 @@
 
 {% autoescape off %}
 {% block maincontent %}
+{% csrf_token %}
 <div id="song-list">
   <h3>Unconfirmed Song Tags:</h3>
   <div id="react-unconfirmed-results" class="row"></div>
@@ -15,7 +16,6 @@
 <script>
   var dataSafe = {{data|safe}};
   var csrfToken = "{{csrf_token}}";
-  var queryType = "{{request.GET.type}}";
 </script>
 {% load compressed %}
 {% compressed_js 'adminSearch' %}
