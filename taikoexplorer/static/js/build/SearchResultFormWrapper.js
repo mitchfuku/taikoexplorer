@@ -40,22 +40,6 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
     shield.show();
   },
 
-  renderAddNewEntryNotice: function() {
-    // Test rendering no new entry notice.  People are adding the * manually.
-    // Or maybe change the message?
-    return null;
-
-    var toadd = "";
-    if (this.props.type === "group") toadd = "group";
-    else toadd = "song or composer";
-    var content = "* - Indicates that you are about to add a new " + toadd + " to the database.";
-    return (
-      React.DOM.div( {className:"row warning"}, 
-        React.DOM.div( {className:"col-md-12"}, content)
-      )
-    );
-  },
-
   addForm: function(type, label) {
     return (
       React.DOM.div( {className:"shield-content container"}, 
@@ -74,15 +58,14 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
             ),
             React.DOM.div( {className:"row"}, 
               AddVideoDataForm(
-                {videodata:this.props.videodata,
+                {csrftoken:this.props.csrftoken,
                 metadata:this.props.metadata,
-                csrftoken:this.props.csrftoken,
-                wrapper:this,
+                shield:this.props.shield,
                 type:type,
-                shield:this.props.shield}
+                videodata:this.props.videodata,
+                wrapper:this}
               )
-            ),
-            this.renderAddNewEntryNotice()
+            )
           )
         )
       )
@@ -274,11 +257,18 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
   },
 
   render: function() {
+    var cx = React.addons.classSet;
+    var isConfirmed = this.props.metadata.videoData.is_confirmed;
+
     return(
       React.DOM.div(
         {className:"panel-group col-md-12",
         id:"accordion" + this.props.index}, 
-        React.DOM.div( {className:"panel panel-default"}, 
+        React.DOM.div( {className:cx({
+          "panel": true,
+          "panel-default": !isConfirmed,
+          "panel-success": isConfirmed
+        })}, 
           React.DOM.div( {className:"panel-heading"}, 
             React.DOM.h5( {className:"panel-title video-accordion"}, 
               React.DOM.a( 

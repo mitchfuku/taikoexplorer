@@ -30,17 +30,23 @@ var SearchResult = React.createClass({
     var urlmod = "watch?v=" + data.id.videoId;
     var form = 
       <SearchResultFormWrapper
-        videodata={data}
-        metadata={metadata}
-        index={this.props.index}
         csrftoken={this.props.csrftoken}
+        index={this.props.index}
+        metadata={metadata}
         shield={this.props.shield}
+        videodata={data}
       />;
     switch (type) {
       case "youtube#channel" :
         urlmod = "user/" + data.snippet.channelTitle;
         form = null;
     }
+
+    var adminControls = null;
+    if (this.props.isadmin) {
+      adminControls = <AdminFormControls />;
+    }
+
     return (
       <div>
         <div className="col-md-4 video-thumb"> 
@@ -61,6 +67,7 @@ var SearchResult = React.createClass({
           <div className="row">
             {form}
           </div>
+          {adminControls}
         </div>
       </div>
     );

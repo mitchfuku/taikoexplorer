@@ -10,6 +10,7 @@ var AdminSongResultContainer = React.createClass({
               videodata={video}
               metadata={this.props.videoMetadata[video.id.videoId]}
               index={index}
+              isadmin={true}
               csrftoken={this.props.csrftoken}
               shield={this.props.shield}
             />

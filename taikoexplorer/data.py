@@ -282,7 +282,7 @@ def rekeyAndFormatVideoData(videos):
       )
 
     dataDict[video.vid] = {
-      "video-data" : model_to_dict(video),
+      "videoData" : model_to_dict(video),
       "groups" : json.loads(
         serializers.serialize("json", video.groups.all())
       ),

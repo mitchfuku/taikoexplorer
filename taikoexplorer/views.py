@@ -10,7 +10,7 @@ from forms import AdminLoginForm
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-ADMIN_COOKIE = 'is_logged_in_admin'
+ADMIN_COOKIE = 'taikoexplorer_is_logged_in_admin'
 ADMIN_COOKIE_EXPIRE = 1800 #seconds
 ADMIN_PASSWORD = 'TaikoEx14'
 
@@ -109,15 +109,10 @@ def groups(request):
 
 # serve the /admin directory
 def admin(request):
-  #unconfirmedSongs = Song.objects.exclude(is_confirmed=True).order_by('title').all()
-  #confirmedSongs = Song.objects.exclude(is_confirmed=False).order_by('title').all()
   unconfirmedSongVideos = Video.objects.filter(
-    songs__is_confirmed__exact=False
+    is_confirmed__exact=False
   ).prefetch_related(
     'songs', 'songs__composers', 'songs__styles', 'groups'
-  ).order_by('title')
-  confirmedSongVideos = Video.objects.filter(
-    songs__is_confirmed__exact=True
   ).order_by('title')
 
   formattedUnconfirmedVideos = []

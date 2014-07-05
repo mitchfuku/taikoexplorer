@@ -40,22 +40,6 @@ var SearchResultFormWrapper = React.createClass({
     shield.show();
   },
 
-  renderAddNewEntryNotice: function() {
-    // Test rendering no new entry notice.  People are adding the * manually.
-    // Or maybe change the message?
-    return null;
-
-    var toadd = "";
-    if (this.props.type === "group") toadd = "group";
-    else toadd = "song or composer";
-    var content = "* - Indicates that you are about to add a new " + toadd + " to the database.";
-    return (
-      <div className="row warning">
-        <div className="col-md-12">{content}</div>
-      </div>
-    );
-  },
-
   addForm: function(type, label) {
     return (
       <div className="shield-content container">
@@ -74,15 +58,14 @@ var SearchResultFormWrapper = React.createClass({
             </div>
             <div className="row">
               <AddVideoDataForm
-                videodata={this.props.videodata}
-                metadata={this.props.metadata}
                 csrftoken={this.props.csrftoken}
-                wrapper={this}
+                metadata={this.props.metadata}
+                shield={this.props.shield}
                 type={type}
-                shield={this.props.shield}>
+                videodata={this.props.videodata}
+                wrapper={this}>
               </AddVideoDataForm>
             </div>
-            {this.renderAddNewEntryNotice()}
           </div>
         </div>
       </div>
@@ -274,11 +257,18 @@ var SearchResultFormWrapper = React.createClass({
   },
 
   render: function() {
+    var cx = React.addons.classSet;
+    var isConfirmed = this.props.metadata.videoData.is_confirmed;
+
     return(
       <div
         className="panel-group col-md-12"
         id={"accordion" + this.props.index}>
-        <div className="panel panel-default">
+        <div className={cx({
+          "panel": true,
+          "panel-default": !isConfirmed,
+          "panel-success": isConfirmed
+        })}>
           <div className="panel-heading">
             <h5 className="panel-title video-accordion">
               <a 

@@ -21,5 +21,4 @@ var ReactInput =  React.createClass({displayName: 'ReactInput',
       ) 
     );
   }
-
 });

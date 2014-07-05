@@ -2,7 +2,7 @@
 
 {% block maincontent %}
 <div id="admin-login">
-  <h3>Please login:</h3>
+  <h3>Please login</h3>
   <form action="/admin/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
