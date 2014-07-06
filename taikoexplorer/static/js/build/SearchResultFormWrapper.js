@@ -257,18 +257,16 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
   },
 
   render: function() {
-    var cx = React.addons.classSet;
-    var isConfirmed = this.props.metadata.videoData.is_confirmed;
+    var confirmedLabel = null;
+    if (this.props.metadata.videoData.is_confirmed) {
+      confirmedLabel = React.DOM.span( {className:"label label-success"}, "Confirmed");
+    }
 
     return(
       React.DOM.div(
         {className:"panel-group col-md-12",
         id:"accordion" + this.props.index}, 
-        React.DOM.div( {className:cx({
-          "panel": true,
-          "panel-default": !isConfirmed,
-          "panel-success": isConfirmed
-        })}, 
+        React.DOM.div( {className:"panel panel-default"}, 
           React.DOM.div( {className:"panel-heading"}, 
             React.DOM.h5( {className:"panel-title video-accordion"}, 
               React.DOM.a( 
@@ -277,7 +275,8 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 'data-parent':"#accordion" + this.props.index, 
                 href:"#collapse" + this.props.index}, 
                 "Video Information"
-              )
+              ),
+              confirmedLabel
             )
           ),
           React.DOM.div( 

@@ -182,7 +182,8 @@ def deleteVideoData(request):
     type = request.POST.get("type")
     if type == "song":
       song = Song.objects.get(pk=eid)
-      Video.objects.get(vid=vid).songs.remove(song)
+      video = Video.objects.get(vid=vid)
+      VideoSong.objects.get(video=video, song=song).delete()
     elif type == "group":
       group = Group.objects.get(pk=eid)
       Video.objects.get(vid=vid).groups.remove(group)
@@ -289,6 +290,17 @@ def rekeyAndFormatVideoData(videos):
       "songs" : songArr,
     }
   return dataDict
+
+#serves the /confirm-video-data async request
+def confirmVideoData(request):
+  if request.method == 'POST':
+    entityID = request.POST.get("entityid")
+    video = Video.objects.get(pk=entityID)
+    video.is_confirmed = True;
+    video.save()
+    return HttpResponse(json.dumps("success"), content_type='application/json')
+
+  return HttpResponse(json.dumps("failure"), content_type='application/json')
 
 # serves the /yts api
 def youtubeSearch(request):

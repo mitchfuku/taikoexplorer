@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^yts/', data.youtubeSearch, name='yts'),
     url(r'^add-video-data/', data.editVideoData, name='editVideoData'),
     url(r'^delete-video-data/', data.deleteVideoData, name='deleteVideoData'),
+    url(r'^confirm-video-data/', data.confirmVideoData, name='confirmVideoData'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

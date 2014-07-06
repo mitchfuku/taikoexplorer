@@ -44,7 +44,10 @@ var SearchResult = React.createClass({
 
     var adminControls = null;
     if (this.props.isadmin) {
-      adminControls = <AdminFormControls />;
+      adminControls = 
+        <AdminFormControls 
+          videoid={this.props.metadata.videoData.id}
+        />;
     }
 
     return (

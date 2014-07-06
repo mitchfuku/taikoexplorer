@@ -257,18 +257,16 @@ var SearchResultFormWrapper = React.createClass({
   },
 
   render: function() {
-    var cx = React.addons.classSet;
-    var isConfirmed = this.props.metadata.videoData.is_confirmed;
+    var confirmedLabel = null;
+    if (this.props.metadata.videoData.is_confirmed) {
+      confirmedLabel = <span className="label label-success">Confirmed</span>;
+    }
 
     return(
       <div
         className="panel-group col-md-12"
         id={"accordion" + this.props.index}>
-        <div className={cx({
-          "panel": true,
-          "panel-default": !isConfirmed,
-          "panel-success": isConfirmed
-        })}>
+        <div className={"panel panel-default"}>
           <div className="panel-heading">
             <h5 className="panel-title video-accordion">
               <a 
@@ -278,6 +276,7 @@ var SearchResultFormWrapper = React.createClass({
                 href={"#collapse" + this.props.index}>
                 Video Information
               </a>
+              {confirmedLabel}
             </h5>
           </div>
           <div 
