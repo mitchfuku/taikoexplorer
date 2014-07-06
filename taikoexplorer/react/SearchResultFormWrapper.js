@@ -258,7 +258,10 @@ var SearchResultFormWrapper = React.createClass({
 
   render: function() {
     var confirmedLabel = null;
-    if (this.props.metadata.videoData.is_confirmed) {
+    if (
+      this.props.metadata &&
+      this.props.metadata.videoData.is_confirmed
+    ) {
       confirmedLabel = <span className="label label-success">Confirmed</span>;
     }
 
