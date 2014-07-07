@@ -2,15 +2,20 @@
 
 var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormWrapper',
   getInitialState: function() {
-    if (this.props.metadata) {
+    var metadata = this.props.metadata;
+    if (metadata) {
       return {
-        groups: this.props.metadata.groups,
-        songs: this.props.metadata.songs,
-        showAddWarning: false
+        groups: metadata.groups,
+        songs: metadata.songs,
+        showAddWarning: false,
+        isConfirmed: metadata.videoData ?
+          metadata.videoData.is_confirmed :
+          false
       };
     } else {
       return {
-        groups: null
+        groups: null,
+        isConfirmed: false
       };
     }
   },
@@ -106,13 +111,16 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
 
   renderSongsAndComposers: function() {
     var metadata = this.state.songs;
+    var addSongOrComposerButton = this.state.isConfirmed ?
+      null :
+      React.DOM.a( {onClick:this.addSongOrComposer}, 
+        "Add a song or composer"
+      );
     if (!metadata || !metadata.length) {
       return (
         React.DOM.div(null, 
           React.DOM.p(null, React.DOM.i(null, "No songs or composers listed")),
-          React.DOM.a( {onClick:this.addSongOrComposer}, 
-            "Add a song or composer"
-          )
+          addSongOrComposerButton
         )
       );
     } else {
@@ -134,15 +142,18 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 if (!composers) byLabel = null;
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
-                    React.DOM.button( 
-                      {type:"button", 
-                      data:JSON.stringify(data),
-                      onClick:that.deleteEntry,
-                      className:"close delete-entry", 
-                      'data-dismiss':"alert", 
-                      'aria-hidden':"true"}, 
-                      "×"
-                    ),
+                    that.state.isConfirmed ?
+                      null :
+                      React.DOM.button( 
+                        {type:"button", 
+                        data:JSON.stringify(data),
+                        onClick:that.deleteEntry,
+                        className:"close delete-entry", 
+                        'data-dismiss':"alert", 
+                        'aria-hidden':"true"}, 
+                        "×"
+                      ),
+                    
                     React.DOM.div( {className:"song-tag"}, 
                       React.DOM.a( 
                         {href:"/?query=" + song.fields.title,
@@ -195,9 +206,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
               }
             )
           ),
-          React.DOM.a( {onClick:this.addSongOrComposer}, 
-            "Add a song or composer"
-          )
+          addSongOrComposerButton
         )
       );
     }
@@ -205,13 +214,16 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
 
   renderGroups: function() {
     var metadata = this.state.groups;
+    var addGroupButton = this.state.isConfirmed ?
+      null :
+      React.DOM.a( {onClick:this.addGroup}, 
+        "Add a group"
+      );
     if (!metadata || !metadata.length) {
       return (
         React.DOM.div(null, 
           React.DOM.p(null, React.DOM.i(null, "No groups listed")),
-          React.DOM.a( {onClick:this.addGroup}, 
-            "Add a group"
-          )
+          addGroupButton
         )
       );
     } else {
@@ -229,15 +241,18 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 };
                 return (
                   React.DOM.li( {className:"list-group-item"}, 
-                    React.DOM.button( 
-                      {type:"button", 
-                      data:JSON.stringify(data),
-                      onClick:that.deleteEntry,
-                      className:"close delete-entry", 
-                      'data-dismiss':"alert", 
-                      'aria-hidden':"true"}, 
-                      "×"
-                    ),
+                    that.state.isConfirmed ?
+                      null :
+                      React.DOM.button( 
+                        {type:"button", 
+                        data:JSON.stringify(data),
+                        onClick:that.deleteEntry,
+                        className:"close delete-entry", 
+                        'data-dismiss':"alert", 
+                        'aria-hidden':"true"}, 
+                        "×"
+                      ),
+                    
                     React.DOM.a( 
                       {href:"/?query=" + group.fields.name,
                       title:"Search other groups with the same name"}, 
@@ -248,9 +263,7 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
               }
             )
           ),
-          React.DOM.a( {onClick:this.addGroup}, 
-            "Add a group"
-          )
+          addGroupButton
         )
       );
     }
@@ -258,11 +271,9 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
 
   render: function() {
     var confirmedLabel = null;
-    if (
-      this.props.metadata &&
-      this.props.metadata.videoData.is_confirmed
-    ) {
-      confirmedLabel = React.DOM.span( {className:"label label-success"}, "Confirmed");
+    if (this.state.isConfirmed) {
+      confirmedLabel = 
+        React.DOM.span( {className:"margin-left-8 label label-success"}, "Confirmed");
     }
 
     return(

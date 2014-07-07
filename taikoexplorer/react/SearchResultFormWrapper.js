@@ -2,15 +2,20 @@
 
 var SearchResultFormWrapper = React.createClass({
   getInitialState: function() {
-    if (this.props.metadata) {
+    var metadata = this.props.metadata;
+    if (metadata) {
       return {
-        groups: this.props.metadata.groups,
-        songs: this.props.metadata.songs,
-        showAddWarning: false
+        groups: metadata.groups,
+        songs: metadata.songs,
+        showAddWarning: false,
+        isConfirmed: metadata.videoData ?
+          metadata.videoData.is_confirmed :
+          false
       };
     } else {
       return {
-        groups: null
+        groups: null,
+        isConfirmed: false
       };
     }
   },
@@ -106,13 +111,16 @@ var SearchResultFormWrapper = React.createClass({
 
   renderSongsAndComposers: function() {
     var metadata = this.state.songs;
+    var addSongOrComposerButton = this.state.isConfirmed ?
+      null :
+      <a onClick={this.addSongOrComposer}>
+        Add a song or composer
+      </a>;
     if (!metadata || !metadata.length) {
       return (
         <div>
           <p><i>No songs or composers listed</i></p>
-          <a onClick={this.addSongOrComposer}>
-            Add a song or composer
-          </a>
+          {addSongOrComposerButton}
         </div>
       );
     } else {
@@ -134,15 +142,18 @@ var SearchResultFormWrapper = React.createClass({
                 if (!composers) byLabel = null;
                 return (
                   <li className="list-group-item">
-                    <button 
-                      type="button" 
-                      data={JSON.stringify(data)}
-                      onClick={that.deleteEntry}
-                      className="close delete-entry" 
-                      data-dismiss="alert" 
-                      aria-hidden="true">
-                      &times;
-                    </button>
+                    {that.state.isConfirmed ?
+                      null :
+                      <button 
+                        type="button" 
+                        data={JSON.stringify(data)}
+                        onClick={that.deleteEntry}
+                        className="close delete-entry" 
+                        data-dismiss="alert" 
+                        aria-hidden="true">
+                        &times;
+                      </button>
+                    }
                     <div className="song-tag">
                       <a 
                         href={"/?query=" + song.fields.title}
@@ -195,9 +206,7 @@ var SearchResultFormWrapper = React.createClass({
               }
             )}
           </ul>
-          <a onClick={this.addSongOrComposer}>
-            Add a song or composer
-          </a>
+          {addSongOrComposerButton}
         </div>
       );
     }
@@ -205,13 +214,16 @@ var SearchResultFormWrapper = React.createClass({
 
   renderGroups: function() {
     var metadata = this.state.groups;
+    var addGroupButton = this.state.isConfirmed ?
+      null :
+      <a onClick={this.addGroup}>
+        Add a group
+      </a>;
     if (!metadata || !metadata.length) {
       return (
         <div>
           <p><i>No groups listed</i></p>
-          <a onClick={this.addGroup}>
-            Add a group
-          </a>
+          {addGroupButton}
         </div>
       );
     } else {
@@ -229,15 +241,18 @@ var SearchResultFormWrapper = React.createClass({
                 };
                 return (
                   <li className="list-group-item">
-                    <button 
-                      type="button" 
-                      data={JSON.stringify(data)}
-                      onClick={that.deleteEntry}
-                      className="close delete-entry" 
-                      data-dismiss="alert" 
-                      aria-hidden="true">
-                      &times;
-                    </button>
+                    {that.state.isConfirmed ?
+                      null :
+                      <button 
+                        type="button" 
+                        data={JSON.stringify(data)}
+                        onClick={that.deleteEntry}
+                        className="close delete-entry" 
+                        data-dismiss="alert" 
+                        aria-hidden="true">
+                        &times;
+                      </button>
+                    }
                     <a 
                       href={"/?query=" + group.fields.name}
                       title="Search other groups with the same name">
@@ -248,9 +263,7 @@ var SearchResultFormWrapper = React.createClass({
               }
             )}
           </ul>
-          <a onClick={this.addGroup}>
-            Add a group
-          </a>
+          {addGroupButton}
         </div>
       );
     }
@@ -258,11 +271,9 @@ var SearchResultFormWrapper = React.createClass({
 
   render: function() {
     var confirmedLabel = null;
-    if (
-      this.props.metadata &&
-      this.props.metadata.videoData.is_confirmed
-    ) {
-      confirmedLabel = <span className="label label-success">Confirmed</span>;
+    if (this.state.isConfirmed) {
+      confirmedLabel = 
+        <span className="margin-left-8 label label-success">Confirmed</span>;
     }
 
     return(
