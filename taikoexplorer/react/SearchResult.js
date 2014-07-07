@@ -23,11 +23,9 @@ var SearchResult = React.createClass({
     }
   },
 
-  renderThumbDetails: function(type) {
+  render: function() {
     var data = this.props.videodata;
     var metadata = this.props.metadata;
-    // If a video, set this to URL
-    var urlmod = "watch?v=" + data.id.videoId;
     var form = 
       <SearchResultFormWrapper
         csrftoken={this.props.csrftoken}
@@ -36,11 +34,6 @@ var SearchResult = React.createClass({
         shield={this.props.shield}
         videodata={data}
       />;
-    switch (type) {
-      case "youtube#channel" :
-        urlmod = "user/" + data.snippet.channelTitle;
-        form = null;
-    }
 
     var adminControls = null;
     if (this.props.isadmin) {
@@ -50,6 +43,7 @@ var SearchResult = React.createClass({
         />;
     }
 
+    var urlmod = "watch?v=" + data.id.videoId;
     return (
       <div>
         <div className="col-md-4 video-thumb"> 
@@ -74,10 +68,5 @@ var SearchResult = React.createClass({
         </div>
       </div>
     );
-  },
-
-  render: function() {
-    var data = this.props.videodata;
-    return this.renderThumbDetails(data.id.kind);
   }
 });

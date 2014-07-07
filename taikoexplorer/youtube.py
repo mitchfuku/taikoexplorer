@@ -17,6 +17,7 @@ def youtube_search(options):
 
   search_response = youtube.search().list(
                       q=options["q"],
+                      type="video",
                       part="id,snippet",
                       maxResults=options["maxResults"],
                       pageToken=options["pageToken"]
@@ -30,6 +31,7 @@ def youtube_search(options):
   for search_result in search_response.get("items", []):
     if search_result["id"]["kind"] == "youtube#video":
       vIDs.append(search_result["id"]["videoId"])
+      #returnResults.append(search_result)
       #videos.append("%s (%s)" % (search_result["snippet"]["title"],
         #search_result["id"]["videoId"]))
     #elif search_result["id"]["kind"] == "youtube#channel":
@@ -42,6 +44,7 @@ def youtube_search(options):
   #print "Videos:\n", "\n".join(videos), "\n"
   #print "Channels:\n", "\n".join(channels), "\n"
   #print "Playlists:\n", "\n".join(playlists), "\n"
+
   search_response["vids"] = vIDs
   return search_response
 
