@@ -271,9 +271,16 @@ var SearchResultFormWrapper = React.createClass({
 
   render: function() {
     var confirmedLabel = null;
+    var hint = null;
     if (this.state.isConfirmed) {
       confirmedLabel = 
         <span className="margin-left-8 label label-success">Confirmed</span>;
+      hint = 
+        <ReactHoverHint 
+          className="margin-left-4" 
+          hintText="Confirmed songs cannot be edited"
+          hintWidth={126}
+        />;
     }
 
     return(
@@ -291,6 +298,7 @@ var SearchResultFormWrapper = React.createClass({
                 Video Information
               </a>
               {confirmedLabel}
+              {hint}
             </h5>
           </div>
           <div 

@@ -271,9 +271,16 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
 
   render: function() {
     var confirmedLabel = null;
+    var hint = null;
     if (this.state.isConfirmed) {
       confirmedLabel = 
         React.DOM.span( {className:"margin-left-8 label label-success"}, "Confirmed");
+      hint = 
+        ReactHoverHint( 
+          {className:"margin-left-4", 
+          hintText:"Confirmed songs cannot be edited",
+          hintWidth:126}
+        );
     }
 
     return(
@@ -290,7 +297,8 @@ var SearchResultFormWrapper = React.createClass({displayName: 'SearchResultFormW
                 href:"#collapse" + this.props.index}, 
                 "Video Information"
               ),
-              confirmedLabel
+              confirmedLabel,
+              hint
             )
           ),
           React.DOM.div( 

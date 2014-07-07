@@ -1,0 +1,33 @@
+.reactHoverHint {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+.reactHoverHint:hover .hintBox {
+  visibility: visible;
+}
+
+.reactHoverHint .hintBox {
+  padding: 8px;
+  position: absolute;
+  background: rgba(80, 80, 80, 0.85);
+  bottom: 25px;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: normal;
+  left: -5px;
+  visibility: hidden;
+  z-index: 1000;
+}
+
+.reactHoverHint .hintBox .arrow-down {
+  bottom: -8px;
+  width: 0; 
+  height: 0; 
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent; 
+  border-top: 8px solid rgba(80, 80, 80, 0.85); 
+  left: 4px;
+  position: absolute;
+}

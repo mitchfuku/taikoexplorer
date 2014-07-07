@@ -34,6 +34,10 @@
 
 }
 
+html .panel-group .panel {
+  overflow: visible;
+}
+
 h4.title {
   margin-top: 0;
 }
