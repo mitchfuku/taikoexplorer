@@ -86,6 +86,8 @@ def editVideoData(request):
             composerIDs.append(c['id'])
           styles = SongStyle.objects.filter(name__in=songStyle)
           composers = Composer.objects.filter(id__in=composerIDs)
+          print(len(composers))
+          print(len(styles))
           try:
             # Good lord this query looks like shit...necessary though 
             # http://stackoverflow.com/questions/8618068/django-filter-queryset-in-for-every-item-in-list
@@ -113,6 +115,7 @@ def editVideoData(request):
             # more than two songs titled the same thing with the same styles
             # and the same composers
             # if there's not...well we're fucked :P
+            print(songs)
             song = list(songs[:1])[0]
 
           except Song.DoesNotExist:
