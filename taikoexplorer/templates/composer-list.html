@@ -3,8 +3,11 @@
 {% block maincontent %}
 <div id="composer-list">
   <h3>All Composers:</h3>
+  {% regroup data by full_name|slice:":1" as letter_list %}
+  {% for letter in letter_list %}
+  <h4>{{letter.grouper}}</h4>
   <ul>
-    {% for i in data %}
+    {% for i in letter.list %}
     <li>
       <a href="/?query={{i.full_name}}">
         {{i.full_name}}
@@ -12,5 +15,6 @@
     </li>
     {% endfor %}
   </ul>
+  {% endfor %}
 </div>
 {% endblock maincontent %}
