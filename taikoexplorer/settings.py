@@ -20,7 +20,7 @@ path.append(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 import socket
  
-if socket.gethostname() == 'Mitchells-MacBook-Pro-2.local':
+if socket.gethostname() == 'Mitchells-MacBook-Pro-2.local' or socket.gethostname() == 'mitchellf-mbp.local':
   DEBUG = True
 else:
   DEBUG = False
