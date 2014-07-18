@@ -101,13 +101,13 @@ def editVideoData(request):
             ).filter(
               styles__in=styles
             ).annotate(
-              num_styles=Count('styles', distinct=True)
+              num_styles=Count('styles')
             ).filter(
               num_styles=len(styles)
             ).filter(
               composers__in=composers
             ).annotate(
-              num_composers=Count('composers', distinct=True)
+              num_composers=Count('composers')
             ).filter(
               num_composers=len(composers)
             )
