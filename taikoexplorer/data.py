@@ -86,39 +86,35 @@ def editVideoData(request):
             composerIDs.append(c['id'])
           styles = SongStyle.objects.filter(name__in=songStyle)
           composers = Composer.objects.filter(id__in=composerIDs)
-          print(len(composers))
-          print(len(styles))
-          try:
-            # Good lord this query looks like shit...necessary though 
-            # http://stackoverflow.com/questions/8618068/django-filter-queryset-in-for-every-item-in-list
-            # If the user forces a create, we need to check if the song they
-            # eventually enter is actually a real song.  Only triggered if 
-            # the user is actually kind of a jackass.
+          # Good lord this query looks like shit...necessary though 
+          # http://stackoverflow.com/questions/8618068/django-filter-queryset-in-for-every-item-in-list
+          # If the user forces a create, we need to check if the song they
+          # eventually enter is actually a real song.  Only triggered if 
+          # the user is actually kind of a jackass.
 
-            # still stupid that we have to do this...it'll work for now
-            songs = Song.objects.filter(
-              title=songData['text']
-            ).filter(
-              styles__in=styles
-            ).annotate(
-              num_styles=Count('styles')
-            ).filter(
-              num_styles=len(styles)
-            ).filter(
-              composers__in=composers
-            ).annotate(
-              num_composers=Count('composers')
-            ).filter(
-              num_composers=len(composers)
-            )
-            # there should only be one.  this assumes that there would never be 
-            # more than two songs titled the same thing with the same styles
-            # and the same composers
-            # if there's not...well we're fucked :P
-            print(songs)
+          # still stupid that we have to do this...it'll work for now
+          songs = Song.objects.filter(
+            title=songData['text']
+          ).filter(
+            styles__in=styles
+          ).annotate(
+            num_styles=Count('styles')
+          ).filter(
+            num_styles=len(styles)
+          ).filter(
+            composers__in=composers
+          ).annotate(
+            num_composers=Count('composers')
+          ).filter(
+            num_composers=len(composers)
+          )
+          # there should only be one.  this assumes that there would never be 
+          # more than two songs titled the same thing with the same styles
+          # and the same composers
+          # if there's not...well we're fucked :P
+          if len(songs) > 0:
             song = list(songs[:1])[0]
-
-          except Song.DoesNotExist:
+          else:
             song = Song(title=songData['text'])
             print("new song")
             song.save()
